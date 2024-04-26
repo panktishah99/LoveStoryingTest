@@ -22,7 +22,7 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "lovestorying24"
+      "package": "com.example.lovestoryingapp"
     },
     "web": {
       "favicon": "./assets/favicon.png"
