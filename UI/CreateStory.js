@@ -96,12 +96,7 @@ export default function CreateStory({ navigation }) {
           placeholder="Type here..."
         />
         <Button title="Generate Story and Image" onPress={generateStoryAndImage} />
-        <View style={{ height: 20 }} />
-        <Button
-          title="Go back to Dashboard"
-          onPress={() => navigation.navigate('Dashboard')}
-        />
-        <View style={{ height: 20 }} />
+        <View style={{ height: 20 }} />s
         <Button
           title="Create Story"
           onPress={() => navigation.navigate('ViewStory')}
