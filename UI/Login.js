@@ -7,9 +7,9 @@ export default function Login({navigation}) {
   const [userName, setUserName] = useState('');
   const [password, setPassword] = useState('');
 
-  const handleLoginButtonClick () => {
+  // const handleLoginButtonClick () => {
     
-  }
+  // }
 
 	return (
 		<View style={styles.container}>
@@ -31,7 +31,7 @@ export default function Login({navigation}) {
         <View style={{ height: 20 }} />
 	      <Button
 	        title="Login"
-	        onPress={() => handleLoginButtonClick()}
+	        onPress={() => navigation.navigate('Dashboard')}
 	      />
 	    </View>
 	);
