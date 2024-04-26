@@ -5,6 +5,9 @@ import * as OpenAIServices from '../components/OpenAIServices';
 import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
 
+//To do
+//move generated story text and image to view story page
+// add more filters- age etc.
 
 export default function CreateStory({ navigation }) {
   const [inputText, setInputText] = useState('');

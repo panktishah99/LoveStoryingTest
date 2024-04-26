@@ -1,5 +1,7 @@
 import { View, Text, TextInput, Button, StyleSheet, Image, ScrollView, Dimensions } from 'react-native';
 
+//show saved stories
+
 export default function Dashboard({navigation}) {
 	return (
 		<View style={styles.container}>

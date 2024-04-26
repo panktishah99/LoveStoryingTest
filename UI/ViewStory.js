@@ -18,7 +18,9 @@ export default function ViewStory({navigation}) {
 	);
 }
 
-
+// - read data from api - see function in CreateStory.js
+// - format text and image 
+// - Add save story button
 
 
 const styles = StyleSheet.create({

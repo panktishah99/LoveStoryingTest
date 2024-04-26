@@ -1,5 +1,7 @@
 import { View, Text, TextInput, Button, StyleSheet, Image, ScrollView, Dimensions } from 'react-native';
 
+//login validation to add 
+
 export default function Login({navigation}) {
 	return (
 		<View style={styles.container}>
