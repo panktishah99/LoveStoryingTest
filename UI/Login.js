@@ -7,8 +7,9 @@ export default function Login({navigation}) {
   const [userName, setUserName] = useState('');
   const [password, setPassword] = useState('');
 
-
-  
+  const handleLoginButtonClick () => {
+    
+  }
 
 	return (
 		<View style={styles.container}>
@@ -18,19 +19,19 @@ export default function Login({navigation}) {
           style={styles.input}
           placeholder="Username"
           onChangeText={setUserName}
-          keyboardType="numeric"
+          keyboardType="email-address"
         />
         <TextInput
           style={styles.input}
           placeholder="Password"
           onChangeText={setPassword}
-          keyboardType="numeric"
+          keyboardType="email-address"
           // value={userNumber}
         />
         <View style={{ height: 20 }} />
 	      <Button
 	        title="Login"
-	        onPress={() => navigation.navigate('Dashboard')}
+	        onPress={() => handleLoginButtonClick()}
 	      />
 	    </View>
 	);

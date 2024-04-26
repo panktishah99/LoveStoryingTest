@@ -12,7 +12,6 @@ export default styles = StyleSheet.create({
     marginBottom: 20,
   },
   title: {
-    fontFamily: 'Swansea',
     fontSize: 20,
     marginBottom: 10,
     fontWeight: 'bold',
@@ -27,10 +26,8 @@ export default styles = StyleSheet.create({
     marginBottom: 20,
     paddingHorizontal: 10,
     alignSelf: 'center',
-    fontFamily: 'Swansea',
   },
   content: {
-    fontFamily: 'Swansea',
     flexGrow: 1,
     paddingTop: 20,
   },
