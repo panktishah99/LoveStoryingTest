@@ -47,6 +47,7 @@ export default function ViewStory({ navigation }) {
         const [storyTitle, setTitle] = useState("");
         const [paragraphs, setParagraphs] = useState([]); // paragraphs in JSON
         const [images, setImages] = useState("https://media-be.chewy.com/wp-content/uploads/2022/09/27095535/cute-dogs-pembroke-welsh-corgi.jpg"); // .jpg images in current path, TODO: change to [] for multiple images
+        const [storiesList, setStoriesList] = useState({});
         
         /*
         // Used to extract paragraphs when the component mounts and extract .jpg
@@ -63,7 +64,7 @@ export default function ViewStory({ navigation }) {
   // Loaf function
   const load = async () => {
     try {
-      let savedStory = await AsyncStorage.getItem("TestTitle"); // this might change in actual implementation
+      let savedStory = await AsyncStorage.getItem("Test Title"); // this might change in actual implementation
       //console.log(savedStory);
       if (savedStory !== null) {
         // Parsing the JSON back into an object

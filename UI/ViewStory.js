@@ -14,7 +14,7 @@ export default function ViewStory({ navigation, route }) {
     const extractedParagraphs = extractParagraphs(item);
     setParagraphs(extractedParagraphs);
     setImageURLs(img);
-    setTitle("TestTitle")
+    setTitle("Test Title")
   }, []);
 
   // Function to extract paragraphs from JSON data
@@ -27,6 +27,13 @@ export default function ViewStory({ navigation, route }) {
   // Function to convert and store the array as JSON
 
   const saveStory = async () => {
+    let titlesJSONString = await AsyncStorage.getItem("titles");
+    // If no titles saved yet, initialize an empty array
+    let titlesArray = titlesJSONString ? JSON.parse(titlesJSONString) : [];
+
+    // Add the title of the new story to the array
+    titlesArray.push(title);
+
     // Save each image to local storage
     try {
       const jsonParagraphs = JSON.stringify(paragraphs);
@@ -36,7 +43,18 @@ export default function ViewStory({ navigation, route }) {
         text: jsonParagraphs,
         images: imageURLs,
       };
+
+      // Add the title of the new story to the array
+      //titlesArray.push(title);
       await AsyncStorage.setItem(title, JSON.stringify(story));
+
+      // Convert the array of stories back to a JSON string
+      let updatedTitlesJSON = JSON.stringify(titlesArray);
+      // Store the updated JSON object back into AsyncStorage
+      await AsyncStorage.setItem("titles", updatedTitlesJSON);
+
+      console.log(updatedTitlesJSON)
+
       alert("Story saved successfully!");
     } catch (err) {
       alert(err);
@@ -47,17 +65,17 @@ export default function ViewStory({ navigation, route }) {
   // Loaf function
   const load = async () => {
     try {
-      let savedStory = await AsyncStorage.getItem("TestTitle"); // this might change in actual implementation
+      let savedStory = await AsyncStorage.getItem("Test Title"); // this might change in actual implementation
       console.log(savedStory);
       if (savedStory !== null) {
         // Parsing the JSON back into an object
-      let loadedStory = JSON.parse(savedStory);
-      console.log(loadedStory.text);
-      /*
-      // Set specific parts of the loaded story
-      setTitle(loadedStory.title);
-      setParagraphs(loadedStory.text);
-      setImageURLs(loadedStory.images);*/
+        let loadedStory = JSON.parse(savedStory);
+        console.log(loadedStory.text);
+        /*
+        // Set specific parts of the loaded story
+        setTitle(loadedStory.title);
+        setParagraphs(loadedStory.text);
+        setImageURLs(loadedStory.images);*/
       }
       else {
         console.log('No story found with the given title:', title);
