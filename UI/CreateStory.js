@@ -17,6 +17,7 @@ export default function CreateStory({ navigation}) {
   const [imageURL, setImageURL] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const [genre, setGenre] = useState('fiction');
+  const [age,setAge] = useState('6');
 
   // UseEffect hook to set default input text based on selected genre
   useEffect(() => {
@@ -84,7 +85,7 @@ export default function CreateStory({ navigation}) {
     <View style={styles.container} onLayout={onLayoutRootView}>
       <View style={styles.topContainer}>
         <Text style={styles.title}>Select Genre:</Text>
-        <View style={styles.genreSelector}>
+        <View style={styles.storyParameterSelector}>
           <Button
             title="Fiction"
             onPress={() => handleGenreSelect('fiction')}
@@ -121,6 +122,17 @@ export default function CreateStory({ navigation}) {
             style={{ backgroundColor: genre === 'poem' ? '#3CB371' : null }}
           />
         </View>
+        <View style={{ height: 20 }} />
+        <View style={styles.storyParameterSelector}>
+          <Text style={styles.title}>Enter the child's age:</Text>
+          <TextInput
+              style={styles.input}
+              onChangeText={setAge}
+              keyboardType="numeric"
+              value={age}
+          />
+        </View>
+        <View style={{ height: 20 }} />
         <Text style={styles.title}>Enter your story prompt:</Text>
         <TextInput
           value={inputText}
