@@ -21,9 +21,18 @@ export default function CreateStory({ navigation}) {
   // UseEffect hook to set default input text based on selected genre
   useEffect(() => {
     if (genre === 'fiction') {
-      setInputText("a cat is dancing for under 12 years old kids.");
+      setInputText("a cat and a mouse are best friends");
     } else if (genre === 'poem') {
-      setInputText("a poem about Seattle for under 12 years old kids.");
+      setInputText("a poem about Seattle");
+    }
+    else if (genre === 'fantasy'){
+      setInputText("as the rest of the world sleeps, a fairy visits a girl named Sarah");
+    }
+    else if (genre === 'adventure'){
+      setInputText("a boy named John climbs the top of the hill only to find...");
+    }
+    else if (genre === 'moral'){
+      setInputText("Pinocchio's nose grew longer and longer as he...");
     }
   }, [genre]);
 
@@ -84,6 +93,27 @@ export default function CreateStory({ navigation}) {
             style={{ backgroundColor: genre === 'fiction' ? '#3CB371' : null }}
           />
           <Button
+            title="Adventure"
+            onPress={() => handleGenreSelect('adventure')}
+            disabled={genre === 'adventure'}
+            color={genre === 'adventure' ? '#ccc' : null}
+            style={{ backgroundColor: genre === 'adventure' ? '#3CB371' : null }}
+          />
+          <Button
+            title="Moral Story"
+            onPress={() => handleGenreSelect('moral')}
+            disabled={genre === 'moral'}
+            color={genre === 'moral' ? '#ccc' : null}
+            style={{ backgroundColor: genre === 'moral' ? '#3CB371' : null }}
+          />
+          <Button
+            title="Fantasy"
+            onPress={() => handleGenreSelect('fantasy')}
+            disabled={genre === 'fantasy'}
+            color={genre === 'fantasy' ? '#ccc' : null}
+            style={{ backgroundColor: genre === 'fantasy' ? '#3CB371' : null }}
+          />
+          <Button
             title="Poem"
             onPress={() => handleGenreSelect('poem')}
             disabled={genre === 'poem'}
@@ -91,7 +121,7 @@ export default function CreateStory({ navigation}) {
             style={{ backgroundColor: genre === 'poem' ? '#3CB371' : null }}
           />
         </View>
-        <Text style={styles.title}>Enter Your Story Requirement:</Text>
+        <Text style={styles.title}>Enter your story prompt:</Text>
         <TextInput
           value={inputText}
           onChangeText={setInputText}
@@ -106,21 +136,6 @@ export default function CreateStory({ navigation}) {
           onPress={() => navigation.navigate('ViewStory', {item: storyText, img: imageURL})}
         />
       </View>
-      <ScrollView contentContainerStyle={styles.content}>
-        {errorMessage ? <Text style={styles.error}>{errorMessage}</Text> : null}
-        {storyText ? (
-          <View style={styles.storyContainer}>
-            <Text style={styles.storyTitle}>Generated Story:</Text>
-            <Text style={styles.storyText}>{storyText}</Text>
-          </View>
-        ) : null}
-        {imageURL ? (
-          <View style={styles.imageContainer}>
-            <Text style={styles.storyTitle}>Image:</Text>
-            <Image source={{ uri: imageURL }} style={styles.image} />
-          </View>
-        ) : null}
-      </ScrollView>
     </View>
   );
 };

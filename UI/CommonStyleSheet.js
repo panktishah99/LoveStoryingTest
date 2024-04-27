@@ -31,4 +31,8 @@ export default styles = StyleSheet.create({
     flexGrow: 1,
     paddingTop: 20,
   },
+  genreSelector: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  }
 });
