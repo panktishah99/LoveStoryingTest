@@ -45,12 +45,12 @@ export default function ViewStory({ navigation }) {
                     <Text>{paragraph}</Text>
                 </View>
             ))}
-            {images.map((item, idx) => (
+            {/*{images.map((item, idx) => (
                 <View key={idx}>
                     <Image source={images[idx]} style={{ width: 300, height: 300 }} />
                 </View>
 
-            ))}
+            ))}*/}
         </ScrollView>
     );
 }

@@ -9,6 +9,7 @@ import styles from "./CommonStyleSheet";
 //To do
 //move generated story text and image to view story page
 // add more filters- age etc.
+// Add the option to the user to give a name to the story
 
 export default function CreateStory({ navigation}) {
   const [inputText, setInputText] = useState('');
@@ -41,7 +42,7 @@ export default function CreateStory({ navigation}) {
       const story = temp.choices[0].text; // dummy data
 
       // Generate image based on generated story and selected genre
-      const imageResponse = await OpenAIServices.imageGeneration(story, genre);
+      //const imageResponse = await OpenAIServices.imageGeneration(story, genre);
       //const imageURL = imageResponse.imgURL;
       const imageURL = 'http://picsum.photos/300'; //dummy data
 

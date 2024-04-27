@@ -29,7 +29,7 @@ const extractParagraphs = (item) => {
             <Text style={styles.storyText}>{item}</Text>
           </View>
         ) : null}
-        {imageURLs[0] ? (
+        {imageURLs ? (
           <View style={styles.imageContainer}>
             <Text style={styles.storyTitle}>Image:</Text>
             <Image source={{ uri: imageURLs }} style={styles.image} />
