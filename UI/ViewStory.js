@@ -1,32 +1,92 @@
 import { View, Text, TextInput, Button, StyleSheet, Image, ScrollView, Dimensions } from 'react-native';
 import React, { useState, useEffect } from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function ViewStory({ navigation, route }) {
   const [paragraphs, setParagraphs] = useState([]); // paragraphs in JSON
   //const [imageURLs, setImageURLs] = useState([]); // http images
   const [imageURLs, setImageURLs] = useState(""); // dummy http images
   const { item, img } = route.params;
-
-// Function to extract paragraphs from JSON data
-const extractParagraphs = (item) => {
-  const paragraphsArray = item.split('\n').filter(paragraph => paragraph.trim() !== '');
-  return paragraphsArray;
-};
+  const [title, setTitle] = useState("") // Title of the story
 
   // Used to extract paragraphs when the component mounts and extract .jpg
   useEffect(() => {
     const extractedParagraphs = extractParagraphs(item);
     setParagraphs(extractedParagraphs);
     setImageURLs(img);
+    setTitle("TestTitle")
   }, []);
+
+  // Function to extract paragraphs from JSON data
+  const extractParagraphs = (item) => {
+    const paragraphsArray = item.split('\n').filter(paragraph => paragraph.trim() !== '');
+    return paragraphsArray;
+  };
+
+  /////////////// Functions that saves data to Directory /////////////
+  // Function to convert and store the array as JSON
+
+  const saveStory = async () => {
+    // Save each image to local storage
+    try {
+      const jsonParagraphs = JSON.stringify(paragraphs);
+      // Create json of story
+      let story = {
+        title: title,
+        text: jsonParagraphs,
+        images: imageURLs,
+      };
+      await AsyncStorage.setItem(title, JSON.stringify(story));
+      alert("Story saved successfully!");
+    } catch (err) {
+      alert(err);
+    }
+  };
+  ////////////////////////////////////////////////////////////////////
+
+  // Loaf function
+  const load = async () => {
+    try {
+      let savedStory = await AsyncStorage.getItem("TestTitle"); // this might change in actual implementation
+      console.log(savedStory);
+      if (savedStory !== null) {
+        // Parsing the JSON back into an object
+      let loadedStory = JSON.parse(savedStory);
+      console.log(loadedStory.text);
+      /*
+      // Set specific parts of the loaded story
+      setTitle(loadedStory.title);
+      setParagraphs(loadedStory.text);
+      setImageURLs(loadedStory.images);*/
+      }
+      else {
+        console.log('No story found with the given title:', title);
+      }
+
+    } catch (err) {
+      alert(err);
+    }
+  }
+  /////////////////////////////////////////////////////////////////////
+
+  // This will only rerender on the initial page load
+  /*
+  useEffect(() => {
+    //load();
+  }, []);*/
 
   return (
     <View style={styles.container}>
       <ScrollView contentContainerStyle={styles.content}>
-        {item ? (
+        {/*<Text style={styles.storyText}>{paragraphs}</Text>*/}
+        {paragraphs ? (
           <View style={styles.storyContainer}>
-            <Text style={styles.storyTitle}>Generated Story:</Text>
-            <Text style={styles.storyText}>{item}</Text>
+            <Text style={styles.storyTitle}>{title}</Text>
+            {paragraphs.map((paragraph, index) => (
+              <View key={index}>
+                <Text>{paragraph}</Text>
+              </View>
+            ))}
           </View>
         ) : null}
         {imageURLs ? (
@@ -46,6 +106,12 @@ const extractParagraphs = (item) => {
         title="Ready to Answer Questions?"
         onPress={() => navigation.navigate('Questionnaire')}
       />
+      <Button
+        title="Save story"
+        onPress={() => {
+          saveStory();
+        }}
+      />
     </View>
   );
 }
@@ -53,12 +119,6 @@ const extractParagraphs = (item) => {
 // - read data from api - see function in CreateStory.js
 // - format text and image 
 // - Add save story button
-
-/* {paragraphs.map((paragraph, index) => (
-        <View key={index}>
-          <Text>{paragraph}</Text>
-        </View>
-      ))} */
 
 const styles = StyleSheet.create({
   container: {
