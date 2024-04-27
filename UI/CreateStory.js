@@ -10,7 +10,7 @@ import styles from "./CommonStyleSheet";
 //move generated story text and image to view story page
 // add more filters- age etc.
 
-export default function CreateStory({ navigation }) {
+export default function CreateStory({ navigation}) {
   const [inputText, setInputText] = useState('');
   const [storyText, setStoryText] = useState('');
   const [imageURL, setImageURL] = useState('');
@@ -35,13 +35,15 @@ export default function CreateStory({ navigation }) {
   const generateStoryAndImage = async () => {
     try {
       // Generate story based on input text and selected genre
-      const storyResponse = await OpenAIServices.textCompletion(inputText, 30, 0.5, 0.5, 0, 0, 'gpt-3.5-turbo-instruct', genre);
-      const story = storyResponse.text;
+      //const storyResponse = await OpenAIServices.textCompletion(inputText, 30, 0.5, 0.5, 0, 0, 'gpt-3.5-turbo-instruct', genre);
+      //const story = storyResponse.text;
+      const temp = require('../assets/test1.json'); // dummy data
+      const story = temp.choices[0].text; // dummy data
 
       // Generate image based on generated story and selected genre
       const imageResponse = await OpenAIServices.imageGeneration(story, genre);
       //const imageURL = imageResponse.imgURL;
-      const imageURL = 'http://picsum.photos/300';
+      const imageURL = 'http://picsum.photos/300'; //dummy data
 
       // Set story text and image URL
       setStoryText(story);
@@ -78,14 +80,14 @@ export default function CreateStory({ navigation }) {
             onPress={() => handleGenreSelect('fiction')}
             disabled={genre === 'fiction'}
             color={genre === 'fiction' ? '#ccc' : null}
-            style={{backgroundColor: genre === 'fiction' ? '#3CB371' : null}}
+            style={{ backgroundColor: genre === 'fiction' ? '#3CB371' : null }}
           />
           <Button
             title="Poem"
             onPress={() => handleGenreSelect('poem')}
             disabled={genre === 'poem'}
             color={genre === 'poem' ? '#ccc' : null}
-            style={{backgroundColor: genre === 'poem' ? '#3CB371' : null}}
+            style={{ backgroundColor: genre === 'poem' ? '#3CB371' : null }}
           />
         </View>
         <Text style={styles.title}>Enter Your Story Requirement:</Text>
@@ -97,10 +99,10 @@ export default function CreateStory({ navigation }) {
           placeholder="Type here..."
         />
         <Button title="Generate Story and Image" onPress={generateStoryAndImage} />
-        <View style={{ height: 20 }} />s
+        <View style={{ height: 20 }} />
         <Button
           title="Create Story"
-          onPress={() => navigation.navigate('ViewStory')}
+          onPress={() => navigation.navigate('ViewStory', {item: storyText, img: imageURL})}
         />
       </View>
       <ScrollView contentContainerStyle={styles.content}>
@@ -114,7 +116,7 @@ export default function CreateStory({ navigation }) {
         {imageURL ? (
           <View style={styles.imageContainer}>
             <Text style={styles.storyTitle}>Image:</Text>
-            <Image source={{uri: imageURL}} style={styles.image} />
+            <Image source={{ uri: imageURL }} style={styles.image} />
           </View>
         ) : null}
       </ScrollView>
