@@ -2,6 +2,7 @@ import { View, Text, TextInput, Button, StyleSheet, Image, ScrollView, Dimension
 
 import React, { useState, useEffect, useCallback } from 'react';
 import * as OpenAIServices from '../components/OpenAIServices';
+import * as Machiery from '../components/machinery';
 import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
 import styles from "./CommonStyleSheet";
@@ -105,7 +106,7 @@ export default function CreateStory({ navigation}) {
 const generateStory = async () => {
     try {
 
-      const newInputText = Machiery.createStoryPrompt(inputText, 3, 2, '12-year old kids', 'fiction', 20)
+      const newInputText = Machiery.createStoryPrompt(inputText, paragraphs, sentences, age, genre, words)
 
       // Generate story
       const storyResponse = await OpenAIServices.textCompletion(newInputText, 300,0.5, 0.5, 0, 0, 'gpt-3.5-turbo-instruct');
@@ -119,7 +120,7 @@ const generateStory = async () => {
     
     // Generate images
     const numImg = paragraphs.length;
-    const imgPrompt = Machiery.createImagePrompt(story, 'illustration'); 
+    const imgPrompt = Machiery.createImagePrompt(story, imageType); 
 
     const imageData = await OpenAIServices.imageGeneration(imgPrompt, numImg);
 
