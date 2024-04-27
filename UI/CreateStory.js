@@ -17,10 +17,11 @@ export default function CreateStory({ navigation}) {
   const [imageURL, setImageURL] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const [genre, setGenre] = useState('fiction');
-  const [age,setAge] = useState('6');
+  const [age,setAge] = useState(6);
   const [paragraphs,setParagraphs] = useState('4');
-  const [sentences,setSentences] = useState('3');
+  const [sentences,setSentences] = useState('5');
   const [words,setWords] = useState('15');
+  const [imageType,setImageType] = useState('illustration');
 
   // UseEffect hook to set default input text based on selected genre
   useEffect(() => {
@@ -43,6 +44,37 @@ export default function CreateStory({ navigation}) {
   const handleGenreSelect = (selectedGenre) => {
     if (selectedGenre !== genre) {
       setGenre(selectedGenre);
+    }
+  };
+
+  const handleImageSelect = (selectedImageType) => {
+    if (selectedImageType !== imageType) {
+      setImageType(selectedImageType);
+    }
+  };
+
+
+  const handleChangeAge = (text) => {
+    const ageValue = Number(text);
+    setAge(ageValue);
+    if (!isNaN(ageValue)) {
+      if(ageValue >= 3 && ageValue <=5){
+        setParagraphs('3');
+        setSentences('3');
+        setWords('10');
+        console.log("here1");
+      } else if (ageValue > 5 && ageValue <=8){
+        setParagraphs('4');
+        setSentences('5');
+        setWords('15');
+        console.log("here2");
+      }
+      else if (ageValue > 8 && ageValue <=12){
+        setParagraphs('5');
+        setSentences('7');
+        setWords('20');
+        console.log("here3");
+      }
     }
   };
 
@@ -127,16 +159,16 @@ export default function CreateStory({ navigation}) {
         </View>
         <View style={{ height: 20 }} />
         <View style={styles.storyParameterSelector}>
-          <Text style={styles.title}>Enter the child's age:</Text>
+          <Text style={styles.title}>Enter the child age:</Text>
           <TextInput
               style={[styles.input, { width: 50 }]}
-              onChangeText={setAge}
+              onChangeText={handleChangeAge}
               keyboardType="numeric"
               value={age}
           />
         </View>
         <View style={{ height: 20 }} />
-        <Text style={styles.title}>Story Length:</Text>
+        <Text style={styles.title}>Story Size:</Text>
         <View style={styles.storyParameterSelector}>
           <Text style={styles.title}>Paragraphs:</Text>
           <TextInput
@@ -158,6 +190,38 @@ export default function CreateStory({ navigation}) {
               onChangeText={setWords}
               keyboardType="numeric"
               value={words}
+          />
+        </View>
+        <View style={{ height: 20 }} />
+        <Text style={styles.title}>Select Image Type:</Text>
+        <View style={styles.storyParameterSelector}>
+          <Button
+            title="Illustration"
+            onPress={() => handleImageSelect('illustration')}
+            disabled={imageType === 'illustration'}
+            color={imageType === 'illustration' ? '#ccc' : null}
+            style={{ backgroundColor: imageType === 'illustration' ? '#3CB371' : null }}
+          />
+          <Button
+            title="Cartoon"
+            onPress={() => handleImageSelect('cartoon')}
+            disabled={imageType === 'cartoon'}
+            color={imageType === 'cartoon' ? '#ccc' : null}
+            style={{ backgroundColor: imageType === 'cartoon' ? '#3CB371' : null }}
+          />
+          <Button
+            title="Photorealistic"
+            onPress={() => handleImageSelect('photorealistic')}
+            disabled={imageType === 'photorealistic'}
+            color={imageType === 'photorealistic' ? '#ccc' : null}
+            style={{ backgroundColor: imageType === 'photorealistic' ? '#3CB371' : null }}
+          />
+          <Button
+            title="Fantasy"
+            onPress={() => handleImageSelect('fantasy')}
+            disabled={imageType === 'fantasy'}
+            color={imageType === 'fantasy' ? '#ccc' : null}
+            style={{ backgroundColor: imageType === 'fantasy' ? '#3CB371' : null }}
           />
         </View>
         <View style={{ height: 20 }} />
