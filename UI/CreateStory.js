@@ -62,45 +62,122 @@ export default function CreateStory({ navigation}) {
         setParagraphs('3');
         setSentences('3');
         setWords('10');
-        console.log("here1");
       } else if (ageValue > 5 && ageValue <=8){
         setParagraphs('4');
         setSentences('5');
         setWords('15');
-        console.log("here2");
       }
       else if (ageValue > 8 && ageValue <=12){
         setParagraphs('5');
         setSentences('7');
         setWords('20');
-        console.log("here3");
       }
     }
   };
 
-  const generateStoryAndImage = async () => {
+  // const generateStoryAndImage = async () => {
+  //   try {
+  //     // Generate story based on input text and selected genre
+  //     //const prompt = 'Generate a ${genre} story about ${inputText} for ${age} year olds. This story has ${paragraphs} paragraphs, with each paragraph having ${sentences} sentences, each sentence having less than ${words} words. The story should be a little bit funny and in general written with a positive mood.';
+  //     //const storyResponse = await OpenAIServices.textCompletion(inputText, 30, 0.5, 0.5, 0, 0, 'gpt-3.5-turbo-instruct', genre);
+  //     //const story = storyResponse.text;
+  //     const temp = require('../assets/test1.json'); // dummy data
+  //     const story = temp.choices[0].text; // dummy data
+
+  //     // Generate image based on generated story and selected genre
+  //     //const imageResponse = await OpenAIServices.imageGeneration(story, genre);
+  //     //const imageURL = imageResponse.imgURL;
+  //     const imageURL = 'http://picsum.photos/300'; //dummy data
+
+  //     // Set story text and image URL
+  //     setStoryText(story);
+  //     setImageURL(imageURL);
+  //     setErrorMessage('');
+  //   } catch (error) {
+  //     setStoryText('');
+  //     setImageURL('');
+  //     setErrorMessage('Error generating story or image. Please try again.' + error.message);
+  //   }
+  // };
+
+
+  // For mocking API calling
+const generateStory = async () => {
     try {
-      // Generate story based on input text and selected genre
-      //const storyResponse = await OpenAIServices.textCompletion(inputText, 30, 0.5, 0.5, 0, 0, 'gpt-3.5-turbo-instruct', genre);
-      //const story = storyResponse.text;
-      const temp = require('../assets/test1.json'); // dummy data
-      const story = temp.choices[0].text; // dummy data
 
-      // Generate image based on generated story and selected genre
-      //const imageResponse = await OpenAIServices.imageGeneration(story, genre);
-      //const imageURL = imageResponse.imgURL;
-      const imageURL = 'http://picsum.photos/300'; //dummy data
+      const newInputText = Machiery.createStoryPrompt(inputText, 3, 2, '12-year old kids', 'fiction', 20)
 
-      // Set story text and image URL
-      setStoryText(story);
-      setImageURL(imageURL);
+      // Generate story
+      const storyResponse = await OpenAIServices.textCompletion(newInputText, 300,0.5, 0.5, 0, 0, 'gpt-3.5-turbo-instruct');
+      const story = storyResponse.text.trim(); // Remove leading and trailing whitespaces
+
+      // Generate Title
+      const title = 'Super the Space Cat';
+
+      // Split text into paragraphs based on the newline character (\n)
+      const paragraphs = story.split('\n').filter(paragraph => paragraph.trim() !== ''); // Remove empty paragraphs
+    
+    // Generate images
+    const numImg = paragraphs.length;
+    const imgPrompt = Machiery.createImagePrompt(story, 'illustration'); 
+
+    const imageData = await OpenAIServices.imageGeneration(imgPrompt, numImg);
+
+    const imageURLs = new Array(imageData.imgURL.length).fill(null);
+    for (let i = 0; i < imageData.imgURL.length; i++) {
+      console.log("response url: ", imageData.imgURL[i]);
+      imageURLs[i] = imageData.imgURL[i];
+    }
+
+      // Combine paragraphs and image URLs into an array of objects
+      const storyData = paragraphs.map((paragraph, index) => ({
+        paragraph:paragraphs[index],
+        imageURL: imageURLs[index],
+      }));
+
+      // Set story data
+      setStoryData(storyData);
+      setGeneratedTitle(title);
       setErrorMessage('');
     } catch (error) {
-      setStoryText('');
-      setImageURL('');
-      setErrorMessage('Error generating story or image. Please try again.' + error.message);
+      setStoryData([]);
+      setErrorMessage('Error generating story.' + error.message);
     }
   };
+
+
+  // return (
+  //   <View style={styles.container}>
+  //     <View style={styles.topContainer}>
+  //       <Text style={styles.title}>Generated Story Viewer</Text>
+  //       <TextInput
+  //         value={inputText || "A cat named Super builds a space ship."}
+  //         onChangeText={setInputText}
+  //         placeholder="Enter your story outline here, like a cat is dancing..."
+  //         multiline
+  //         style={[styles.input, { width: Dimensions.get('window').width - 40 }]} // Adjust width dynamically
+  //       />
+  //       <Button title="Generate Story" onPress={generateStory} />
+  //     </View>
+
+  //       {/* Render generated title */}
+  //     <Text style={styles.generatedTitle}>{generatedTitle}</Text>
+
+  //     <ScrollView contentContainerStyle={styles.content}>
+  //       {errorMessage ? <Text style={styles.error}>{errorMessage}</Text> : null}
+        
+  //       {storyData.map((item, index) => (
+  //         <View key={index} style={styles.storyContainer}>
+            
+
+  //           <Text style={styles.storyText}>{item.paragraph}</Text>
+  //           <Image source={ item.imageURL } style={styles.image} />
+  //         </View>
+  //       ))}
+  //     </ScrollView>
+  //   </View>
+  // );
+};
 
   const [fontsLoaded, fontError] = useFonts({
     'Swansea': require('../assets/fonts/Swansea.ttf'),
@@ -233,7 +310,7 @@ export default function CreateStory({ navigation}) {
           style={[styles.input, { width: 400 }]}
           placeholder="Type here..."
         />
-        <Button title="Generate Story and Image" onPress={generateStoryAndImage} />
+        <Button title="Generate Story and Image" onPress={generateStory} />
         <View style={{ height: 20 }} />
         <Button
           title="Create Story"
