@@ -4,7 +4,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import * as OpenAIServices from '../components/OpenAIServices';
 import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
-import styles from "./CommonStyleSheet"
+import styles from "./CommonStyleSheet";
 
 //To do
 //move generated story text and image to view story page
@@ -40,7 +40,8 @@ export default function CreateStory({ navigation }) {
 
       // Generate image based on generated story and selected genre
       const imageResponse = await OpenAIServices.imageGeneration(story, genre);
-      const imageURL = imageResponse.imgURL;
+      //const imageURL = imageResponse.imgURL;
+      const imageURL = 'http://picsum.photos/300';
 
       // Set story text and image URL
       setStoryText(story);
@@ -113,7 +114,7 @@ export default function CreateStory({ navigation }) {
         {imageURL ? (
           <View style={styles.imageContainer}>
             <Text style={styles.storyTitle}>Image:</Text>
-            <Image source={imageURL} style={styles.image} />
+            <Image source={{uri: imageURL}} style={styles.image} />
           </View>
         ) : null}
       </ScrollView>
