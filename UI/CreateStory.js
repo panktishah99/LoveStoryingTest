@@ -18,6 +18,9 @@ export default function CreateStory({ navigation}) {
   const [errorMessage, setErrorMessage] = useState('');
   const [genre, setGenre] = useState('fiction');
   const [age,setAge] = useState('6');
+  const [paragraphs,setParagraphs] = useState('4');
+  const [sentences,setSentences] = useState('3');
+  const [words,setWords] = useState('15');
 
   // UseEffect hook to set default input text based on selected genre
   useEffect(() => {
@@ -126,10 +129,35 @@ export default function CreateStory({ navigation}) {
         <View style={styles.storyParameterSelector}>
           <Text style={styles.title}>Enter the child's age:</Text>
           <TextInput
-              style={styles.input}
+              style={[styles.input, { width: 50 }]}
               onChangeText={setAge}
               keyboardType="numeric"
               value={age}
+          />
+        </View>
+        <View style={{ height: 20 }} />
+        <Text style={styles.title}>Story Length:</Text>
+        <View style={styles.storyParameterSelector}>
+          <Text style={styles.title}>Paragraphs:</Text>
+          <TextInput
+              style={[styles.input, { width: 40 }]}
+              onChangeText={setParagraphs}
+              keyboardType="numeric"
+              value={paragraphs}
+          />
+          <Text style={styles.title}>Sentences:</Text>
+          <TextInput
+              style={[styles.input, { width: 40 }]}
+              onChangeText={setSentences}
+              keyboardType="numeric"
+              value={sentences}
+          />
+          <Text style={styles.title}>Words:</Text>
+          <TextInput
+              style={[styles.input, { width: 40 }]}
+              onChangeText={setWords}
+              keyboardType="numeric"
+              value={words}
           />
         </View>
         <View style={{ height: 20 }} />
@@ -138,7 +166,7 @@ export default function CreateStory({ navigation}) {
           value={inputText}
           onChangeText={setInputText}
           multiline
-          style={[styles.input, { width: Dimensions.get('window').width - 40 }]}
+          style={[styles.input, { width: 400 }]}
           placeholder="Type here..."
         />
         <Button title="Generate Story and Image" onPress={generateStoryAndImage} />
