@@ -1,0 +1,29 @@
+{
+  "images": [
+    {
+      "id": 1,
+      "url": "https://cats.com/wp-content/uploads/2023/09/fluffy-cat-lies-on-the-windowsill-and-looks-into-the-camera.jpg",
+      "location": "../assets/image1.jpg"
+    },
+    {
+      "id": 2,
+      "url": "https://cdn.britannica.com/70/234870-050-D4D024BB/Orange-colored-cat-yawns-displaying-teeth.jpg",
+      "location": "../assets/image2.jpg"
+    },
+    {
+      "id": 3,
+      "url": "https://cats.com/wp-content/uploads/2023/09/fluffy-cat-lies-on-the-windowsill-and-looks-into-the-camera.jpg",
+      "location": "../assets/image3.jpg"
+    },
+        {
+      "id": 4,
+      "url": "https://cdn.britannica.com/70/234870-050-D4D024BB/Orange-colored-cat-yawns-displaying-teeth.jpg",
+      "location": "../assets/image4.jpg"
+    },
+    {
+      "id": 5,
+      "url": "https://cats.com/wp-content/uploads/2023/09/fluffy-cat-lies-on-the-windowsill-and-looks-into-the-camera.jpg",
+      "location": "../assets/image5.jpg"
+    }
+  ]
+}
