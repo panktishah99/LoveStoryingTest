@@ -121,3 +121,5 @@ export default function CreateStory({ navigation }) {
     </View>
   );
 };
+
+//<Image source={imageURL} style={styles.image} />
