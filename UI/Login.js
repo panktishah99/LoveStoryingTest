@@ -13,6 +13,8 @@ export default function Login({navigation}) {
   const handleLogin = () => {
 
     if (userName === 'Admin' && password === '12345') {
+      setPassword('');
+      setisError(false);
       navigation.navigate('Dashboard');
     } else {
       // Display error message or notification for invalid credentials
@@ -31,12 +33,14 @@ export default function Login({navigation}) {
           placeholder="Username"
           onChangeText={setUserName}
           keyboardType="default"
+          value={userName}
         />
         <TextInput
           style={styles.loginInput}
           placeholder="Password"
           onChangeText={setPassword}
           keyboardType="default"
+          value={password}
           secureTextEntry
         />
         <View style={{ height: 20 }} />
