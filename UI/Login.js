@@ -7,10 +7,19 @@ import MyImage from '../assets/bgimages/login.jpg';
 export default function Login({navigation}) {
   const [userName, setUserName] = useState('');
   const [password, setPassword] = useState('');
+  const [isError, setisError] = useState(false);
 
-  // const handleLoginButtonClick () => {
-    
-  // }
+
+  const handleLogin = () => {
+
+    if (userName === 'Admin' && password === '12345') {
+      navigation.navigate('Dashboard');
+    } else {
+      // Display error message or notification for invalid credentials
+      setisError(true);
+      console.log('Invalid credentials');
+    }
+  };
 
 	return (
     <ImageBackground source={MyImage} style={styles.backgroundImage}>
@@ -28,14 +37,18 @@ export default function Login({navigation}) {
           placeholder="Password"
           onChangeText={setPassword}
           keyboardType="default"
-          secureTextEntry={true}
+          secureTextEntry
         />
         <View style={{ height: 20 }} />
 	      <Button
 	        title="Login"
-          style={{ backgroundColor: '#1f1b13' }}
-	        onPress={() => navigation.navigate('Dashboard')}
+          color='#0b756e'
+	        onPress={handleLogin}
 	      />
+        <View style={{ height: 20 }} />
+        {isError && (
+          <Text style={{fontSize:18}}>Invalid Credentals. Please try again.</Text>
+        )}
 	    </View>
     </ImageBackground>
 	);
