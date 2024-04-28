@@ -213,11 +213,13 @@ export default function ViewStory({ navigation, route }) {
       <Button
         title="Ready to Answer Questions?"
         onPress={goToQuestionnaire}
+        color='#256943'
       />
       <View style={{ height: 20 }} />
       <Button
         title="Save story"
         onPress={() => { saveStory(); }}
+        color='#274b7a'
       />
     </View>
     // </ImageBackground>
