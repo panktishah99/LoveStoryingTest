@@ -7,7 +7,7 @@ import MyImage from '../assets/bgimages/dashboard.jpg';
 //show saved stories
 
 export default function Dashboard({ navigation }) {
-	[storyTitles, setListTiles] = useState([]);
+	[storyTitles, setStoryTitles] = useState([]);
 	
 	useEffect(()=>{
 		refreshDashboard();
