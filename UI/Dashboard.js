@@ -32,6 +32,12 @@ export default function Dashboard({ navigation }) {
         }
     };
 
+    const handleTitlePress = (item) => {
+		//console.log(item);
+		console.log(storyTitles);
+        navigation.navigate('ReadStory', { item });
+    };
+
     return (
         <ImageBackground source={MyImage} style={styles.backgroundImage}>
             <View style={styles.container}>
@@ -54,11 +60,13 @@ export default function Dashboard({ navigation }) {
                         data={storyTitles}
                         keyExtractor={(item, index) => index.toString()}
                         renderItem={({ item }) => (
-                            <View style={styles.imageItem}>
-                                <View style={styles.imageInfo}>
-                                    <Text style={styles.imageName}>{item.title}</Text>
+                            <TouchableOpacity onPress={() => handleTitlePress(item.dateName)}>
+                                <View style={styles.imageItem}>
+                                    <View style={styles.imageInfo}>
+                                        <Text style={styles.imageName}>{item.title}</Text>
+                                    </View>
                                 </View>
-                            </View>
+                            </TouchableOpacity>
                         )}
                     />
                 ) : (
@@ -68,3 +76,4 @@ export default function Dashboard({ navigation }) {
         </ImageBackground>
     );
 }
+
