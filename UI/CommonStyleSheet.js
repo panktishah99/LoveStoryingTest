@@ -103,5 +103,24 @@ export default styles = StyleSheet.create({
 	  borderRadius: 6,
 	  paddingVertical: 12,
 	  paddingHorizontal: 32,
-	} 
+	},
+  imageItem: {
+	  flexDirection: 'row',
+	  alignItems: 'center',
+	  justifyContent: 'space-between',
+	  marginVertical: 5,
+	  padding: 10,
+	  backgroundColor: '#eee',
+	  borderRadius: 5,
+	},
+  
+	imageInfo: {
+	  flexDirection: 'row',
+	  alignItems: 'center',
+	},
+  
+	imageName: {
+	  marginTop: 5, // Adjust as needed
+	  textAlign: 'center', // Adjust as needed
+	}, 
 });

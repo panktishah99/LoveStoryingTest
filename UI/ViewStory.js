@@ -80,7 +80,7 @@ export default function ViewStory({ navigation, route }) {
     const currentTime = new Date();
 
     // Format the current time
-    const formattedTime = `${currentTime.getFullYear()}${(currentTime.getMonth() + 1)
+    /*const formattedTime = `${currentTime.getFullYear()}${(currentTime.getMonth() + 1)
       .toString()
       .padStart(2, '0')}${currentTime
         .getDate()
@@ -94,19 +94,14 @@ export default function ViewStory({ navigation, route }) {
             .padStart(2, '0')}${currentTime
               .getSeconds()
               .toString()
-              .padStart(2, '0')}`;
-
-    // Use the formatted time as the name for storing data
-    const dataName = `story_${formattedTime}`;
-
-    // titles key will have as a value a Json where the list of created stories will be stored
-    let titlesJSONString = await AsyncStorage.getItem("titles");
-    // If no titles saved yet, initialize an empty array
-    let titlesArray = titlesJSONString ? JSON.parse(titlesJSONString) : [];
+              .padStart(2, '0')}`;*/
 
     // Save each image to local storage
     try {
-      //const jsonParagraphs = JSON.stringify(paragraphs);
+      // Use the formatted time as the name for storing data
+      //const dataName = `story_${formattedTime}`;
+      const dataName = `story_${new Date().getTime()}`
+
       // Create json of story
       let story = {
         dateName: dataName,
@@ -116,8 +111,17 @@ export default function ViewStory({ navigation, route }) {
         genre: storyGenre,
         age: userAge,
       };
+      
+      // titles key will have as a value a Json where the list of created stories will be stored
+      let titlesJSONString = await AsyncStorage.getItem("storyTitles");
+      // If no titles saved yet, initialize an empty array
+      let titlesArray = titlesJSONString ? JSON.parse(titlesJSONString) : [];
+      //const jsonParagraphs = JSON.stringify(paragraphs);
+      titlesArray.push(story);
 
-      console.log(story);
+
+
+/*
       // Check if dataName is not already in the array
       if (!titlesArray.includes(dataName)) {
         // If not, add the title(creation name) of the new story to the array
@@ -125,16 +129,16 @@ export default function ViewStory({ navigation, route }) {
       } else {
         // If dataName is already in the array, handle the case accordingly
         console.log(`${dataName} already exists in the array.`);
-      }
+      }*/
       // Set value for dataName key
-      await AsyncStorage.setItem(dataName, JSON.stringify(story));
+      //await AsyncStorage.setItem(dataName, JSON.stringify(story));
 
       // Convert the array of stories back to a JSON string
-      let updatedTitlesJSON = JSON.stringify(titlesArray);
+      //let updatedTitlesJSON = JSON.stringify(titlesArray);
       // Store the updated JSON object back into AsyncStorage
-      await AsyncStorage.setItem("titles", updatedTitlesJSON);
+      await AsyncStorage.setItem("storyTitles", JSON.stringify(titlesArray));
 
-      console.log(updatedTitlesJSON) // Showing list of current stories
+      //console.log(updatedTitlesJSON) // Showing list of current stories
 
       alert("Story saved successfully!");
     } catch (err) {
