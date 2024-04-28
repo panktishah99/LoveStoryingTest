@@ -1,6 +1,7 @@
 import { View, Text, TextInput, Button, StyleSheet, Image, ScrollView, Dimensions } from 'react-native';
 import React, { useState, useEffect } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import * as OpenAIServices from '../components/OpenAIServices';
 
 export default function ViewStory({ navigation, route }) {
   const [paragraphs, setParagraphs] = useState([]); // paragraphs in JSON
@@ -8,8 +9,8 @@ export default function ViewStory({ navigation, route }) {
   const [imageURLs, setImageURLs] = useState(""); // dummy http images
   // const { item, img } = route.params;
   const { theStoryTitle, theStoryData } = route.params;
-  console.log(theStoryTitle);
-  console.log(theStoryData);
+  // console.log(theStoryTitle);
+  // console.log(theStoryData);
   // const [title, setTitle] = useState("") // Title of the story
 
   // Used to extract paragraphs when the component mounts and extract .jpg
@@ -29,13 +30,34 @@ export default function ViewStory({ navigation, route }) {
   /////////////// Functions that saves data to Directory /////////////
   // Function to convert and store the array as JSON
 
+  const goToQuestionnaire = async () => {
+  	//We will have some API call to GPT to generate questions based on the story
+  	//Forward these to Questionnaire page from here
+  	const questionsResponse = await OpenAIServices.questionsGenerator('someStoryText');
+    const generatedQuestions = questionsResponse.text.trim(); // Remove leading and trailing whitespaces
+
+    // Split text into paragraphs based on the newline character (\n)
+    const questions = generatedQuestions.split('\n').filter(questions => questions.trim() !== ''); // Remove empty paragraphs
+
+    const theQuestions = questions.filter((_, index) => index % 2 === 0);
+		const theAnswers = questions.filter((_, index) => index % 2 !== 0);
+		const theAnswersWithoutPrefix = theAnswers.map(theAnswer => theAnswer.slice(8));
+  
+    // Combine paragraphs and image URLs into an array of objects
+    // const questionsMap = questions.map((paragraph, index) => ({
+    //   paragraph:paragraphs[index],
+    //   imageURL: imageURLs[index],
+    // }));
+    // console.log(questions);
+  	navigation.navigate('Questionnaire', { storyTitle: theStoryTitle, questionsArray: theQuestions, answersArray: theAnswersWithoutPrefix});
+  };
   const saveStory = async () => {
     // Save each image to local storage
     try {
       const jsonParagraphs = JSON.stringify(paragraphs);
       // Create json of story
       let story = {
-        title: title,
+        title: theStorytitle,
         text: jsonParagraphs,
         images: imageURLs,
       };
@@ -47,7 +69,7 @@ export default function ViewStory({ navigation, route }) {
   };
   ////////////////////////////////////////////////////////////////////
 
-  // Loaf function
+  // Load function
   const load = async () => {
     try {
       let savedStory = await AsyncStorage.getItem("TestTitle"); // this might change in actual implementation
@@ -94,7 +116,7 @@ export default function ViewStory({ navigation, route }) {
       <View style={{ height: 20 }} />
       <Button
         title="Ready to Answer Questions?"
-        onPress={() => navigation.navigate('Questionnaire')}
+        onPress={goToQuestionnaire}
       />
       <View style={{ height: 20 }} />
       <Button
@@ -102,50 +124,10 @@ export default function ViewStory({ navigation, route }) {
         onPress={() => {saveStory();}}
       />
     </View>
-
-    // <View style={styles.container}>
-    //   <ScrollView contentContainerStyle={styles.content}>
-    //     {/*<Text style={styles.storyText}>{paragraphs}</Text>*/}
-    //     {paragraphs ? (
-    //       <View style={styles.storyContainer}>
-    //         <Text style={styles.storyTitle}>{title}</Text>
-    //         {paragraphs.map((paragraph, index) => (
-    //           <View key={index}>
-    //             <Text>{paragraph}</Text>
-    //           </View>
-    //         ))}
-    //       </View>
-    //     ) : null}
-    //     {imageURLs ? (
-    //       <View style={styles.imageContainer}>
-    //         <Text style={styles.storyTitle}>Image:</Text>
-    //         <Image source={{ uri: imageURLs }} style={styles.image} />
-    //       </View>
-    //     ) : null}
-    //   </ScrollView>
-    //   <View style={{ height: 20 }} />
-    //   <Button
-    //     title="Go back to Create Story"
-    //     onPress={() => navigation.navigate('CreateStory')}
-    //   />
-    //   <View style={{ height: 20 }} />
-    //   <Button
-    //     title="Ready to Answer Questions?"
-    //     onPress={() => navigation.navigate('Questionnaire')}
-    //   />
-    //   <Button
-    //     title="Save story"
-    //     onPress={() => {
-    //       saveStory();
-    //     }}
-    //   />
-    // </View>
   );
 }
 
-// - read data from api - see function in CreateStory.js
-// - format text and image 
-// - Add save story button
+
 
 const styles = StyleSheet.create({
   container: {

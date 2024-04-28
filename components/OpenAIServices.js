@@ -85,3 +85,23 @@ export function titleGeneration(textPrompt) {
     // Simulate resolving a promise with the mock response
     return Promise.resolve(mockResponse); //=================
 }
+
+
+// This part is for the mocking openAI API calling
+export function questionsGenerator(storyText) {
+    // Simulating receiving data without sending a request
+    const mockResponse = {
+
+        text: '1. What was the name of the Cat?\n' +
+        'Answer: Super\n' +
+        '\n' +
+        '2. What did the Cat build?\n' +
+        'Answer: Spaceship\n' +
+        '\n' +
+        '3. WWhat did the Cat forget to build?\n' +
+        'Answer: Bathroom\n'
+        // You can add more mock data fields if needed
+    };
+    // Simulate resolving a promise with the mock response
+    return Promise.resolve(mockResponse); //=================
+}

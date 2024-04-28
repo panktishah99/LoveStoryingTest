@@ -119,8 +119,8 @@ const generateStory = async () => {
       setStoryData(storyData);
       setGeneratedTitle(storyTitle);
       setErrorMessage('');
-      console.log('string: '+storyTitle);
-      console.log('generated: '+generatedTitle);
+      // console.log('string: '+storyTitle);
+      // console.log('generated: '+generatedTitle);
       //debug shows empty string here - need to check why
 
       navigation.navigate('ViewStory', { theStoryTitle: storyTitle, theStoryData: storyData});
