@@ -85,8 +85,8 @@ const generateStory = async () => {
       const newInputText = Machiery.createStoryPrompt(inputText, paragraphs, sentences, age, genre, words)
       // Generate story
       const storyResponse = await OpenAIServices.textCompletion(newInputText, 300,0.5, 0.5, 0, 0, 'gpt-3.5-turbo-instruct');
-      const responseData = await storyResponse.json(); // Remove leading and trailing whitespaces 
-      // const responseData = storyResponse;
+      // const responseData = await storyResponse.json(); // Remove leading and trailing whitespaces 
+      const responseData = storyResponse;
       const story = responseData.text.trim();
       console.log(story);
 
@@ -96,19 +96,25 @@ const generateStory = async () => {
       // const storyTitle = storyTitleResponse.title.trim();
 
       // Generate Title
-      const titlePrompt = Machiery.createTitlePrompt(story);
-      const responseTitle = await OpenAIServices.textCompletion(titlePrompt, 200,0.5, 0.5, 0, 0, 'gpt-3.5-turbo-instruct');
-      const dataTitle = await responseTitle.json();
-      const storyTitle = dataTitle.text;
+      // const titlePrompt = Machiery.createTitlePrompt(story);
+      // const responseTitle = await OpenAIServices.textCompletion(titlePrompt, 200,0.5, 0.5, 0, 0, 'gpt-3.5-turbo-instruct');
+      // const dataTitle = await responseTitle.json();
+      // const storyTitle = dataTitle.text;
+      
+      const titleResponse = await OpenAIServices.titleGeneration('abc');
+      const storyTitle = titleResponse.title;
       console.log(storyTitle);
 
       // Generate Questions
-      const questionPrompt = Machiery.createQuestions(story);
-      const responseQuestion = await OpenAIServices.textCompletion(questionPrompt, 200,0.5, 0.5, 0, 0, 'gpt-3.5-turbo-instruct');
-      const dataQuestion = await responseQuestion.json();
-      const questions = dataQuestion.text;
-      console.log(questions);
+      // const questionPrompt = Machiery.createQuestions(story);
+      // const responseQuestion = await OpenAIServices.textCompletion(questionPrompt, 200,0.5, 0.5, 0, 0, 'gpt-3.5-turbo-instruct');
+      // const dataQuestion = await responseQuestion.json();
+      // const questions = dataQuestion.text;
+      // console.log(questions);
 
+      const responseQuestion = await OpenAIServices.questionsGenerator('abc');
+      const questions = responseQuestion.text;
+      
 
       // Split text into paragraphs based on the newline character (\n)
       const paragraphs = story.split('\n').filter(paragraph => paragraph.trim() !== ''); // Remove empty paragraphs
@@ -117,13 +123,13 @@ const generateStory = async () => {
       const numImg = paragraphs.length;
       const imgPrompt = Machiery.createImagePrompt(paragraphs[0], 'illustration'); 
       const imageResponse = await OpenAIServices.imageGeneration(imgPrompt, numImg);
-      // const imageData = imageResponse;
-      const imageData = await imageResponse.json();
+      const imageData = imageResponse;
+      // const imageData = await imageResponse.json();
 
       const imageURLs = new Array(imageData.imgURL.length).fill(null);
       for (let i = 0; i < imageData.imgURL.length; i++) {
-        console.log("response url: ", imageData.imgURL[i].url);
-        imageURLs[i] = imageData.imgURL[i].url;
+        console.log("response url: ", imageData.imgURL[i]);
+        imageURLs[i] = imageData.imgURL[i];
       }
 
         // Combine paragraphs and image URLs into an array of objects
@@ -149,7 +155,7 @@ const generateStory = async () => {
       setCurStoryData([]);
       console.log("ERROR!");
       console.log(error.message);
-      onsole.log(error);
+      console.log(error);
       setErrorMessage('Error generating story.' + error.message);
     }
   };

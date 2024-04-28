@@ -26,7 +26,7 @@ export default function Login({navigation}) {
 	return (
     <ImageBackground source={MyImage} style={styles.backgroundImage}>
 		<View style={styles.container}>
-	      <Text style={[styles.title,{color: '#0b756e'}]}>Welcome to LoveStorying!</Text>
+	      <Text style={[styles.title,{color: '#0b756e'}]}>Welcome to StoryHome!</Text>
         <View style={{ height: 30 }} />
         <TextInput
           style={styles.loginInput}
@@ -51,7 +51,7 @@ export default function Login({navigation}) {
 	      />
         <View style={{ height: 20 }} />
         {isError && (
-          <Text style={{fontSize:18}}>Invalid Credentals. Please try again.</Text>
+          <Text style={{fontSize:18}}>Invalid Credentials. Please try again.</Text>
         )}
 	    </View>
     </ImageBackground>

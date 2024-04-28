@@ -204,8 +204,7 @@ export default function ViewStory({ navigation, route }) {
           <View key={index} style={styles.storyContainer}>
 
             <Text style={styles.content}>{item.paragraph}</Text>
-            <Image source={{ uri: item.imageURL }} style={styles.image} />
-            {/*<Image source={ item.imageURL } style={styles.image} />*/}
+            <Image source={ item.imageURL } style={styles.image} />
           </View>
         ))}
       </ScrollView>
