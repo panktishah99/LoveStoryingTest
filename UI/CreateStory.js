@@ -3,8 +3,7 @@ import { View, Text, TextInput, Button, StyleSheet, Image, ScrollView, Dimension
 import React, { useState, useEffect, useCallback } from 'react';
 import * as OpenAIServices from '../components/OpenAIServices';
 import * as Machiery from '../components/machinery';
-import { useFonts } from 'expo-font';
-import * as SplashScreen from 'expo-splash-screen';
+
 import styles from "./CommonStyleSheet";
 import MyImage from '../assets/bgimages/forest.jpg';
 
@@ -29,7 +28,7 @@ export default function CreateStory({ navigation}) {
   // UseEffect hook to set default input text based on selected genre
   useEffect(() => {
     if (genre === 'fiction') {
-      setInputText("a cat and a mouse are best friends");
+      setInputText("a cat and a mouse were best friends...");
     } else if (genre === 'poem') {
       setInputText("a poem about Seattle");
     }
@@ -55,7 +54,6 @@ export default function CreateStory({ navigation}) {
       setImageType(selectedImageType);
     }
   };
-
 
   const handleChangeAge = (text) => {
     const ageValue = Number(text);
@@ -87,14 +85,29 @@ const generateStory = async () => {
       const newInputText = Machiery.createStoryPrompt(inputText, paragraphs, sentences, age, genre, words)
       // Generate story
       const storyResponse = await OpenAIServices.textCompletion(newInputText, 300,0.5, 0.5, 0, 0, 'gpt-3.5-turbo-instruct');
-      const responseData = await storyResponse.json(); // Remove leading and trailing whitespaces
+      const responseData = await storyResponse.json(); // Remove leading and trailing whitespaces 
+      // const responseData = storyResponse;
       const story = responseData.text.trim();
       console.log(story);
 
 
       // Generate Title
-      const storyTitleResponse = await OpenAIServices.titleGeneration('abc'); //modify this
-      const storyTitle = storyTitleResponse.title.trim();
+      // const storyTitleResponse = await OpenAIServices.titleGeneration('abc'); //modify this
+      // const storyTitle = storyTitleResponse.title.trim();
+
+      // Generate Title
+      const titlePrompt = Machiery.createTitlePrompt(story);
+      const responseTitle = await OpenAIServices.textCompletion(titlePrompt, 200,0.5, 0.5, 0, 0, 'gpt-3.5-turbo-instruct');
+      const dataTitle = await responseTitle.json();
+      const storyTitle = dataTitle.text;
+      console.log(storyTitle);
+
+      // Generate Questions
+      const questionPrompt = Machiery.createQuestions(story);
+      const responseQuestion = await OpenAIServices.textCompletion(questionPrompt, 200,0.5, 0.5, 0, 0, 'gpt-3.5-turbo-instruct');
+      const dataQuestion = await responseQuestion.json();
+      const questions = dataQuestion.text;
+      console.log(questions);
 
 
       // Split text into paragraphs based on the newline character (\n)
@@ -104,6 +117,7 @@ const generateStory = async () => {
       const numImg = paragraphs.length;
       const imgPrompt = Machiery.createImagePrompt(paragraphs[0], 'illustration'); 
       const imageResponse = await OpenAIServices.imageGeneration(imgPrompt, numImg);
+      // const imageData = imageResponse;
       const imageData = await imageResponse.json();
 
       const imageURLs = new Array(imageData.imgURL.length).fill(null);
@@ -128,7 +142,7 @@ const generateStory = async () => {
       //debug shows empty string here - need to check why
       //console.log(storyData);
 
-      navigation.navigate('ViewStory', { theStoryTitle: storyTitle, theStoryData: storyData, sGenre: genre, uAge: age}); //=======
+      navigation.navigate('ViewStory', { theStoryTitle: storyTitle, theStoryData: storyData, sGenre: genre, uAge: age, questionsResponse: questions}); //=======
       //navigation.navigate('ViewStory', { theStoryTitle: storyTitle, theStoryData: storyData});
     } catch (error) {
       //setStoryData([]);
@@ -141,25 +155,10 @@ const generateStory = async () => {
 
 
 
-  const [fontsLoaded, fontError] = useFonts({
-    'Swansea': require('../assets/fonts/Swansea.ttf'),
-  });
-
-  const onLayoutRootView = useCallback(async () => {
-    if (fontsLoaded || fontError) {
-      await SplashScreen.hideAsync();
-    }
-  }, [fontsLoaded, fontError]);
-
-  if (!fontsLoaded && !fontError) {
-    return null;
-  }
-
   return (
     <ImageBackground source={MyImage} style={styles.backgroundImage}>
-    <View style={styles.container} onLayout={onLayoutRootView}>
+    <View style={styles.container}>
       <View style={styles.topContainer}>
-
         <Text style={styles.inputLabel}>Select Genre:</Text>
         <View style={styles.storyParameterSelector}>
           <Button
@@ -217,7 +216,7 @@ const generateStory = async () => {
         </View>
         <View style={{ height: 30 }} />
         <View style={styles.storyParameterSelector}>
-          <Text style={styles.inputLabel}>Enter the child's age:</Text>
+          <Text style={styles.inputLabel}>Enter the Child's Age:</Text>
           <TextInput
               style={[styles.inputNumber, {marginLeft: 50}]}
               onChangeText={handleChangeAge}
@@ -236,7 +235,7 @@ const generateStory = async () => {
           />
         </View>
         <View style={styles.storyParameterSelector}>
-          <Text style={styles.inputLabel}>Sentences per paragraph:</Text>
+          <Text style={styles.inputLabel}>Sentences per Paragraph:</Text>
           <TextInput
               style={[styles.inputNumber, {marginLeft: 5}]}
               onChangeText={setSentences}
@@ -245,7 +244,7 @@ const generateStory = async () => {
           />
         </View>
         <View style={styles.storyParameterSelector}>
-          <Text style={styles.inputLabel}>Words per sentence:</Text>
+          <Text style={styles.inputLabel}>Words per Sentence:</Text>
           <TextInput
               style={[styles.inputNumber, {marginLeft: 50}]}
               onChangeText={setWords}
@@ -264,7 +263,7 @@ const generateStory = async () => {
           placeholder="Type here..."
         />
         <View style={{ height: 20 }} />
-        <Button title="Generate Story and Image" onPress={generateStory} />
+        <Button title="Generate Illustrated Story" onPress={generateStory} color='#bf150f' />
       </View>
     </View>
     </ImageBackground>

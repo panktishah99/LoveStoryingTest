@@ -3,7 +3,7 @@ import {StyleSheet} from 'react-native';
 export default styles = StyleSheet.create({
   backgroundImage:{
     flex: 1, // Cover the entire view
-    resizeMode: 'stretch', // Adjust how the image fits (e.g., 'cover', 'contain', 'stretch')
+    resizeMode: 'cover', // Adjust how the image fits (e.g., 'cover', 'contain', 'stretch')
     zIndex: -1,
     backgroundColor: 'transparent',
   
@@ -13,6 +13,14 @@ export default styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     padding: 20,
+  },
+  overlay: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 20,
+    backgroundColor: 'white',
+    opacity: 0.5,
   },
   topContainer: {
     alignItems: 'center',
@@ -26,14 +34,16 @@ export default styles = StyleSheet.create({
     alignItems: 'center',
   },
   question: {
-    fontSize: 22,
+    fontSize: 20,
     marginBottom: 10,
     fontWeight: 'bold',
+    color: '#f5efe6',
   },
   inputLabel: {
     fontSize: 20,
     marginBottom: 10,
     fontWeight: 'bold',
+    textAlign:'left',
     alignSelf: 'center',
     alignItems: 'center',
   },
@@ -75,7 +85,6 @@ export default styles = StyleSheet.create({
     paddingVertical: 20,
     paddingHorizontal: 14,
     fontSize: 18,
-
   },
   storyParameterSelector: {
     flexDirection: 'row',

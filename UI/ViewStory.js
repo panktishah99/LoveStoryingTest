@@ -13,7 +13,7 @@ export default function ViewStory({ navigation, route }) {
   const [storyGenre, setStoryGenre] = useState("");
   const [userAge, setUserAge] = useState("");
   // const { item, img } = route.params;
-  const { theStoryTitle, theStoryData, sGenre, uAge } = route.params;
+  const { theStoryTitle, theStoryData, sGenre, uAge, questionsResponse} = route.params;
 
 
   // Used to extract paragraphs when the component mounts and extract .jpg
@@ -36,8 +36,8 @@ export default function ViewStory({ navigation, route }) {
   const goToQuestionnaire = async () => {
     //We will have some API call to GPT to generate questions based on the story
     //Forward these to Questionnaire page from here
-    const questionsResponse = await OpenAIServices.questionsGenerator('someStoryText');
-    const generatedQuestions = questionsResponse.text.trim(); // Remove leading and trailing whitespaces
+    // const questionsResponse = await OpenAIServices.questionsGenerator('someStoryText');
+    const generatedQuestions = questionsResponse; // Remove leading and trailing whitespaces
 
     // Split text into paragraphs based on the newline character (\n)
     const questions = generatedQuestions.split('\n').filter(questions => questions.trim() !== ''); // Remove empty paragraphs
