@@ -40,7 +40,7 @@ export default function Questionnaire({navigation,route}) {
 	      <Button title="Submit Answers" onPress={handleSubmit} />
 	      <View style={{ height: 20 }} />
 			{isSubmitted && (
-	        <Text style={stylesnew.successText}>Your score is {score}.</Text>
+	        <Text>You scored {score} out of {answersArray.length}.</Text>
 	      )}
 	      </View>
 	    </View>
@@ -65,12 +65,6 @@ const stylesnew = StyleSheet.create({
     borderColor: '#ccc',
     padding: 5,
     marginBottom: 5,
-  },
-  errorText: {
-    color: 'red',
-  },
-  successText: {
-    color: 'green',
   },
 });
 

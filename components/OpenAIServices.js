@@ -98,7 +98,7 @@ export function questionsGenerator(storyText) {
         '2. What did the Cat build?\n' +
         'Answer: Spaceship\n' +
         '\n' +
-        '3. WWhat did the Cat forget to build?\n' +
+        '3. What did the Cat forget to build?\n' +
         'Answer: Bathroom\n'
         // You can add more mock data fields if needed
     };
