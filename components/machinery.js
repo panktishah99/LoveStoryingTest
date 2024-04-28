@@ -28,7 +28,7 @@ Formulate a very short title of the following story: ${story}.
 
 export function createQuestions(story) {
     return `
-Formulate 4 simple selection questions and its right answer for the following story: ${story}.
+Formulate 4 simple questions and its right answer for the following story: ${story}.
 
 `;
 }
