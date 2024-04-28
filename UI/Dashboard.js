@@ -1,7 +1,7 @@
 import { View, Text, TextInput, Button, StyleSheet, Image, ScrollView, Dimensions, ImageBackground,TouchableOpacity } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useEffect, useState } from 'react';
-import { FlatList } from 'react-native-web';
+// import { FlatList } from 'react-native-web';
 import styles from "./CommonStyleSheet"
 import MyImage from '../assets/bgimages/Picture1.png';
 //show saved stories

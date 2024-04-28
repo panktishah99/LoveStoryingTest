@@ -21,9 +21,9 @@ export default function CreateStory({ navigation}) {
   const [errorMessage, setErrorMessage] = useState('');
   const [genre, setGenre] = useState('fiction');
   const [age,setAge] = useState('6');
-  const [paragraphs,setParagraphs] = useState('1');
-  const [sentences,setSentences] = useState('5');
-  const [words,setWords] = useState('10');
+  const [paragraphs,setParagraphs] = useState('2');
+  const [sentences,setSentences] = useState('4');
+  const [words,setWords] = useState('20');
   const [imageType,setImageType] = useState('illustration');
 
   // UseEffect hook to set default input text based on selected genre
@@ -62,17 +62,17 @@ export default function CreateStory({ navigation}) {
     setAge(ageValue);
     if (!isNaN(ageValue)) {
       if(ageValue >= 3 && ageValue <=5){
-        setParagraphs('3');
-        setSentences('3');
-        setWords('10');
+        setParagraphs('2');
+        setSentences('4');
+        setWords('20');
       } else if (ageValue > 5 && ageValue <=8){
-        setParagraphs('4');
-        setSentences('5');
-        setWords('15');
+        setParagraphs('2');
+        setSentences('4');
+        setWords('20');
       }
       else if (ageValue > 8 && ageValue <=12){
-        setParagraphs('5');
-        setSentences('7');
+        setParagraphs('2');
+        setSentences('4');
         setWords('20');
       }
     }
@@ -167,36 +167,31 @@ const generateStory = async () => {
             title="Fiction"
             onPress={() => handleGenreSelect('fiction')}
             disabled={genre === 'fiction'}
-            color={genre === 'fiction' ? '#ccc' : null}
-            style={{ backgroundColor: genre === 'fiction' ? '#3CB371' : null }}
+            color='#8a3636'
           />
           <Button
             title="Adventure"
             onPress={() => handleGenreSelect('adventure')}
             disabled={genre === 'adventure'}
-            color={genre === 'adventure' ? '#ccc' : null}
-            style={{ backgroundColor: genre === 'adventure' ? '#3CB371' : null }}
+            color='#8a3636'
           />
           <Button
             title="Moral Story"
             onPress={() => handleGenreSelect('moral')}
             disabled={genre === 'moral'}
-            color={genre === 'moral' ? '#ccc' : null}
-            style={{ backgroundColor: genre === 'moral' ? '#3CB371' : null }}
+            color='#8a3636'
           />
           <Button
             title="Fantasy"
             onPress={() => handleGenreSelect('fantasy')}
             disabled={genre === 'fantasy'}
-            color={genre === 'fantasy' ? '#ccc' : null}
-            style={{ backgroundColor: genre === 'fantasy' ? '#3CB371' : null }}
+            color='#8a3636'
           />
           <Button
             title="Poem"
             onPress={() => handleGenreSelect('poem')}
             disabled={genre === 'poem'}
-            color={genre === 'poem' ? '#ccc' : null}
-            style={{ backgroundColor: genre === 'poem' ? '#3CB371' : null }}
+            color='#8a3636'
           />
         </View>
         <View style={{ height: 20 }} />
@@ -206,36 +201,26 @@ const generateStory = async () => {
             title="Illustration"
             onPress={() => handleImageSelect('illustration')}
             disabled={imageType === 'illustration'}
-            color={imageType === 'illustration' ? '#ccc' : null}
-            style={{ backgroundColor: imageType === 'illustration' ? '#3CB371' : null }}
+            color='#8a4736'
           />
           <Button
-            title="Cartoon"
-            onPress={() => handleImageSelect('cartoon')}
-            disabled={imageType === 'cartoon'}
-            color={imageType === 'cartoon' ? '#ccc' : null}
-            style={{ backgroundColor: imageType === 'cartoon' ? '#3CB371' : null }}
+            title="Historical"
+            onPress={() => handleImageSelect('historical image')}
+            disabled={imageType === 'historical image'}
+            color='#8a4736'
           />
           <Button
             title="Photorealistic"
-            onPress={() => handleImageSelect('photorealistic')}
-            disabled={imageType === 'photorealistic'}
-            color={imageType === 'photorealistic' ? '#ccc' : null}
-            style={{ backgroundColor: imageType === 'photorealistic' ? '#3CB371' : null }}
-          />
-          <Button
-            title="Fantasy"
-            onPress={() => handleImageSelect('fantasy')}
-            disabled={imageType === 'fantasy'}
-            color={imageType === 'fantasy' ? '#ccc' : null}
-            style={{ backgroundColor: imageType === 'fantasy' ? '#3CB371' : null }}
+            onPress={() => handleImageSelect('picture')}
+            disabled={imageType === 'picture'}
+            color='#8a4736'
           />
         </View>
         <View style={{ height: 30 }} />
         <View style={styles.storyParameterSelector}>
           <Text style={styles.inputLabel}>Enter the child's age:</Text>
           <TextInput
-              style={[styles.inputNumber, {marginLeft: 10}]}
+              style={[styles.inputNumber, {marginLeft: 50}]}
               onChangeText={handleChangeAge}
               keyboardType="numeric"
               value={age}
@@ -243,27 +228,27 @@ const generateStory = async () => {
         </View>
         <View style={{ height: 20 }} />
         <View style={styles.storyParameterSelector}>
-          <Text style={styles.inputLabel}>Paragraphs:</Text>
+          <Text style={styles.inputLabel}>Total Paragraphs:</Text>
           <TextInput
-              style={[styles.inputNumber, {marginLeft: 10}]}
+              style={[styles.inputNumber, {marginLeft: 80}]}
               onChangeText={setParagraphs}
               keyboardType="numeric"
               value={paragraphs}
           />
         </View>
         <View style={styles.storyParameterSelector}>
-          <Text style={styles.inputLabel}>Sentences:</Text>
+          <Text style={styles.inputLabel}>Sentences per paragraph:</Text>
           <TextInput
-              style={[styles.inputNumber, {marginLeft: 18}]}
+              style={[styles.inputNumber, {marginLeft: 5}]}
               onChangeText={setSentences}
               keyboardType="numeric"
               value={sentences}
           />
         </View>
         <View style={styles.storyParameterSelector}>
-          <Text style={styles.inputLabel}>Words:</Text>
+          <Text style={styles.inputLabel}>Words per sentence:</Text>
           <TextInput
-              style={[styles.inputNumber, {marginLeft: 55}]}
+              style={[styles.inputNumber, {marginLeft: 50}]}
               onChangeText={setWords}
               keyboardType="numeric"
               value={words}
