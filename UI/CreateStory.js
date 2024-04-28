@@ -15,7 +15,7 @@ import MyImage from '../assets/bgimages/createstory.jpg';
 
 export default function CreateStory({ navigation}) {
   const [inputText, setInputText] = useState('');
-  const [storyData, setStoryData] = useState('');
+  const [curStoryData, setCurStoryData] = useState();
   const [generatedTitle, setGeneratedTitle] = useState('');
   const [imageURL, setImageURL] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
@@ -104,27 +104,42 @@ const generateStory = async () => {
 
       const imageData = await OpenAIServices.imageGeneration(imgPrompt, numImg);
 
-      const imageURLs = new Array(imageData.imgURL.length).fill(null);
-      for (let i = 0; i < imageData.imgURL.length; i++) {
-        console.log("response url: ", imageData.imgURL[i]);
+      //===== this version should be closer to the actual one needed
+      const imageDataDummy = require("../assets/test3.json");
+      const curURLs= imageDataDummy.imageData.imgURL;
+      const imageURLs = new Array(curURLs.length).fill(null);
+      const imageURLsMOCK = new Array(curURLs.length).fill(null);
+      //console.log(curURLs.length);
+      //=====
+
+      //const imageURLs = new Array(imageData.imgURL.length).fill(null);
+      //for (let i = 0; i < imageData.imgURL.length; i++) {
+        for (let i = 0; i < curURLs.length; i++) {
+        //console.log("response url: ", imageData.imgURL[i]);
+        //console.log("response url: ", curURLs[i]);
         imageURLs[i] = imageData.imgURL[i];
+        imageURLsMOCK[i] = curURLs[i].url; //====== Look at this one for actual implementation
+        console.log(imageURLsMOCK[i]);
       }
 
       // Combine paragraphs and image URLs into an array of objects
       const storyData = paragraphs.map((paragraph, index) => ({
         paragraph:paragraphs[index],
-        imageURL: imageURLs[index],
+        imageURL: imageURLsMOCK[index], // ===== Look at this one for actual implementation
+        //imageURL: imageURLs[index],
       }));
 
       // Set story data
-      setStoryData(storyData);
+      //setCurStoryData(storyData);
       setGeneratedTitle(storyTitle);
       setErrorMessage('');
       // console.log('string: '+storyTitle);
       // console.log('generated: '+generatedTitle);
       //debug shows empty string here - need to check why
+      console.log(storyData);
 
-      navigation.navigate('ViewStory', { theStoryTitle: storyTitle, theStoryData: storyData});
+      navigation.navigate('ViewStory', { theStoryTitle: storyTitle, theStoryData: storyData}); //=======
+      //navigation.navigate('ViewStory', { theStoryTitle: storyTitle, theStoryData: storyData});
     } catch (error) {
       setStoryData([]);
       setErrorMessage('Error generating story.' + error.message);
