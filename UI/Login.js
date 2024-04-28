@@ -1,7 +1,7 @@
 import { View, Text, TextInput, Button, StyleSheet, Image, ScrollView, Dimensions, ImageBackground,KeyboardAvoidingView } from 'react-native';
 import { useState, useEffect, useCallback } from 'react';
 import styles from "./CommonStyleSheet"
-import MyImage from '../assets/bgimages/login.jpg';
+import MyImage from '../assets/bgimages/login.png';
 //login validation to add 
 
 export default function Login({navigation}) {
