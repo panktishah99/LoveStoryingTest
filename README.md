@@ -9,4 +9,4 @@ The application contains the below basic pages-
 4. View Story - a scrollable page formatted with the generated story and images for a User friendly reading experience
 5. Questionnaire - an evaluation page to answer questions related to the story
 
-Try our app on snakc on a simulated phone or your own device: https://snack.expo.dev/@panktiii/github.com-panktishah99-lovestoryingtest
+Try our app on snack on a simulated phone or your own device: https://snack.expo.dev/@panktiii/github.com-panktishah99-lovestoryingtest
