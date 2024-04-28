@@ -47,8 +47,6 @@ export default function ViewStory({ navigation }) {
 export default function ViewStory({ navigation, route }) {
     const [storyData, setStoryData] = useState(null);
     const [storyTitle, setTitle] = useState("");
-    const [paragraphs, setParagraphs] = useState([]); // paragraphs in JSON
-    const [images, setImages] = useState("https://media-be.chewy.com/wp-content/uploads/2022/09/27095535/cute-dogs-pembroke-welsh-corgi.jpg"); // .jpg images in current path, TODO: change to [] for multiple images
     const { item } = route.params;
 
     /*
@@ -89,13 +87,13 @@ export default function ViewStory({ navigation, route }) {
             }*/
 
             //let savedStory = await AsyncStorage.getItem("story_20240428020208"); // this might change in actual implementation
-            let savedStory = await AsyncStorage.getItem("story_20240428020208"); // this might change in actual implementation
+            //let savedStory = await AsyncStorage.getItem("story_20240428020208"); // this might change in actual implementation
             // If story is in list, get data
-            if (savedStory !== null) {
+            if (desiredItem !== null) {
             //if (desiredItem !== null) {
             //if (desiredItem){
                 // Extracting title and story data
-                let loadedStory = JSON.parse(savedStory);
+                //let loadedStory = JSON.parse(savedStory);
                 //let loadedStory = JSON.parse(desiredItem);
                 console.log(desiredItem.storyData);
                 let titleString = JSON.parse(desiredItem.title);
@@ -105,7 +103,7 @@ export default function ViewStory({ navigation, route }) {
                 //console.log(loadedStory.storyData[0]);
             }
             else {
-                console.log('No story found with the given title:', title);
+                //console.log('No story found with the given title:', title);
             }
 
         } catch (err) {
