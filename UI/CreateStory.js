@@ -149,6 +149,7 @@ const generateStory = async () => {
       setCurStoryData([]);
       console.log("ERROR!");
       console.log(error.message);
+      onsole.log(error);
       setErrorMessage('Error generating story.' + error.message);
     }
   };

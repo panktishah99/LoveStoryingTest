@@ -64,7 +64,7 @@ export default function Dashboard({ navigation }) {
                 <View style={{ height: 20 }} />
                 <TouchableOpacity style={styles.buttonStyle1} >
                     <Button 
-                        color = '#256943'
+                        color = '#2f8062'
                         title="Go to Create Story Page"
                         onPress={() => navigation.navigate('CreateStory')}
                     />
@@ -80,7 +80,7 @@ export default function Dashboard({ navigation }) {
                             <TouchableOpacity onPress={() => handleTitlePress(item.dateName)}>
                                 <View style={styles.imageItem}>
                                     <View style={styles.imageInfo}>
-                                        <Text style={[styles.imageName,{marginRight: 40}]}>{JSON.parse(JSON.parse(item.title))}</Text>
+                                        <Text style={[styles.imageName,{fontSize:18,width:200,marginRight: 40}]}>{JSON.parse(JSON.parse(item.title))}</Text>
                                         <Button title="Delete" color='#c26315' onPress={() => handleDeleteStory(item)} />
                                     </View>
                                 </View>

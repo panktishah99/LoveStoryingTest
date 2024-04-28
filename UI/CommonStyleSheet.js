@@ -32,6 +32,9 @@ export default styles = StyleSheet.create({
     fontWeight: 'bold',
     alignSelf: 'center',
     alignItems: 'center',
+    // textShadowOffset: { width: 20, height: 20 },
+    // textShadowColor: 'black',
+    // elevation: 10,
   },
   question: {
     fontSize: 20,
