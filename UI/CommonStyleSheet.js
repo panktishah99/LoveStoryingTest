@@ -91,4 +91,16 @@ export default styles = StyleSheet.create({
     height: 50,
     backgroundColor: '#fcc73f',
   },
+  buttonStyle1: {
+	  borderWidth: 1,
+	  backgroundColor: '#575DD9',
+	  alignItems: "center",
+	  justifyContent: "center",
+	  alignSelf: "stretch",
+	  marginTop: 32,
+	  marginHorizontal: 32,
+	  borderRadius: 6,
+	  paddingVertical: 12,
+	  paddingHorizontal: 32,
+	} 
 });

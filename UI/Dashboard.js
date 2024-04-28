@@ -8,7 +8,24 @@ import MyImage from '../assets/bgimages/dashboard.jpg';
 
 export default function Dashboard({ navigation }) {
 	[storyTitles, setListTiles] = useState([]);
-	const remove = async () => {
+	
+	useEffect(()=>{
+		refreshDashboard();
+	  }, []);
+	  
+	  const refreshDashboard = async () => {
+		try {
+			let titlesJSONString = await AsyncStorage.getItem("titles");
+			// If no titles saved yet, initialize an empty array
+			let titlesArray = titlesJSONString ? JSON.parse(titlesJSONString) : [];
+			setListTiles(titlesArray);
+			console.log(storyTitles);
+		} catch(err) {
+		  alert(err);
+		}
+	  };
+	 
+	  const remove = async () => {
 		try {
 		  await AsyncStorage.removeItem("Test Title"); // TODO: match the current list of stories
 		} catch(err) {
@@ -17,22 +34,6 @@ export default function Dashboard({ navigation }) {
 		  setName("");
 		}*/
 	  };
-	  
-	  const refreshDashboard = async () => {
-		try {
-			let titlesJSONString = await AsyncStorage.getItem("titles");
-			// If no titles saved yet, initialize an empty array
-			let titlesArray = titlesJSONString ? JSON.parse(titlesJSONString) : [];
-			setListTiles(titlesArray);
-
-		} catch(err) {
-		  alert(err);
-		}
-	  };
-	 
-	  useEffect(()=>{
-		//refreshDashboard();
-	  }, []);
 
 	return (
 		<ImageBackground source={MyImage} style={styles.backgroundImage}>
@@ -55,9 +56,3 @@ export default function Dashboard({ navigation }) {
 		</ImageBackground>
 	);
 }
-
-
-//import { View, Text, TextInput, Button, StyleSheet, Image, ScrollView, Dimensions,  } from 'react-native';
-
-
-//show saved stories

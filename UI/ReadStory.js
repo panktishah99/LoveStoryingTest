@@ -43,11 +43,13 @@ export default function ViewStory({ navigation }) {
     }, []);*/
 /////////////////
 
-export default function ViewStory({ navigation }) {
+//export default function ViewStory({ navigation, route }) {
+export default function ViewStory({ navigation}) {
     const [storyData, setStoryData]=useState(null);
     const [storyTitle, setTitle] = useState("");
     const [paragraphs, setParagraphs] = useState([]); // paragraphs in JSON
     const [images, setImages] = useState("https://media-be.chewy.com/wp-content/uploads/2022/09/27095535/cute-dogs-pembroke-welsh-corgi.jpg"); // .jpg images in current path, TODO: change to [] for multiple images
+    //const { cur } = route.params;
 
     /*
     // Used to extract paragraphs when the component mounts and extract .jpg
