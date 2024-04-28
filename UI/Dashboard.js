@@ -3,7 +3,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useEffect, useState } from 'react';
 import { FlatList } from 'react-native-web';
 import styles from "./CommonStyleSheet"
-import MyImage from '../assets/bgimages/dashboard.jpg';
+import MyImage from '../assets/bgimages/Picture1.png';
 //show saved stories
 
 export default function Dashboard({ navigation }) {

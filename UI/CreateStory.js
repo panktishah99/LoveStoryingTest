@@ -6,7 +6,7 @@ import * as Machiery from '../components/machinery';
 import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
 import styles from "./CommonStyleSheet";
-import MyImage from '../assets/bgimages/createstory.jpg';
+import MyImage from '../assets/bgimages/forest.jpg';
 
 //To do
 //move generated story text and image to view story page
@@ -21,9 +21,9 @@ export default function CreateStory({ navigation}) {
   const [errorMessage, setErrorMessage] = useState('');
   const [genre, setGenre] = useState('fiction');
   const [age,setAge] = useState('6');
-  const [paragraphs,setParagraphs] = useState('4');
+  const [paragraphs,setParagraphs] = useState('1');
   const [sentences,setSentences] = useState('5');
-  const [words,setWords] = useState('15');
+  const [words,setWords] = useState('10');
   const [imageType,setImageType] = useState('illustration');
 
   // UseEffect hook to set default input text based on selected genre
@@ -88,9 +88,10 @@ const generateStory = async () => {
       console.log("HEREEEE!!!");
       // Generate story
       const storyResponse = await OpenAIServices.textCompletion(newInputText, 300,0.5, 0.5, 0, 0, 'gpt-3.5-turbo-instruct');
-      const story = storyResponse.text.trim(); // Remove leading and trailing whitespaces
+      const responseData = await storyResponse.json(); // Remove leading and trailing whitespaces
+      const story = responseData.text.trim();
+      console.log(story);
 
-      
 
       // Generate Title
       const storyTitleResponse = await OpenAIServices.titleGeneration('abc'); //modify this
@@ -102,37 +103,22 @@ const generateStory = async () => {
     
       // Generate images
       const numImg = paragraphs.length;
-      const imgPrompt = Machiery.createImagePrompt(story, imageType); 
+      const imgPrompt = Machiery.createImagePrompt(paragraphs[0], 'illustration'); 
+      const imageResponse = await OpenAIServices.imageGeneration(imgPrompt, numImg);
+      const imageData = await imageResponse.json();
 
-      //const imageData = await OpenAIServices.imageGeneration(imgPrompt, numImg);
-      const imageDataDummy = await OpenAIServices.imageGeneration(imgPrompt, numImg);
-      
-      console.log(imageDataDummy);
-
-      //===== this version should be closer to the actual one needed
-      //const imageDataDummy = require("../assets/test3.json");
-      const curURLs= imageDataDummy.imageData.imgURL;
-      const imageURLs = new Array(curURLs.length).fill(null);
-      const imageURLsMOCK = new Array(curURLs.length).fill(null);
-      //console.log(curURLs.length);
-      //=====
-
-      //const imageURLs = new Array(imageData.imgURL.length).fill(null);
-      //for (let i = 0; i < imageData.imgURL.length; i++) {
-        for (let i = 0; i < curURLs.length; i++) {
-        //console.log("response url: ", imageData.imgURL[i]);
-        //console.log("response url: ", curURLs[i]);
-        imageURLs[i] = imageData.imgURL[i];
-        imageURLsMOCK[i] = curURLs[i].url; //====== Look at this one for actual implementation
-        //console.log(imageURLsMOCK[i]);
+      const imageURLs = new Array(imageData.imgURL.length).fill(null);
+      for (let i = 0; i < imageData.imgURL.length; i++) {
+        console.log("response url: ", imageData.imgURL[i].url);
+        imageURLs[i] = imageData.imgURL[i].url;
       }
 
-      // Combine paragraphs and image URLs into an array of objects
+        // Combine paragraphs and image URLs into an array of objects
       const storyData = paragraphs.map((paragraph, index) => ({
         paragraph:paragraphs[index],
-        imageURL: imageURLsMOCK[index], // ===== Look at this one for actual implementation
-        //imageURL: imageURLs[index],
+        imageURL: imageURLs[index],
       }));
+
 
       // Set story data
       //setCurStoryData(storyData);
@@ -148,7 +134,8 @@ const generateStory = async () => {
     } catch (error) {
       //setStoryData([]);
       setCurStoryData([]);
-      console.log("ERROR!")
+      console.log("ERROR!");
+      console.log(error.message);
       setErrorMessage('Error generating story.' + error.message);
     }
   };
@@ -173,6 +160,7 @@ const generateStory = async () => {
     <ImageBackground source={MyImage} style={styles.backgroundImage}>
     <View style={styles.container} onLayout={onLayoutRootView}>
       <View style={styles.topContainer}>
+
         <Text style={styles.inputLabel}>Select Genre:</Text>
         <View style={styles.storyParameterSelector}>
           <Button

@@ -1,7 +1,7 @@
 import { View, Text, TextInput, Button, StyleSheet, Image, ScrollView, Dimensions, ImageBackground } from 'react-native';
 import styles from "./CommonStyleSheet"
 import React, { useState, useEffect } from 'react';
-import MyImage from '../assets/bgimages/viewstory.jpg';
+import MyImage from '../assets/bgimages/birds.jpg';
 
 export default function Questionnaire({navigation,route}) {
 	const { storyTitle, questionsArray, answersArray } = route.params;

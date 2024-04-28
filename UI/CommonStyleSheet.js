@@ -3,7 +3,7 @@ import {StyleSheet} from 'react-native';
 export default styles = StyleSheet.create({
   backgroundImage:{
     flex: 1, // Cover the entire view
-    resizeMode: 'cover', // Adjust how the image fits (e.g., 'cover', 'contain', 'stretch')
+    resizeMode: 'stretch', // Adjust how the image fits (e.g., 'cover', 'contain', 'stretch')
     zIndex: -1,
     backgroundColor: 'transparent',
   
@@ -75,6 +75,7 @@ export default styles = StyleSheet.create({
     paddingVertical: 20,
     paddingHorizontal: 14,
     fontSize: 18,
+
   },
   storyParameterSelector: {
     flexDirection: 'row',
