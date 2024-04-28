@@ -1,18 +1,16 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { View, Text, Button, StyleSheet, ImageBackground, TouchableOpacity, FlatList } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useFocusEffect } from '@react-navigation/native'; // Import useFocusEffect
 
 import styles from "./CommonStyleSheet";
-import MyImage from '../assets/bgimages/dashb.jpg';
+import MyImage from '../assets/bgimages/Picture1.png';
 
 export default function Dashboard({ navigation }) {
     const [storyTitles, setStoryTitles] = useState([]);
 
-    useEffect(() => {
-        refreshDashboard();
-    }, []);
-
-    const refreshDashboard = async () => {
+    // Function to refresh the dashboard
+    const refreshDashboard = useCallback(async () => {
         try {
             const titles = await AsyncStorage.getItem("storyTitles");
             if (titles) {
@@ -22,7 +20,18 @@ export default function Dashboard({ navigation }) {
         } catch (err) {
             alert(err);
         }
-    };
+    }, []); // Dependency array is empty since no external dependencies
+
+    useEffect(() => {
+        refreshDashboard(); // Initial dashboard refresh
+    }, [refreshDashboard]); // Run the effect whenever refreshDashboard changes
+
+    // Listen for screen focus and refresh the dashboard
+    useFocusEffect(
+        useCallback(() => {
+            refreshDashboard();
+        }, [refreshDashboard])
+    );
 
     const remove = async () => {
         try {
@@ -34,26 +43,33 @@ export default function Dashboard({ navigation }) {
     };
 
     const handleTitlePress = (item) => {
-		//console.log(item);
-		console.log(storyTitles);
         navigation.navigate('ReadStory', { item });
+        //console.log("HERE")
+        console.log(item);
+    };
+
+    const handleDeleteStory = async (item) => {
+        try {
+            const updatedStoryTitles = storyTitles.filter(story => story.dateName !== item.dateName);
+            await AsyncStorage.setItem("storyTitles", JSON.stringify(updatedStoryTitles));
+            setStoryTitles(updatedStoryTitles);
+        } catch (error) {
+            console.error('Error deleting story:', error);
+        }
     };
 
     return (
         <ImageBackground source={MyImage} style={styles.backgroundImage}>
             <View style={styles.container}>
-                <Text>Hello World! This is the Dashboard</Text>
                 <View style={{ height: 20 }} />
-                <Button
-                    title="Go to Create Story Page"
-                    onPress={() => navigation.navigate('CreateStory')}
-                />
-                <Button
-                    title="Go to Read Story Page"
-                    onPress={() => navigation.navigate('ReadStory')}
-                />
-                <TouchableOpacity style={styles.buttonStyle1} onPress={remove}>
-                    <Text style={{ color: "white" }}>Remove my story!</Text>
+                <TouchableOpacity style={styles.buttonStyle1} >
+                    <Button
+                        color="white"
+                        title="Go to Create Story Page"
+                        onPress={() => navigation.navigate('CreateStory')}
+                    />
+
+
                 </TouchableOpacity>
 
                 {storyTitles.length > 0 ? (
@@ -65,8 +81,8 @@ export default function Dashboard({ navigation }) {
                                 <View style={styles.imageItem}>
                                     <View style={styles.imageInfo}>
                                         <Text style={styles.imageName}>{item.title}</Text>
+                                        <Button title="Delete" onPress={() => handleDeleteStory(item)} />
                                     </View>
-									<Button title="Delete" onPress={() => handleDeleteImage(item)} />
                                 </View>
                             </TouchableOpacity>
                         )}
@@ -78,4 +94,3 @@ export default function Dashboard({ navigation }) {
         </ImageBackground>
     );
 }
-

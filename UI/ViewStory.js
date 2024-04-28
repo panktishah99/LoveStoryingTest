@@ -9,7 +9,7 @@ export default function ViewStory({ navigation, route }) {
   //const [paragraphs, setParagraphs] = useState([]); // paragraphs in JSON
   //const [imageURLs, setImageURLs] = useState([]); // http images
   //const [imageURLs, setImageURLs] = useState(""); // dummy http images
-  const [title, setTitle] = useState("") // Title of the story
+  const [myTitle, setTitle] = useState("") // Title of the story
   const [storyGenre, setStoryGenre] = useState("");
   const [userAge, setUserAge] = useState("");
   // const { item, img } = route.params;
@@ -105,7 +105,7 @@ export default function ViewStory({ navigation, route }) {
       // Create json of story
       let story = {
         dateName: dataName,
-        title: title,
+        title: myTitle,
         storyData: theStoryData,
         //images: imageURLs,
         genre: storyGenre,
