@@ -85,7 +85,6 @@ const generateStory = async () => {
     try {
 
       const newInputText = Machiery.createStoryPrompt(inputText, paragraphs, sentences, age, genre, words)
-      console.log("HEREEEE!!!");
       // Generate story
       const storyResponse = await OpenAIServices.textCompletion(newInputText, 300,0.5, 0.5, 0, 0, 'gpt-3.5-turbo-instruct');
       const responseData = await storyResponse.json(); // Remove leading and trailing whitespaces
