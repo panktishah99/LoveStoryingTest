@@ -90,7 +90,8 @@ const generateStory = async () => {
       const story = storyResponse.text.trim(); // Remove leading and trailing whitespaces
 
       // Generate Title
-      const storyTitle = 'Super the Space Cat';
+      const storyTitleResponse = await OpenAIServices.titleGeneration('abc'); //modify this
+      const storyTitle = storyTitleResponse.title.trim();
 
 
       // Split text into paragraphs based on the newline character (\n)

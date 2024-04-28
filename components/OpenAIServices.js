@@ -75,3 +75,13 @@ export function imageGeneration(textPrompt) {
     // Simulate resolving a promise with the mock response
     return Promise.resolve(mockResponse); //=================
 }
+
+export function titleGeneration(textPrompt) {
+    // Simulating receiving data without sending a request
+    const mockResponse =  {
+        title: 'Super the Space Cat'
+    };
+
+    // Simulate resolving a promise with the mock response
+    return Promise.resolve(mockResponse); //=================
+}
