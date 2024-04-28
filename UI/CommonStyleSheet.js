@@ -103,7 +103,7 @@ export default styles = StyleSheet.create({
   },
   buttonStyle1: {
 	  borderWidth: 1,
-	  backgroundColor: '#575DD9',
+	  backgroundColor: '#256943',
 	  alignItems: "center",
 	  justifyContent: "center",
 	  alignSelf: "stretch",

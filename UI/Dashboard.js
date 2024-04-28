@@ -63,14 +63,14 @@ export default function Dashboard({ navigation }) {
             <View style={styles.container}>
                 <View style={{ height: 20 }} />
                 <TouchableOpacity style={styles.buttonStyle1} >
-                    <Button
-                        color="white"
+                    <Button 
+                        color = '#256943'
                         title="Go to Create Story Page"
                         onPress={() => navigation.navigate('CreateStory')}
                     />
-
-
                 </TouchableOpacity>
+                <View style={{ height: 20 }} />
+                <Text style={[styles.title,{ color: 'white'}]}>Saved Stories List:</Text>
 
                 {storyTitles.length > 0 ? (
                     <FlatList
@@ -81,7 +81,7 @@ export default function Dashboard({ navigation }) {
                                 <View style={styles.imageItem}>
                                     <View style={styles.imageInfo}>
                                         <Text style={styles.imageName}>{item.title}</Text>
-                                        <Button title="Delete" onPress={() => handleDeleteStory(item)} />
+                                        <Button title="Delete" color='#c26315' onPress={() => handleDeleteStory(item)} />
                                     </View>
                                 </View>
                             </TouchableOpacity>
@@ -90,6 +90,11 @@ export default function Dashboard({ navigation }) {
                 ) : (
                     <Text>No saved stories found</Text>
                 )}
+                <Button 
+                    color = '#2b3b32'
+                    title="Logout"
+                    onPress={() => navigation.navigate('Login')}
+                />
             </View>
         </ImageBackground>
     );
