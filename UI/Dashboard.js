@@ -18,7 +18,7 @@ export default function Dashboard({ navigation }) {
 			let titlesJSONString = await AsyncStorage.getItem("titles");
 			// If no titles saved yet, initialize an empty array
 			let titlesArray = titlesJSONString ? JSON.parse(titlesJSONString) : [];
-			setListTiles(titlesArray);
+			setStoryTitles(titlesArray);
 			console.log(storyTitles);
 		} catch(err) {
 		  alert(err);
