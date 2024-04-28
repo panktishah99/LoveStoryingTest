@@ -119,7 +119,7 @@ const generateStory = async () => {
         //console.log("response url: ", curURLs[i]);
         imageURLs[i] = imageData.imgURL[i];
         imageURLsMOCK[i] = curURLs[i].url; //====== Look at this one for actual implementation
-        console.log(imageURLsMOCK[i]);
+        //console.log(imageURLsMOCK[i]);
       }
 
       // Combine paragraphs and image URLs into an array of objects
@@ -136,9 +136,9 @@ const generateStory = async () => {
       // console.log('string: '+storyTitle);
       // console.log('generated: '+generatedTitle);
       //debug shows empty string here - need to check why
-      console.log(storyData);
+      //console.log(storyData);
 
-      navigation.navigate('ViewStory', { theStoryTitle: storyTitle, theStoryData: storyData}); //=======
+      navigation.navigate('ViewStory', { theStoryTitle: storyTitle, theStoryData: storyData, sGenre: genre, uAge: age}); //=======
       //navigation.navigate('ViewStory', { theStoryTitle: storyTitle, theStoryData: storyData});
     } catch (error) {
       setStoryData([]);
