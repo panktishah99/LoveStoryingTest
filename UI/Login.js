@@ -1,6 +1,7 @@
-import { View, Text, TextInput, Button, StyleSheet, Image, ScrollView, Dimensions } from 'react-native';
+import { View, Text, TextInput, Button, StyleSheet, Image, ScrollView, Dimensions, ImageBackground } from 'react-native';
 import { useState, useEffect, useCallback } from 'react';
 import styles from "./CommonStyleSheet"
+import MyImage from '../assets/bgimages/login.jpg';
 //login validation to add 
 
 export default function Login({navigation}) {
@@ -12,17 +13,18 @@ export default function Login({navigation}) {
   // }
 
 	return (
+    <ImageBackground source={MyImage} style={styles.backgroundImage}>
 		<View style={styles.container}>
-	      <Text>Welcome to LoveStorying!</Text>
+	      <Text style={styles.title}>Welcome to LoveStorying!</Text>
         <View style={{ height: 30 }} />
         <TextInput
-          style={styles.input}
+          style={styles.loginInput}
           placeholder="Username"
           onChangeText={setUserName}
           keyboardType="email-address"
         />
         <TextInput
-          style={styles.input}
+          style={styles.loginInput}
           placeholder="Password"
           onChangeText={setPassword}
           keyboardType="email-address"
@@ -31,8 +33,10 @@ export default function Login({navigation}) {
         <View style={{ height: 20 }} />
 	      <Button
 	        title="Login"
+          style={{ backgroundColor: '#1f1b13' }}
 	        onPress={() => navigation.navigate('Dashboard')}
 	      />
 	    </View>
+    </ImageBackground>
 	);
 }

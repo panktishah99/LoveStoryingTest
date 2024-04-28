@@ -1,6 +1,7 @@
-import { View, Text, TextInput, Button, StyleSheet, Image, ScrollView, Dimensions } from 'react-native';
+import { View, Text, TextInput, Button, StyleSheet, Image, ScrollView, Dimensions, ImageBackground } from 'react-native';
 import styles from "./CommonStyleSheet"
 import React, { useState, useEffect } from 'react';
+import MyImage from '../assets/bgimages/viewstory.jpg';
 
 export default function Questionnaire({navigation,route}) {
 	const { storyTitle, questionsArray, answersArray } = route.params;
@@ -25,14 +26,15 @@ export default function Questionnaire({navigation,route}) {
 	 };
 
 	return (
+		<ImageBackground source={MyImage} style={styles.backgroundImage}>
 		<View style={styles.container}>
-	      <Text style={styles.title}>Questions for {storyTitle}</Text>
-	      <View style={styles.container}>
+	      <Text style={styles.title}>Questions for '{storyTitle}'</Text>
+	      <View style={{ height: 20 }} />
 	      {questionsArray.map((question, index) => (
-	        <View key={index} style={stylesnew.questionItem}>
-	          <Text style={stylesnew.questionText}>{question}</Text>
+	        <View key={index} style={styles.question}>
+	          <Text style={styles.question}>{question}</Text>
 	          <TextInput
-	            style={stylesnew.textInput}
+	            style={styles.loginInput}
 	            onChangeText={(text) => handleChange(text, index)}
 	          />
 	        </View>
@@ -40,31 +42,12 @@ export default function Questionnaire({navigation,route}) {
 	      <Button title="Submit Answers" onPress={handleSubmit} />
 	      <View style={{ height: 20 }} />
 			{isSubmitted && (
-	        <Text>You scored {score} out of {answersArray.length}.</Text>
+	        <Text style={{fontSize:20}}>You scored {score} out of {answersArray.length}.</Text>
 	      )}
-	      </View>
 	    </View>
+	    </ImageBackground>
 	    
 	);
 }
 
-const stylesnew = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 20,
-  },
-  questionItem: {
-    marginBottom: 10,
-  },
-  questionText: {
-    fontSize: 18,
-    fontWeight: 'bold',
-  },
-  textInput: {
-    borderWidth: 1,
-    borderColor: '#ccc',
-    padding: 5,
-    marginBottom: 5,
-  },
-});
 

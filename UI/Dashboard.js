@@ -1,9 +1,11 @@
-import { View, Text, TextInput, Button, StyleSheet, Image, ScrollView, Dimensions } from 'react-native';
+import { View, Text, TextInput, Button, StyleSheet, Image, ScrollView, Dimensions, ImageBackground } from 'react-native';
 import styles from "./CommonStyleSheet"
+import MyImage from '../assets/bgimages/dashboard.jpg';
 //show saved stories
 
 export default function Dashboard({ navigation }) {
 	return (
+		<ImageBackground source={MyImage} style={styles.backgroundImage}>
 		<View style={styles.container}>
 			{ }
 			<Text>Hello World! This is the Dashboard</Text>
@@ -17,5 +19,6 @@ export default function Dashboard({ navigation }) {
 				onPress={() => navigation.navigate('ReadStory')}
 			/>
 		</View>
+		</ImageBackground>
 	);
 }

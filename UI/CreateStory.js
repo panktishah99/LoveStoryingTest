@@ -1,4 +1,4 @@
-import { View, Text, TextInput, Button, StyleSheet, Image, ScrollView, Dimensions } from 'react-native';
+import { View, Text, TextInput, Button, StyleSheet, Image, ScrollView, Dimensions, ImageBackground } from 'react-native';
 
 import React, { useState, useEffect, useCallback } from 'react';
 import * as OpenAIServices from '../components/OpenAIServices';
@@ -6,6 +6,7 @@ import * as Machiery from '../components/machinery';
 import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
 import styles from "./CommonStyleSheet";
+import MyImage from '../assets/bgimages/createstory.jpg';
 
 //To do
 //move generated story text and image to view story page
@@ -19,7 +20,7 @@ export default function CreateStory({ navigation}) {
   const [imageURL, setImageURL] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const [genre, setGenre] = useState('fiction');
-  const [age,setAge] = useState(6);
+  const [age,setAge] = useState('6');
   const [paragraphs,setParagraphs] = useState('4');
   const [sentences,setSentences] = useState('5');
   const [words,setWords] = useState('15');
@@ -147,9 +148,10 @@ const generateStory = async () => {
   }
 
   return (
+    <ImageBackground source={MyImage} style={styles.backgroundImage}>
     <View style={styles.container} onLayout={onLayoutRootView}>
       <View style={styles.topContainer}>
-        <Text style={styles.title}>Select Genre:</Text>
+        <Text style={styles.inputLabel}>Select Genre:</Text>
         <View style={styles.storyParameterSelector}>
           <Button
             title="Fiction"
@@ -188,42 +190,7 @@ const generateStory = async () => {
           />
         </View>
         <View style={{ height: 20 }} />
-        <View style={styles.storyParameterSelector}>
-          <Text style={styles.title}>Enter the child age:</Text>
-          <TextInput
-              style={[styles.input, { width: 50 }]}
-              onChangeText={handleChangeAge}
-              keyboardType="numeric"
-              value={age}
-          />
-        </View>
-        <View style={{ height: 20 }} />
-        <Text style={styles.title}>Story Size:</Text>
-        <View style={styles.storyParameterSelector}>
-          <Text style={styles.title}>Paragraphs:</Text>
-          <TextInput
-              style={[styles.input, { width: 40 }]}
-              onChangeText={setParagraphs}
-              keyboardType="numeric"
-              value={paragraphs}
-          />
-          <Text style={styles.title}>Sentences:</Text>
-          <TextInput
-              style={[styles.input, { width: 40 }]}
-              onChangeText={setSentences}
-              keyboardType="numeric"
-              value={sentences}
-          />
-          <Text style={styles.title}>Words:</Text>
-          <TextInput
-              style={[styles.input, { width: 40 }]}
-              onChangeText={setWords}
-              keyboardType="numeric"
-              value={words}
-          />
-        </View>
-        <View style={{ height: 20 }} />
-        <Text style={styles.title}>Select Image Type:</Text>
+        <Text style={styles.inputLabel}>Select Image Type:</Text>
         <View style={styles.storyParameterSelector}>
           <Button
             title="Illustration"
@@ -254,19 +221,59 @@ const generateStory = async () => {
             style={{ backgroundColor: imageType === 'fantasy' ? '#3CB371' : null }}
           />
         </View>
+        <View style={{ height: 30 }} />
+        <View style={styles.storyParameterSelector}>
+          <Text style={styles.inputLabel}>Enter the child's age:</Text>
+          <TextInput
+              style={[styles.inputNumber, {marginLeft: 10}]}
+              onChangeText={handleChangeAge}
+              keyboardType="numeric"
+              value={age}
+          />
+        </View>
         <View style={{ height: 20 }} />
-        <Text style={styles.title}>Enter your story prompt:</Text>
+        <View style={styles.storyParameterSelector}>
+          <Text style={styles.inputLabel}>Paragraphs:</Text>
+          <TextInput
+              style={[styles.inputNumber, {marginLeft: 10}]}
+              onChangeText={setParagraphs}
+              keyboardType="numeric"
+              value={paragraphs}
+          />
+        </View>
+        <View style={styles.storyParameterSelector}>
+          <Text style={styles.inputLabel}>Sentences:</Text>
+          <TextInput
+              style={[styles.inputNumber, {marginLeft: 18}]}
+              onChangeText={setSentences}
+              keyboardType="numeric"
+              value={sentences}
+          />
+        </View>
+        <View style={styles.storyParameterSelector}>
+          <Text style={styles.inputLabel}>Words:</Text>
+          <TextInput
+              style={[styles.inputNumber, {marginLeft: 55}]}
+              onChangeText={setWords}
+              keyboardType="numeric"
+              value={words}
+          />
+        </View>
+        
+        <View style={{ height: 20 }} />
+        <Text style={styles.inputLabel}>Enter your story prompt:</Text>
         <TextInput
           value={inputText}
           onChangeText={setInputText}
           multiline
-          style={[styles.input, { width: 400 }]}
+          style={styles.inputText}
           placeholder="Type here..."
         />
-        <Button title="Generate Story and Image" onPress={generateStory} />
         <View style={{ height: 20 }} />
+        <Button title="Generate Story and Image" onPress={generateStory} />
       </View>
     </View>
+    </ImageBackground>
   );
 };
 
