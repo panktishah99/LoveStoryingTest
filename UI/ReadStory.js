@@ -41,72 +41,79 @@ export default function ViewStory({ navigation }) {
         const imagePaths = generateImagePaths(numImages);
         setImages(imagePaths);
     }, []);*/
-    /////////////////
+/////////////////
 
-    export default function ViewStory({ navigation }) {
-        const [storyTitle, setTitle] = useState("");
-        const [paragraphs, setParagraphs] = useState([]); // paragraphs in JSON
-        const [images, setImages] = useState("https://media-be.chewy.com/wp-content/uploads/2022/09/27095535/cute-dogs-pembroke-welsh-corgi.jpg"); // .jpg images in current path, TODO: change to [] for multiple images
-        
-        /*
-        // Used to extract paragraphs when the component mounts and extract .jpg
-        useEffect(() => {
-            const extractedParagraphs = extractParagraphs(jsonData);
-            setParagraphs(extractedParagraphs);
-            const numImages = extractedParagraphs.length;
-            const imagePaths = generateImagePaths(numImages);
-            setImages(imagePaths);
-        }, []);*/
+//export default function ViewStory({ navigation, route }) {
+export default function ViewStory({ navigation}) {
+    const [storyData, setStoryData]=useState(null);
+    const [storyTitle, setTitle] = useState("");
+    const [paragraphs, setParagraphs] = useState([]); // paragraphs in JSON
+    const [images, setImages] = useState("https://media-be.chewy.com/wp-content/uploads/2022/09/27095535/cute-dogs-pembroke-welsh-corgi.jpg"); // .jpg images in current path, TODO: change to [] for multiple images
+    //const { cur } = route.params;
 
-  ////////////////////////////////////////////////////////////////////
+    /*
+    // Used to extract paragraphs when the component mounts and extract .jpg
+    useEffect(() => {
+        const extractedParagraphs = extractParagraphs(jsonData);
+        setParagraphs(extractedParagraphs);
+        const numImages = extractedParagraphs.length;
+        const imagePaths = generateImagePaths(numImages);
+        setImages(imagePaths);
+    }, []);*/
 
-  // Loaf function
-  const load = async () => {
-    try {
-      let savedStory = await AsyncStorage.getItem("TestTitle"); // this might change in actual implementation
-      //console.log(savedStory);
-      if (savedStory !== null) {
-        // Parsing the JSON back into an object
-      let loadedStory = JSON.parse(savedStory);
-      
-      // Extracting paragraphs:
-      let textArray = JSON.parse(loadedStory.text);
-      setParagraphs(textArray);
-      // Extracting images and title
-      setTitle(loadedStory.title);
-      setImages(loadedStory.images);
-      }
-      else {
-        console.log('No story found with the given title:', title);
-      }
+    ////////////////////////////////////////////////////////////////////
 
-    } catch (err) {
-      alert(err);
+    // Loaf function
+    const load = async () => {
+        try {
+            let savedStory = await AsyncStorage.getItem("story_20240428020208"); // this might change in actual implementation
+            // If story is in list, get data
+            if (savedStory !== null) {
+                // Extracting title and story data
+                let loadedStory = JSON.parse(savedStory);
+                let titleString = JSON.parse(loadedStory.title);
+                setTitle(titleString);
+                let data = loadedStory.storyData;
+                setStoryData(data);
+                //console.log(loadedStory.storyData[0]);
+            }
+            else {
+                console.log('No story found with the given title:', title);
+            }
+
+        } catch (err) {
+            alert(err);
+        }
     }
-  }
-  /////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////
 
-  // This will only rerender on the initial page load
-  useEffect(() => {
-    load();
-  }, []);
+    // This will only rerender on the initial page load
+    useEffect(() => {
+        load();
+    }, []);
 
     return (
-        <ScrollView>
-            <Text>{storyTitle}</Text>
-            {paragraphs.map((paragraph, index) => (
-                <View key={index}>
-                    <Text>{paragraph}</Text>
-                </View>
-            ))}
-            {/* TODO: This image section may be changed in actual implementation*/}
-            <Image source={{ uri: images }} style={{ width: 300, height: 300 }}/>
-            {/*{images.map((item, idx) => (
-                <View key={idx}>
-                    <Image source={images[idx]} style={{ width: 300, height: 300 }} />
-                </View>
 
-            ))}*/}
+        <ScrollView contentContainerStyle={styles.content}>
+            <Text style={styles.title}>Test</Text>
+            
+            <Text style={styles.title}>{storyTitle}</Text>
+            { storyData? (
+            storyData.map((item, index) => (
+                <View key={index} style={styles.storyContainer}>
+                    <Text style={styles.content}>{item.paragraph}</Text>
+                    <Image source={{ uri: item.imageURL }} style={styles.image} />
+                    {/*<Image source={ item.imageURL } style={styles.image} />*/}
+                </View>
+            ))
+            ):(
+                <Text> Sorry, no story data available</Text>
+        )}
         </ScrollView>
+
     );
 }
+
+
+
+
