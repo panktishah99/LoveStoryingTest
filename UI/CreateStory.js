@@ -85,10 +85,12 @@ const generateStory = async () => {
     try {
 
       const newInputText = Machiery.createStoryPrompt(inputText, paragraphs, sentences, age, genre, words)
-
+      console.log("HEREEEE!!!");
       // Generate story
       const storyResponse = await OpenAIServices.textCompletion(newInputText, 300,0.5, 0.5, 0, 0, 'gpt-3.5-turbo-instruct');
       const story = storyResponse.text.trim(); // Remove leading and trailing whitespaces
+
+      
 
       // Generate Title
       const storyTitleResponse = await OpenAIServices.titleGeneration('abc'); //modify this
@@ -102,10 +104,13 @@ const generateStory = async () => {
       const numImg = paragraphs.length;
       const imgPrompt = Machiery.createImagePrompt(story, imageType); 
 
-      const imageData = await OpenAIServices.imageGeneration(imgPrompt, numImg);
+      //const imageData = await OpenAIServices.imageGeneration(imgPrompt, numImg);
+      const imageDataDummy = await OpenAIServices.imageGeneration(imgPrompt, numImg);
+      
+      console.log(imageDataDummy);
 
       //===== this version should be closer to the actual one needed
-      const imageDataDummy = require("../assets/test3.json");
+      //const imageDataDummy = require("../assets/test3.json");
       const curURLs= imageDataDummy.imageData.imgURL;
       const imageURLs = new Array(curURLs.length).fill(null);
       const imageURLsMOCK = new Array(curURLs.length).fill(null);
@@ -141,7 +146,9 @@ const generateStory = async () => {
       navigation.navigate('ViewStory', { theStoryTitle: storyTitle, theStoryData: storyData, sGenre: genre, uAge: age}); //=======
       //navigation.navigate('ViewStory', { theStoryTitle: storyTitle, theStoryData: storyData});
     } catch (error) {
-      setStoryData([]);
+      //setStoryData([]);
+      setCurStoryData([]);
+      console.log("ERROR!")
       setErrorMessage('Error generating story.' + error.message);
     }
   };
