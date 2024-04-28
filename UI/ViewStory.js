@@ -6,22 +6,25 @@ export default function ViewStory({ navigation, route }) {
   const [paragraphs, setParagraphs] = useState([]); // paragraphs in JSON
   //const [imageURLs, setImageURLs] = useState([]); // http images
   const [imageURLs, setImageURLs] = useState(""); // dummy http images
-  const { item, img } = route.params;
-  const [title, setTitle] = useState("") // Title of the story
+  // const { item, img } = route.params;
+  const { theStoryTitle, theStoryData } = route.params;
+  console.log(theStoryTitle);
+  console.log(theStoryData);
+  // const [title, setTitle] = useState("") // Title of the story
 
   // Used to extract paragraphs when the component mounts and extract .jpg
-  useEffect(() => {
-    const extractedParagraphs = extractParagraphs(item);
-    setParagraphs(extractedParagraphs);
-    setImageURLs(img);
-    setTitle("TestTitle")
-  }, []);
+  // useEffect(() => {
+  //   const extractedParagraphs = extractParagraphs(item);
+  //   setParagraphs(extractedParagraphs);
+  //   setImageURLs(img);
+  //   // setTitle("TestTitle")
+  // }, []);
 
   // Function to extract paragraphs from JSON data
-  const extractParagraphs = (item) => {
-    const paragraphsArray = item.split('\n').filter(paragraph => paragraph.trim() !== '');
-    return paragraphsArray;
-  };
+  // const extractParagraphs = (item) => {
+  //   const paragraphsArray = item.split('\n').filter(paragraph => paragraph.trim() !== '');
+  //   return paragraphsArray;
+  // };
 
   /////////////// Functions that saves data to Directory /////////////
   // Function to convert and store the array as JSON
@@ -76,43 +79,67 @@ export default function ViewStory({ navigation, route }) {
   }, []);*/
 
   return (
-    <View style={styles.container}>
+  	<View style={styles.container}>
       <ScrollView contentContainerStyle={styles.content}>
-        {/*<Text style={styles.storyText}>{paragraphs}</Text>*/}
-        {paragraphs ? (
-          <View style={styles.storyContainer}>
-            <Text style={styles.storyTitle}>{title}</Text>
-            {paragraphs.map((paragraph, index) => (
-              <View key={index}>
-                <Text>{paragraph}</Text>
-              </View>
-            ))}
+        <Text style={styles.storyTitle}>{theStoryTitle}</Text>
+        {theStoryData.map((item, index) => (
+          <View key={index} style={styles.storyContainer}>
+            
+
+            <Text style={styles.storyText}>{item.paragraph}</Text>
+            <Image source={ item.imageURL } style={styles.image} />
           </View>
-        ) : null}
-        {imageURLs ? (
-          <View style={styles.imageContainer}>
-            <Text style={styles.storyTitle}>Image:</Text>
-            <Image source={{ uri: imageURLs }} style={styles.image} />
-          </View>
-        ) : null}
+        ))}
       </ScrollView>
-      <View style={{ height: 20 }} />
-      <Button
-        title="Go back to Create Story"
-        onPress={() => navigation.navigate('CreateStory')}
-      />
       <View style={{ height: 20 }} />
       <Button
         title="Ready to Answer Questions?"
         onPress={() => navigation.navigate('Questionnaire')}
       />
+      <View style={{ height: 20 }} />
       <Button
         title="Save story"
-        onPress={() => {
-          saveStory();
-        }}
+        onPress={() => {saveStory();}}
       />
     </View>
+
+    // <View style={styles.container}>
+    //   <ScrollView contentContainerStyle={styles.content}>
+    //     {/*<Text style={styles.storyText}>{paragraphs}</Text>*/}
+    //     {paragraphs ? (
+    //       <View style={styles.storyContainer}>
+    //         <Text style={styles.storyTitle}>{title}</Text>
+    //         {paragraphs.map((paragraph, index) => (
+    //           <View key={index}>
+    //             <Text>{paragraph}</Text>
+    //           </View>
+    //         ))}
+    //       </View>
+    //     ) : null}
+    //     {imageURLs ? (
+    //       <View style={styles.imageContainer}>
+    //         <Text style={styles.storyTitle}>Image:</Text>
+    //         <Image source={{ uri: imageURLs }} style={styles.image} />
+    //       </View>
+    //     ) : null}
+    //   </ScrollView>
+    //   <View style={{ height: 20 }} />
+    //   <Button
+    //     title="Go back to Create Story"
+    //     onPress={() => navigation.navigate('CreateStory')}
+    //   />
+    //   <View style={{ height: 20 }} />
+    //   <Button
+    //     title="Ready to Answer Questions?"
+    //     onPress={() => navigation.navigate('Questionnaire')}
+    //   />
+    //   <Button
+    //     title="Save story"
+    //     onPress={() => {
+    //       saveStory();
+    //     }}
+    //   />
+    // </View>
   );
 }
 
