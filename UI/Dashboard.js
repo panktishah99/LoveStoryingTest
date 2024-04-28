@@ -3,7 +3,7 @@ import { View, Text, Button, StyleSheet, ImageBackground, TouchableOpacity, Flat
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import styles from "./CommonStyleSheet";
-import MyImage from '../assets/bgimages/Picture1.png';
+import MyImage from '../assets/bgimages/dashb.jpg';
 
 export default function Dashboard({ navigation }) {
     const [storyTitles, setStoryTitles] = useState([]);
