@@ -80,7 +80,7 @@ export default function Dashboard({ navigation }) {
                             <TouchableOpacity onPress={() => handleTitlePress(item.dateName)}>
                                 <View style={styles.imageItem}>
                                     <View style={styles.imageInfo}>
-                                        <Text style={styles.imageName}>{item.title}</Text>
+                                        <Text style={styles.imageName}>{JSON.parse(JSON.parse(item.title))}</Text>
                                         <Button title="Delete" onPress={() => handleDeleteStory(item)} />
                                     </View>
                                 </View>
