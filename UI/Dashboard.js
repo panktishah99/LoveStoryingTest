@@ -66,6 +66,7 @@ export default function Dashboard({ navigation }) {
                                     <View style={styles.imageInfo}>
                                         <Text style={styles.imageName}>{item.title}</Text>
                                     </View>
+									<Button title="Delete" onPress={() => handleDeleteImage(item)} />
                                 </View>
                             </TouchableOpacity>
                         )}
