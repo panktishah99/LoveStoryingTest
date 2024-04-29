@@ -18,13 +18,6 @@ Specifying serial image style, illustration, historical image, picture. 
 7. Cross-platform support with react native: iOS, android, web
 8. Established server locally to connect with OpenAI to request and receive responses. For the purpose of the prototype we are only showing some already generated stories stored in-app.
 
-    
-Some screenshots of the app-
-![image](https://github.com/panktishah99/LoveStoryingTest/assets/147209312/92594276-d0b2-4d6c-b752-7f2e7b6309f0)
-![image](https://github.com/panktishah99/LoveStoryingTest/assets/147209312/1b4424e6-cb04-4ac0-b253-7610d6b604bd)
-![image](https://github.com/panktishah99/LoveStoryingTest/assets/147209312/9557a85d-4486-4bf7-943a-209987e7eb75)
-![WhatsApp Image 2024-04-28 at 22 49 54](https://github.com/panktishah99/LoveStoryingTest/assets/147209312/b5992076-35e0-40b1-811a-507ffdedb52e)
-![image](https://github.com/panktishah99/LoveStoryingTest/assets/147209312/9e0f2e2a-7a7f-4068-9669-434df4e1a5bb)
 
 Check out a demo video of our app:
 https://youtu.be/EBV32WunE3s?si=Xnr7Ya2w0xe_TklG
