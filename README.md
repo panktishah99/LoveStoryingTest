@@ -25,5 +25,5 @@ Specifying serial image style, illustration, historical image, picture. 
 Check out a demo video of our app:
 https://youtu.be/EBV32WunE3s?si=Xnr7Ya2w0xe_TklG
 
-Try our app on snack on a simulated phone or your own device: https://snack.expo.dev/@panktiii/github.com-panktishah99-lovestoryingtest
+Try our app on snack on a simulated phone or your own device: https://snack.expo.dev/@panktiii/github.com-panktishah99-lovestoryingtest@prototype
 
