@@ -79,23 +79,6 @@ export default function ViewStory({ navigation, route }) {
     // Get the current time
     const currentTime = new Date();
 
-    // Format the current time
-    /*const formattedTime = `${currentTime.getFullYear()}${(currentTime.getMonth() + 1)
-      .toString()
-      .padStart(2, '0')}${currentTime
-        .getDate()
-        .toString()
-        .padStart(2, '0')}${currentTime
-          .getHours()
-          .toString()
-          .padStart(2, '0')}${currentTime
-            .getMinutes()
-            .toString()
-            .padStart(2, '0')}${currentTime
-              .getSeconds()
-              .toString()
-              .padStart(2, '0')}`;*/
-
     // Save each image to local storage
     try {
       // Use the formatted time as the name for storing data

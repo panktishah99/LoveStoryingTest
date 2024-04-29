@@ -6,17 +6,18 @@ import { useFocusEffect } from '@react-navigation/native'; // Import useFocusEff
 import styles from "./CommonStyleSheet";
 import MyImage from '../assets/bgimages/Picture1.png';
 
+const jsonDummyData = require('../assets/StoriesData.json'); // Load dummy stories
+
 export default function Dashboard({ navigation }) {
     const [storyTitles, setStoryTitles] = useState([]);
 
     // Function to refresh the dashboard
     const refreshDashboard = useCallback(async () => {
+
         try {
-            const titles = await AsyncStorage.getItem("storyTitles");
-            if (titles) {
-                const titlesInDashboard = JSON.parse(titles);
-                setStoryTitles(titlesInDashboard);
-            }
+            //const titles = await AsyncStorage.getItem("storyTitles");
+            // Load stored dummy stories into dashboard
+            setStoryTitles(jsonDummyData.storyTitles);
         } catch (err) {
             alert(err);
         }
@@ -33,19 +34,9 @@ export default function Dashboard({ navigation }) {
         }, [refreshDashboard])
     );
 
-    const remove = async () => {
-        try {
-            await AsyncStorage.removeItem("storyTitles");
-            setStoryTitles([]);
-        } catch (err) {
-            alert(err);
-        }
-    };
-
     const handleTitlePress = (item) => {
-        navigation.navigate('ReadStory', { item });
-        //console.log("HERE")
         console.log(item);
+        navigation.navigate('ReadStory', { item });      
     };
 
     const handleDeleteStory = async (item) => {
@@ -63,14 +54,14 @@ export default function Dashboard({ navigation }) {
             <View style={styles.container}>
                 <View style={{ height: 20 }} />
                 <TouchableOpacity style={styles.buttonStyle1} >
-                    <Button 
-                        color = '#2f8062'
+                    <Button
+                        color='#2f8062'
                         title="Go to Create Story Page"
                         onPress={() => navigation.navigate('CreateStory')}
                     />
                 </TouchableOpacity>
                 <View style={{ height: 20 }} />
-                <Text style={[styles.title,{ color: 'white'}]}>Saved Stories List:</Text>
+                <Text style={[styles.title, { color: 'white' }]}>Saved Stories List:</Text>
 
                 {storyTitles.length > 0 ? (
                     <FlatList
@@ -80,7 +71,7 @@ export default function Dashboard({ navigation }) {
                             <TouchableOpacity onPress={() => handleTitlePress(item.dateName)}>
                                 <View style={styles.imageItem}>
                                     <View style={styles.imageInfo}>
-                                        <Text style={[styles.imageName,{fontSize:18,width:200,marginRight: 40}]}>{JSON.parse(JSON.parse(item.title))}</Text>
+                                        <Text style={[styles.imageName, { fontSize: 18, width: 200, marginRight: 40 }]}>{JSON.parse(JSON.parse(item.title))}</Text>
                                         <Button title="Delete" color='#c26315' onPress={() => handleDeleteStory(item)} />
                                     </View>
                                 </View>
@@ -90,8 +81,8 @@ export default function Dashboard({ navigation }) {
                 ) : (
                     <Text>No saved stories found</Text>
                 )}
-                <Button 
-                    color = '#2b3b32'
+                <Button
+                    color='#2b3b32'
                     title="Logout"
                     onPress={() => navigation.navigate('Login')}
                 />

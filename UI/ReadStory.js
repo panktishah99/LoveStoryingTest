@@ -4,6 +4,28 @@ import React, { useState, useEffect } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import styles from "./CommonStyleSheet"
 
+
+const jsonDummyData = require('../assets/StoriesData.json'); // Load dummy stories
+const savedJson = {
+    "dateName": "story_1714323146513",
+    "title": "\"\\\"The Giant Chicken Adventure\\\"\"",
+    "storyData": [
+        {
+            "paragraph": "John was a brave boy who loved to explore. One day, he decided to climb the top of the hill near his house. As he climbed higher and higher, he started to feel tired. But he didn't give up, he kept going.",
+            "imageURL": "https://oaidalleapiprodscus.blob.core.windows.net/private/org-gwQoHEgHZddystkuYHLyFDRe/user-1AsoJu2Fl3NCSo36ePCNO5Tn/img-qESfbMegga9MAhl3l56XQ3W2.png?st=2024-04-28T15%3A52%3A14Z&se=2024-04-28T17%3A52%3A14Z&sp=r&sv=2021-08-06&sr=b&rscd=inline&rsct=image/png&skoid=6aaadede-4fb3-4698-a8f6-684d7786b067&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2024-04-27T19%3A41%3A57Z&ske=2024-04-28T19%3A41%3A57Z&sks=b&skv=2021-08-06&sig=GZNYpWFmGz1Fd0FvtRXo1zAXqKWxGPAWQkiqQ6Gjdb4%3D"
+        },
+        {
+            "paragraph": "Using his sharp claws and quick thinking, Super managed to build a small but functional space ship in just a few days. The kids were amazed and couldn't wait to take it for a test flight. As they soared through the stars, Super couldn't help but feel proud of his creation.",
+            "imageURL": "https://oaidalleapiprodscus.blob.core.windows.net/private/org-gwQoHEgHZddystkuYHLyFDRe/user-1AsoJu2Fl3NCSo36ePCNO5Tn/img-gVIoBGZjEqyzcO9XVaQRMT97.png?st=2024-04-28T15%3A52%3A14Z&se=2024-04-28T17%3A52%3A14Z&sp=r&sv=2021-08-06&sr=b&rscd=inline&rsct=image/png&skoid=6aaadede-4fb3-4698-a8f6-684d7786b067&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2024-04-27T19%3A41%3A57Z&ske=2024-04-28T19%3A41%3A57Z&sks=b&skv=2021-08-06&sig=l2v1KCi2s/1H/IjvqKEmqytMCUOWCupDFHw/68XTsP0%3D"
+        },
+        {
+            "paragraph": "But as they were about to land back on Earth, Super realized that he forgot to install a bathroom in the space ship. The kids burst into laughter as Super frantically searched for a solution. In the end, they all had a good laugh and Super promised to add a bathroom for their next space adventure. From that day on, Super became known as the coolest cat in the galaxy.",
+            "imageURL": "https://oaidalleapiprodscus.blob.core.windows.net/private/org-gwQoHEgHZddystkuYHLyFDRe/user-1AsoJu2Fl3NCSo36ePCNO5Tn/img-OgXMRDso6UDT5A5bcoVZyJXO.png?st=2024-04-28T15%3A52%3A14Z&se=2024-04-28T17%3A52%3A14Z&sp=r&sv=2021-08-06&sr=b&rscd=inline&rsct=image/png&skoid=6aaadede-4fb3-4698-a8f6-684d7786b067&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2024-04-27T19%3A41%3A57Z&ske=2024-04-28T19%3A41%3A57Z&sks=b&skv=2021-08-06&sig=MTbKPKxMDmBRAZiyZYeM65WAB5E%2BX/ttD/bL5eWRJ4Y%3D"
+        }
+    ],
+    "genre": "\"action\"",
+    "age": "\"6\""
+}
 /////////////// Loading chatGPT response
 
 // Import the dummy JSON file
@@ -46,7 +68,7 @@ export default function ViewStory({ navigation }) {
 //export default function ViewStory({ navigation, route }) {
 export default function ViewStory({ navigation, route }) {
     const [storyData, setStoryData] = useState(null);
-    const [storyTitle, setTitle] = useState("");
+    const [storyTitle, setTitle] = useState();
     const { item } = route.params;
 
     /*
@@ -70,12 +92,7 @@ export default function ViewStory({ navigation, route }) {
     // Loaf function
     const load = async () => {
         try {
-            /*
-            const theStory = JSON.stringify(curStory);
-            //const storyId = theStory.dateName;
-            console.log(theStory);
-            setStoryTitle(item.title);
-            setStoryData(item.data);*/
+
             const desiredDateName = item;
             //const desiredDateName = JSON.stringify(item);   
             const desiredItem = await getItemByDateName(desiredDateName);
@@ -96,7 +113,7 @@ export default function ViewStory({ navigation, route }) {
                 //let loadedStory = JSON.parse(savedStory);
                 //let loadedStory = JSON.parse(desiredItem);
                 console.log(desiredItem.storyData);
-                let titleString = JSON.parse(desiredItem.title);
+                let titleString = JSON.parse(JSON.parse(desiredItem.title));
                 setTitle(titleString);
                 let data = desiredItem.storyData;
                 setStoryData(data);
@@ -114,12 +131,10 @@ export default function ViewStory({ navigation, route }) {
     const getItemByDateName = async (dateName) => {
         try {
             // Get all items with the key "story"
-            const allStories = await AsyncStorage.getItem("storyTitles");
+            const allStories = jsonDummyData.storyTitles;
             if (allStories !== null) {
-                // Parse the JSON string to an array of objects
-                const allStoriesArray = JSON.parse(allStories);
                 // Find the item with the matching dateName
-                const desiredItem = allStoriesArray.find(item => item.dateName === dateName);
+                const desiredItem = allStories.find(item => item.dateName === dateName);
                 return desiredItem;
             } else {
                 console.log("No stories found in AsyncStorage");
