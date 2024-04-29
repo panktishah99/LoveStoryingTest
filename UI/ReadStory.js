@@ -4,6 +4,8 @@ import React, { useState, useEffect } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import styles from "./CommonStyleSheet"
 
+
+const jsonDummyData = require('../assets/StoriesData.json'); // Load dummy stories
 /////////////// Loading chatGPT response
 
 // Import the dummy JSON file
@@ -46,7 +48,7 @@ export default function ViewStory({ navigation }) {
 //export default function ViewStory({ navigation, route }) {
 export default function ViewStory({ navigation, route }) {
     const [storyData, setStoryData] = useState(null);
-    const [storyTitle, setTitle] = useState("");
+    const [storyTitle, setTitle] = useState();
     const { item } = route.params;
 
     /*
@@ -70,12 +72,7 @@ export default function ViewStory({ navigation, route }) {
     // Loaf function
     const load = async () => {
         try {
-            /*
-            const theStory = JSON.stringify(curStory);
-            //const storyId = theStory.dateName;
-            console.log(theStory);
-            setStoryTitle(item.title);
-            setStoryData(item.data);*/
+
             const desiredDateName = item;
             //const desiredDateName = JSON.stringify(item);   
             const desiredItem = await getItemByDateName(desiredDateName);
@@ -96,7 +93,7 @@ export default function ViewStory({ navigation, route }) {
                 //let loadedStory = JSON.parse(savedStory);
                 //let loadedStory = JSON.parse(desiredItem);
                 console.log(desiredItem.storyData);
-                let titleString = JSON.parse(desiredItem.title);
+                let titleString = JSON.parse(JSON.parse(desiredItem.title));
                 setTitle(titleString);
                 let data = desiredItem.storyData;
                 setStoryData(data);
@@ -114,12 +111,10 @@ export default function ViewStory({ navigation, route }) {
     const getItemByDateName = async (dateName) => {
         try {
             // Get all items with the key "story"
-            const allStories = await AsyncStorage.getItem("storyTitles");
+            const allStories = jsonDummyData.storyTitles;
             if (allStories !== null) {
-                // Parse the JSON string to an array of objects
-                const allStoriesArray = JSON.parse(allStories);
                 // Find the item with the matching dateName
-                const desiredItem = allStoriesArray.find(item => item.dateName === dateName);
+                const desiredItem = allStories.find(item => item.dateName === dateName);
                 return desiredItem;
             } else {
                 console.log("No stories found in AsyncStorage");
