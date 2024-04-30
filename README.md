@@ -26,4 +26,5 @@ Check out a demo video of our app:
 https://youtu.be/EBV32WunE3s?si=Xnr7Ya2w0xe_TklG
 
 Try our Prototype on snack on a simulated phone or your own device: https://snack.expo.dev/@panktiii/github.com-panktishah99-lovestoryingtest@prototype
+Use Username: Admin and Password:12345
 
