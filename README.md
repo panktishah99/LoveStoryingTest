@@ -13,5 +13,7 @@ The application contains the below basic pages-
 6. Questionnaire - an evaluation page to answer questions related to the story
 
 Please try the App prototype on snack's simulated phone (Android / IOS) or your own device: https://snack.expo.dev/@panktiii/github.com-panktishah99-lovestoryingtest@prototype
+
 User name: Admin
+
 Password: 12345
