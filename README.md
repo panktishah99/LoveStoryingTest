@@ -9,7 +9,7 @@ The application contains the below basic pages-
 2. Dashboard - List of saved stories to read or delete
 3. Create Story - User enters various parameters and prompt for AI to generate a story with images
 4. View Story - a scrollable page formatted with the generated story and images for a User friendly reading experience
-5. Manage Story
+5. Data Storage Management
 6. Questionnaire - an evaluation page to answer questions related to the story
 
 Please try the App prototype on snack's simulated phone (Android / IOS) or your own device: https://snack.expo.dev/@panktiii/github.com-panktishah99-lovestoryingtest@prototype
