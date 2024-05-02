@@ -95,7 +95,7 @@ export default function ViewStory({ navigation, route }) {
                 // Extracting title and story data
                 //let loadedStory = JSON.parse(savedStory);
                 //let loadedStory = JSON.parse(desiredItem);
-                console.log(desiredItem.storyData);
+                //console.log(desiredItem.storyData);
                 let titleString = JSON.parse(desiredItem.title);
                 setTitle(titleString);
                 let data = desiredItem.storyData;

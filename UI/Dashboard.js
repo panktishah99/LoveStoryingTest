@@ -22,6 +22,13 @@ export default function Dashboard({ navigation }) {
         }
     }, []); // Dependency array is empty since no external dependencies
 
+    // Updated refresh effect
+    useEffect(() => {
+        refreshDashboard(); // Initial dashboard refresh
+        console.log(storyTitles.length)
+    }, [storyTitles.length]); // Run the effect whenever the number of titles changes
+/*
+// Previous refresh effect
     useEffect(() => {
         refreshDashboard(); // Initial dashboard refresh
     }, [refreshDashboard]); // Run the effect whenever refreshDashboard changes
@@ -33,6 +40,7 @@ export default function Dashboard({ navigation }) {
         }, [refreshDashboard])
     );
 
+    // Removes all titles
     const remove = async () => {
         try {
             await AsyncStorage.removeItem("storyTitles");
@@ -40,14 +48,15 @@ export default function Dashboard({ navigation }) {
         } catch (err) {
             alert(err);
         }
-    };
+    };*/
 
+    // Navigate to ReadStory page on click over item listed
     const handleTitlePress = (item) => {
         navigation.navigate('ReadStory', { item });
-        //console.log("HERE")
         console.log(item);
     };
 
+    // Delete story on click 'Delete'
     const handleDeleteStory = async (item) => {
         try {
             const updatedStoryTitles = storyTitles.filter(story => story.dateName !== item.dateName);
@@ -80,7 +89,7 @@ export default function Dashboard({ navigation }) {
                             <TouchableOpacity onPress={() => handleTitlePress(item.dateName)}>
                                 <View style={styles.imageItem}>
                                     <View style={styles.imageInfo}>
-                                        <Text style={[styles.imageName,{fontSize:18,width:200,marginRight: 40}]}>{JSON.parse(JSON.parse(item.title))}</Text>
+                                        <Text style={[styles.imageName,{fontSize:18,width:200,marginRight: 40}]}>{JSON.parse((item.title))}</Text>
                                         <Button title="Delete" color='#c26315' onPress={() => handleDeleteStory(item)} />
                                     </View>
                                 </View>
