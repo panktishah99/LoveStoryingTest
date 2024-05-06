@@ -25,24 +25,26 @@ export default function Login({ navigation }) {
       if (savedData !== null) {
         // check if we got a valid data before calling JSON.parse
         savedData = JSON.parse(savedData);
-      }
-      console.log(savedData)
+        
+        console.log(savedData)
+        const currentTimestamp = Math.floor(Date.now() / 1000); // get current UNIX timestamp. Divide by 1000 to get seconds and round it down
 
-      const currentTimestamp = Math.floor(Date.now() / 1000); // get current UNIX timestamp. Divide by 1000 to get seconds and round it down
-
-      // Remove the saved data if it expires.
-      // Check if expiryTime exists with the optional chaining operator `?`
-      // then, we check if the current ‘now’ time is still behind expiryTime
-      // if not, it means the storage data has expired and needs to be removed
-      if (currentTimestamp >= savedData?.expiryTime) {
+        // Remove the saved data if it expires.
+        // Check if expiryTime exists with the optional chaining operator `?`
+        // then, we check if the current ‘now’ time is still behind expiryTime
+        // if not, it means the storage data has expired and needs to be removed
+        if (currentTimestamp >= savedData?.expiryTime) {
           AsyncStorage.removeItem(credentialsKey);
-        return; // if needed, you can leave the function here depending of your function’s logic
+          return; // if needed, you can leave the function here depending of your function’s logic
+        }
+        else {
+          setUserName(savedData.userId);
+          setPassword(savedData.pass);
+          setisError(false);
+        }
+
       }
-      else{
-        setUserName(savedData.userId);
-        setPassword(savedData.pass);
-        setisError(false);
-      }
+
 
     } catch { }
 
