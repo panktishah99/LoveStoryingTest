@@ -39,16 +39,7 @@ export default function Dashboard({ navigation }) {
             refreshDashboard();
         }, [refreshDashboard])
     );
-
-    // Removes all titles
-    const remove = async () => {
-        try {
-            await AsyncStorage.removeItem("storyTitles");
-            setStoryTitles([]);
-        } catch (err) {
-            alert(err);
-        }
-    };*/
+*/
 
     // Navigate to ReadStory page on click over item listed
     const handleTitlePress = (item) => {

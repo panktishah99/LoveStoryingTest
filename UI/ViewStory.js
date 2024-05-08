@@ -6,33 +6,12 @@ import MyImage from '../assets/bgimages/viewstory.jpg';
 import styles from "./CommonStyleSheet"
 
 export default function ViewStory({ navigation, route }) {
-  //const [paragraphs, setParagraphs] = useState([]); // paragraphs in JSON
-  //const [imageURLs, setImageURLs] = useState([]); // http images
-  //const [imageURLs, setImageURLs] = useState(""); // dummy http images
   const [myTitle, setTitle] = useState("") // Title of the story
   const [storyGenre, setStoryGenre] = useState("");
   const [userAge, setUserAge] = useState("");
-  // const { item, img } = route.params;
   const { theStoryTitle, theStoryData, sGenre, uAge, questionsResponse} = route.params;
 
-
-  // Used to extract paragraphs when the component mounts and extract .jpg
-  // useEffect(() => {
-  //   const extractedParagraphs = extractParagraphs(item);
-  //   setParagraphs(extractedParagraphs);
-  //   setImageURLs(img);
-  //   // setTitle("TestTitle")
-  // }, []);
-
-  // Function to extract paragraphs from JSON data
-  // const extractParagraphs = (item) => {
-  //   const paragraphsArray = item.split('\n').filter(paragraph => paragraph.trim() !== '');
-  //   return paragraphsArray;
-  // };
-
-  /////////////// Functions that saves data to Directory /////////////
-  // Function to convert and store the array as JSON
-
+  // Function that redirects user to the questionnaire
   const goToQuestionnaire = async () => {
     //We will have some API call to GPT to generate questions based on the story
     //Forward these to Questionnaire page from here
@@ -72,7 +51,6 @@ export default function ViewStory({ navigation, route }) {
 
   /////////////// Functions that saves data to Directory /////////////
   // Function to convert and store the array as JSON
-
   const saveStory = async () => {
     console.log(theStoryData);
 
@@ -102,99 +80,30 @@ export default function ViewStory({ navigation, route }) {
       //const dataName = `story_${formattedTime}`;
       const dataName = `story_${new Date().getTime()}`
 
-      // Create json of story
+      // Create JSON of story
       let story = {
         dateName: dataName,
         title: myTitle,
         storyData: theStoryData,
-        //images: imageURLs,
         genre: storyGenre,
         age: userAge,
       };
       
-      // titles key will have as a value a Json where the list of created stories will be stored
+      // Titles key will have as a value a JSON where the list of created stories will be stored
       let titlesJSONString = await AsyncStorage.getItem("storyTitles");
       // If no titles saved yet, initialize an empty array
       let titlesArray = titlesJSONString ? JSON.parse(titlesJSONString) : [];
-      //const jsonParagraphs = JSON.stringify(paragraphs);
       titlesArray.push(story);
 
-
-
-/*
-      // Check if dataName is not already in the array
-      if (!titlesArray.includes(dataName)) {
-        // If not, add the title(creation name) of the new story to the array
-        titlesArray.push(dataName);
-      } else {
-        // If dataName is already in the array, handle the case accordingly
-        console.log(`${dataName} already exists in the array.`);
-      }*/
-      // Set value for dataName key
-      //await AsyncStorage.setItem(dataName, JSON.stringify(story));
-
-      // Convert the array of stories back to a JSON string
-      //let updatedTitlesJSON = JSON.stringify(titlesArray);
       // Store the updated JSON object back into AsyncStorage
       await AsyncStorage.setItem("storyTitles", JSON.stringify(titlesArray));
-
-      //console.log(updatedTitlesJSON) // Showing list of current stories
 
       alert("Story saved successfully!");
     } catch (err) {
       alert(err);
     }
   };
-  /*
-    const saveStory = async () => {
-      // Save each image to local storage
-      try {
-        const jsonParagraphs = JSON.stringify(paragraphs);
-        // Create json of story
-        let story = {
-          title: theStorytitle,
-          text: jsonParagraphs,
-          images: imageURLs,
-        };
-        await AsyncStorage.setItem(title, JSON.stringify(story));
-        alert("Story saved successfully!");
-      } catch (err) {
-        alert(err);
-      }
-    };*/
   ////////////////////////////////////////////////////////////////////
-
-  // Load function
-  const load = async () => {
-    try {
-      let savedStory = await AsyncStorage.getItem("TestTitle"); // this might change in actual implementation
-      //console.log(savedStory);
-      if (savedStory !== null) {
-        // Parsing the JSON back into an object
-        let loadedStory = JSON.parse(savedStory);
-        //console.log(loadedStory.text);
-        /*
-        // Set specific parts of the loaded story
-        setTitle(loadedStory.title);
-        setParagraphs(loadedStory.text);
-        setImageURLs(loadedStory.images);*/
-      }
-      else {
-        console.log('No story found with the given title:', title);
-      }
-
-    } catch (err) {
-      alert(err);
-    }
-  }
-  /////////////////////////////////////////////////////////////////////
-
-  // This will only rerender on the initial page load
-  /*
-  useEffect(() => {
-    //load();
-  }, []);*/
-
   return (
     // <ImageBackground source={MyImage} style={styles.backgroundImage}>
     <View style={styles.container}>
