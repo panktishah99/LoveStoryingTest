@@ -10,57 +10,57 @@ export default function Login({ navigation }) {
   const [password, setPassword] = useState('');
   const [isError, setisError] = useState(false);
   const credentialsKey = "userCredentials"; // User credentials key in AsyncStorage
-  const storageExpirationTime = 2; // Expiration time in minutes 
+  const storageExpirationTime = 15; // Expiration time in minutes 
 
-  // This will check for non expired credentials
   useEffect(() => {
-    console.log(userName);
-    console.log(password);
+    //console.log(userName);
+    //console.log(password);
     getCredentials();
   }, []);
 
+  // This will check for non expired credentials
   const getCredentials = async () => {
     try {
-      let savedData = AsyncStorage.getItem(credentialsKey);
+      let savedData = await AsyncStorage.getItem(credentialsKey);
       if (savedData !== null) {
         // check if we got a valid data before calling JSON.parse
-        savedData = JSON.parse(savedData);
-
-        console.log(savedData)
+        let curData = JSON.parse(savedData);
         const currentTimestamp = Math.floor(Date.now() / 1000); // get current UNIX timestamp. Divide by 1000 to get seconds and round it down
 
         // Remove the saved data if it expires.
         // Check if expiryTime exists with the optional chaining operator `?`
         // then, we check if the current ‘now’ time is still behind expiryTime
         // if not, it means the storage data has expired and needs to be removed
-        if (currentTimestamp >= savedData?.expiryTime) {
+        if (currentTimestamp >= curData?.expiryTime) {
           AsyncStorage.removeItem(credentialsKey);
-          return; // if needed, you can leave the function here depending of your function’s logic
+          //return; // if needed, you can leave the function here depending of your function’s logic
+          setPassword('');
+          setisError(true);
         }
         else {
-          setUserName(savedData.userId);
-          setPassword(savedData.pass);
+          setUserName(curData.userId);
+          setPassword(curData.pass);
           setisError(false);
         }
-
       }
-
-
-    } catch { }
-
+    } catch (error) {
+      console.error('Error retrieving data:', error);
+      Alert.alert('Error', 'Failed to retrieve input');
+    }
   }
 
   const handleLogin = async () => {
     try {
       //
       if (userName === 'Admin' && password === '12345') {
-        setPassword('');
+        //setPassword('');
         setisError(false);
 
         // Save credentials and set an expiration date
         const now = new Date();
         now.setMinutes(now.getMinutes() + storageExpirationTime); // add the expiration time to the current Date time
         const expiryTimeInTimestamp = Math.floor(now.getTime() / 1000); // convert the expiry time in UNIX timestamp
+        
         const data = {
           userId: userName, // example of data you need to store
           pass: password,
@@ -79,7 +79,6 @@ export default function Login({ navigation }) {
     } catch (err) {
       console.log("error")
     }
-
   };
 
   return (
