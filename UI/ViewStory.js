@@ -9,7 +9,7 @@ export default function ViewStory({ navigation, route }) {
   const [myTitle, setTitle] = useState("") // Title of the story
   const [storyGenre, setStoryGenre] = useState("");
   const [userAge, setUserAge] = useState("");
-  const { theStoryTitle, theStoryData, sGenre, uAge, questionsResponse} = route.params;
+  const { theStoryTitle, theStoryData, sGenre, uAge, questionsResponse } = route.params;
 
   // Function that redirects user to the questionnaire
   const goToQuestionnaire = async () => {
@@ -88,7 +88,7 @@ export default function ViewStory({ navigation, route }) {
         genre: storyGenre,
         age: userAge,
       };
-      
+
       // Titles key will have as a value a JSON where the list of created stories will be stored
       let titlesJSONString = await AsyncStorage.getItem("storyTitles");
       // If no titles saved yet, initialize an empty array
@@ -114,7 +114,7 @@ export default function ViewStory({ navigation, route }) {
 
             <Text style={styles.content}>{item.paragraph}</Text>
             <Image source={{ uri: item.imageURL }} style={styles.image} />
-            
+
           </View>
         ))}
       </ScrollView>

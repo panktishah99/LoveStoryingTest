@@ -25,7 +25,7 @@ export default function Login({ navigation }) {
       if (savedData !== null) {
         // check if we got a valid data before calling JSON.parse
         savedData = JSON.parse(savedData);
-        
+
         console.log(savedData)
         const currentTimestamp = Math.floor(Date.now() / 1000); // get current UNIX timestamp. Divide by 1000 to get seconds and round it down
 

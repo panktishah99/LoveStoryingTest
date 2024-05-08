@@ -27,19 +27,19 @@ export default function Dashboard({ navigation }) {
         refreshDashboard(); // Initial dashboard refresh
         console.log(storyTitles.length)
     }, [storyTitles.length]); // Run the effect whenever the number of titles changes
-/*
-// Previous refresh effect
-    useEffect(() => {
-        refreshDashboard(); // Initial dashboard refresh
-    }, [refreshDashboard]); // Run the effect whenever refreshDashboard changes
-
-    // Listen for screen focus and refresh the dashboard
-    useFocusEffect(
-        useCallback(() => {
-            refreshDashboard();
-        }, [refreshDashboard])
-    );
-*/
+    /*
+    // Previous refresh effect
+        useEffect(() => {
+            refreshDashboard(); // Initial dashboard refresh
+        }, [refreshDashboard]); // Run the effect whenever refreshDashboard changes
+    
+        // Listen for screen focus and refresh the dashboard
+        useFocusEffect(
+            useCallback(() => {
+                refreshDashboard();
+            }, [refreshDashboard])
+        );
+    */
 
     // Navigate to ReadStory page on click over item listed
     const handleTitlePress = (item) => {
@@ -63,14 +63,14 @@ export default function Dashboard({ navigation }) {
             <View style={styles.container}>
                 <View style={{ height: 20 }} />
                 <TouchableOpacity style={styles.buttonStyle1} >
-                    <Button 
-                        color = '#2f8062'
+                    <Button
+                        color='#2f8062'
                         title="Go to Create Story Page"
                         onPress={() => navigation.navigate('CreateStory')}
                     />
                 </TouchableOpacity>
                 <View style={{ height: 20 }} />
-                <Text style={[styles.title,{ color: 'white'}]}>Saved Stories List:</Text>
+                <Text style={[styles.title, { color: 'white' }]}>Saved Stories List:</Text>
 
                 {storyTitles.length > 0 ? (
                     <FlatList
@@ -80,7 +80,7 @@ export default function Dashboard({ navigation }) {
                             <TouchableOpacity onPress={() => handleTitlePress(item.dateName)}>
                                 <View style={styles.imageItem}>
                                     <View style={styles.imageInfo}>
-                                        <Text style={[styles.imageName,{fontSize:18,width:200,marginRight: 40}]}>{JSON.parse((item.title))}</Text>
+                                        <Text style={[styles.imageName, { fontSize: 18, width: 200, marginRight: 40 }]}>{JSON.parse((item.title))}</Text>
                                         <Button title="Delete" color='#c26315' onPress={() => handleDeleteStory(item)} />
                                     </View>
                                 </View>
@@ -90,8 +90,8 @@ export default function Dashboard({ navigation }) {
                 ) : (
                     <Text>No saved stories found</Text>
                 )}
-                <Button 
-                    color = '#2b3b32'
+                <Button
+                    color='#2b3b32'
                     title="Logout"
                     onPress={() => navigation.navigate('Login')}
                 />

@@ -24,7 +24,6 @@ export default function ViewStory({ navigation, route }) {
             const desiredItem = await getItemByDateName(desiredDateName);
             // If story is in list, get data
             if (desiredItem !== null) {
-            //if (desiredItem){
                 // Extracting title and story data
                 let titleString = JSON.parse(desiredItem.title);
                 setTitle(titleString);
