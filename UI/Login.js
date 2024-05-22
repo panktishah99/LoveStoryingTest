@@ -185,7 +185,7 @@ export default function Login({ navigation }) {
               secureTextEntry
             />
             <View style={{ height: 20 }} />
-            { loading ? ( <ActivityIndicator size="large" color="#0000ff" /> )
+            { loading ? ( <ActivityIndicator size="large" color="#0b756e" /> )
               : (
               <View>
                 <Button

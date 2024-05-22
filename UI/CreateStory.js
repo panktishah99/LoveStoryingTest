@@ -3,7 +3,7 @@ import * as OpenAIServices from '../components/OpenAIServices';
 import * as Machiery from '../components/machinery';
 import styles from './CommonStyleSheet';
 //import MyImage from '../assets/bgimages/forest.jpg';
-import { View, Text, TextInput, Button, ImageBackground, Alert, ScrollView, KeyboardAvoidingView, Platform, TouchableWithoutFeedback, Keyboard } from 'react-native';
+import { View, Text, TextInput, Button, ImageBackground, Alert, ScrollView, KeyboardAvoidingView, Platform, TouchableWithoutFeedback, Keyboard, ActivityIndicator } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
@@ -487,13 +487,21 @@ export default function CreateStory({ navigation }) {
               />
 
               <View style={{ height: 20 }} />
-              <Button
+
+              { isLoading ? ( <ActivityIndicator size="large" color="#bf150f" /> )
+              : (
+              <View>
+                <Button
                 title="Generate Illustrated Story"
                 onPress={generateStory}
                 color='#bf150f'
 
                 disabled={isError || inputText.trim() === '' || age.trim() === '' || paragraphs.trim() === '' || sentences.trim() === '' || words.trim() === ''}
               />
+              </View>
+              )
+            }
+              
 
 
               {
