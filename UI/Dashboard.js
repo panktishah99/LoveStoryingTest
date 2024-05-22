@@ -1,7 +1,9 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { View, Text, Button, StyleSheet, ImageBackground, TouchableOpacity, FlatList } from 'react-native';
+import { View, Text, Button, StyleSheet, ImageBackground, TouchableOpacity, FlatList, Image } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useFocusEffect } from '@react-navigation/native'; // Import useFocusEffect
+
+import { firebaseAuth } from '../components/FireBaseConfig';
 
 import styles from "./CommonStyleSheet";
 import MyImage from '../assets/bgimages/Picture1.png';
@@ -18,7 +20,7 @@ export default function Dashboard({ navigation }) {
                 setStoryTitles(titlesInDashboard);
             }
         } catch (err) {
-            alert(err);
+            console.error(err);
         }
     }, []); // Dependency array is empty since no external dependencies
 
@@ -38,7 +40,7 @@ export default function Dashboard({ navigation }) {
             await AsyncStorage.removeItem("storyTitles");
             setStoryTitles([]);
         } catch (err) {
-            alert(err);
+            console.error('Error remove story:',err);
         }
     };
 
@@ -74,17 +76,26 @@ export default function Dashboard({ navigation }) {
 
                 {storyTitles.length > 0 ? (
                     <FlatList
-                        data={storyTitles}
-                        keyExtractor={(item, index) => index.toString()}
-                        renderItem={({ item }) => (
-                            <TouchableOpacity onPress={() => handleTitlePress(item.dateName)}>
-                                <View style={styles.imageItem}>
-                                    <View style={styles.imageInfo}>
-                                        <Text style={[styles.imageName,{fontSize:18,width:200,marginRight: 40}]}>{JSON.parse(JSON.parse(item.title))}</Text>
-                                        <Button title="Delete" color='#c26315' onPress={() => handleDeleteStory(item)} />
-                                    </View>
-                                </View>
-                            </TouchableOpacity>
+
+    data={storyTitles}
+    keyExtractor={(item, index) => index.toString()}
+    renderItem={({ item }) => (
+        <TouchableOpacity onPress={() => handleTitlePress(item.dateName)}>
+            <View style={styles.imageItem}>
+                <View style={styles.imageInfo}>
+                    {/* Display the cover image */}
+                    <Image
+                        source={{ uri:item.coverURL}}
+                        style={styles.image,{ width: 90, height: 90, marginRight: 10 }}
+                    />
+                    {/* Display the story title */}
+                    <Text style={styles.imageName}>{JSON.parse(item.title)}</Text>
+                    <Button title="Delete" color='#c26315' onPress={() => handleDeleteStory(item)} />
+                </View>
+            </View>
+        </TouchableOpacity>
+
+
                         )}
                     />
                 ) : (
@@ -93,7 +104,7 @@ export default function Dashboard({ navigation }) {
                 <Button 
                     color = '#2b3b32'
                     title="Logout"
-                    onPress={() => navigation.navigate('Login')}
+                    onPress={()=>firebaseAuth.signOut()}
                 />
             </View>
         </ImageBackground>

@@ -1,7 +1,8 @@
 //import { PDFDocument, rgb } from 'react-native-pdf-lib';
 //import { writeFile } from 'react-native-fs';
 
-export function createStoryPrompt(outline, numParagraph = 3, numSentences = 7, targetAudience = 12, genr = 'fiction story', numsentencewords = 20) {
+
+export function createStoryPrompt(outline, numParagraph = 1, numSentences = 1, targetAudience = 6, genr = 'fiction story', numsentencewords = 10) {
     return `
     A ${genr} story about ${outline} for ${targetAudience}-year old kids with ending part. This story has ${numParagraph} paragraphs, this story has ${numSentences} sentences in its each paragraph, each sentence has less than ${numsentencewords} words. 
 
@@ -9,9 +10,20 @@ export function createStoryPrompt(outline, numParagraph = 3, numSentences = 7, t
     `;
 }
 
-export function createImagePrompt(story, imageType = 'illustration', numImg) {
+
+
+
+export function createStoryOutline(story) {
     return `
-Draw ${numImg} related ${imageType} for each paragraph of the following story: ${story}. 
+    Create a summary for the following story: ${story}.
+    `;
+}
+
+
+
+export function createImagePrompt(story, imageType = 'illustration') {
+    return `
+Draw related ${imageType} for the following story outline: ${story}. 
 
 The general mood of the ${imageType} is positive.
 Do not write any text or speech or words into the ${imageType}.
@@ -26,9 +38,13 @@ Formulate a very short title of the following story: ${story}.
 `;
 }
 
+
 export function createQuestions(story) {
     return `
-Formulate 4 simple questions and its right answer for the following story: ${story}.
+
+Formulate 5 selection questions for a following story: ${story}.
+
+Each question has 1 right answer and 3 confusing answers, and the first answer is the right answer.
 
 `;
 }

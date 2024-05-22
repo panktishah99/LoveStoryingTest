@@ -1,12 +1,11 @@
-import {StyleSheet} from 'react-native';
+import { StyleSheet } from 'react-native';
 
 export default styles = StyleSheet.create({
-  backgroundImage:{
-    flex: 1, // Cover the entire view
-    resizeMode: 'cover', // Adjust how the image fits (e.g., 'cover', 'contain', 'stretch')
+  backgroundImage: {
+    flex: 1,
+    resizeMode: 'cover',
     zIndex: -1,
     backgroundColor: 'transparent',
-  
   },
   container: {
     flex: 1,
@@ -32,9 +31,6 @@ export default styles = StyleSheet.create({
     fontWeight: 'bold',
     alignSelf: 'center',
     alignItems: 'center',
-    // textShadowOffset: { width: 20, height: 20 },
-    // textShadowColor: 'black',
-    // elevation: 10,
   },
   question: {
     fontSize: 20,
@@ -46,7 +42,7 @@ export default styles = StyleSheet.create({
     fontSize: 20,
     marginBottom: 10,
     fontWeight: 'bold',
-    textAlign:'left',
+    textAlign: 'left',
     alignSelf: 'center',
     alignItems: 'center',
   },
@@ -105,34 +101,49 @@ export default styles = StyleSheet.create({
     backgroundColor: '#fcc73f',
   },
   buttonStyle1: {
-	  borderWidth: 1,
-	  backgroundColor: '#256943',
-	  alignItems: "center",
-	  justifyContent: "center",
-	  alignSelf: "stretch",
-	  marginTop: 32,
-	  marginHorizontal: 32,
-	  borderRadius: 6,
-	  paddingVertical: 12,
-	  paddingHorizontal: 32,
-	},
+    borderWidth: 1,
+    backgroundColor: '#256943',
+    alignItems: 'center',
+    justifyContent: 'center',
+    alignSelf: 'stretch',
+    marginTop: 32,
+    marginHorizontal: 32,
+    borderRadius: 6,
+    paddingVertical: 12,
+    paddingHorizontal: 32,
+  },
   imageItem: {
-	  flexDirection: 'row',
-	  alignItems: 'center',
-	  justifyContent: 'space-between',
-	  marginVertical: 5,
-	  padding: 10,
-	  backgroundColor: '#eee',
-	  borderRadius: 5,
-	},
-  
-	imageInfo: {
-	  flexDirection: 'row',
-	  alignItems: 'center',
-	},
-  
-	imageName: {
-	  marginTop: 5, // Adjust as needed
-	  textAlign: 'center', // Adjust as needed
-	}, 
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginVertical: 5,
+    padding: 10,
+    backgroundColor: '#eee',
+    borderRadius: 5,
+  },
+  imageInfo: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  imageName: {
+    marginTop: 5,
+    textAlign: 'center',
+  },
+  // New style for error container
+  errorContainer: {
+    alignItems: 'center',
+    marginBottom: 10,
+  },
+  errorText: {
+    backgroundColor: 'white',
+    color: 'red', // Adjust the text color as needed
+    padding: 5, // Add padding for better readability
+    marginTop: 5, // Add some space between the error message and the input field
+  },
+    inputContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+
 });
+
