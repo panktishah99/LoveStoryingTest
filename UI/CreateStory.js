@@ -2,9 +2,15 @@ import React, { useState, useEffect } from 'react';
 import * as OpenAIServices from '../components/OpenAIServices';
 import * as Machiery from '../components/machinery';
 import styles from './CommonStyleSheet';
-//import MyImage from '../assets/bgimages/forest.jpg';
-import { View, Text, TextInput, Button, ImageBackground, Alert, ScrollView, KeyboardAvoidingView, Platform, TouchableWithoutFeedback, Keyboard, ActivityIndicator } from 'react-native';
+import MyImage from '../assets/bgimages/landscape3.jpg';
+import { View, Text, TextInput, Button, ImageBackground, Alert, ScrollView, KeyboardAvoidingView, Platform, TouchableWithoutFeedback, Keyboard, SafeAreaView, ActivityIndicator, Pressable, Image } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Picker } from '@react-native-picker/picker';
+import Slider from '@react-native-community/slider';
+//import DropDownPicker from 'react-native-dropdown-picker';
+import { Dropdown } from 'react-native-element-dropdown';
+//import ModalPicker from 'react-native-modal-picker';
+//import { StatusBar } from 'expo-status-bar';
 
 
 export default function CreateStory({ navigation }) {
@@ -14,7 +20,7 @@ export default function CreateStory({ navigation }) {
   const [imageType, setImageType] = useState('illustration');
 
   const [age, setAge] = useState('6');
-  const [paragraphs, setParagraphs] = useState('1');
+  const [paragraphs, setParagraphs] = useState('2');
   const [sentences, setSentences] = useState('2');
   const [words, setWords] = useState('10');
   const [isError, setIsError] = useState(false);
@@ -24,9 +30,11 @@ export default function CreateStory({ navigation }) {
   const [fieldName, setFieldName] = useState('');
 
   const [firstLaunch, setLaunch] = useState(true);
-
   const [isLoading, setIsLoading] = useState(false);
+  const [apiErrorText, setApiErrorText] = useState('');
 
+  const [open, setOpen] = useState(false);
+  const [openImg, setOpenImg] = useState(false);
 
   const dataKey = "selectedData"
 
@@ -40,26 +48,44 @@ export default function CreateStory({ navigation }) {
     inputTextInStory: inputText
   }
 
+  // List of genres
+  const data = [
+    { label: 'Fiction', value: 'fiction' },
+    { label: 'Adventure', value: 'adventure' },
+    { label: 'Moral Story', value: 'moral' },
+    { label: 'Fantasy', value: 'fantasy' },
+    { label: 'Poem', value: 'poem' },
+  ];
+
+  // List of image types
+  const imageTypeData = [
+    { label: 'Illustration', value: 'illustration' },
+    { label: 'Historical', value: 'historical image' },
+    { label: 'Photorealistic', value: 'picture' },
+  ];
+
   useEffect(() => {
     // Set default input text based on selected genre
     const defaultText = {
       fiction: "a cat and a mouse were best friends...",
       poem: "a poem about Seattle",
       adventure: "a boy named John climbs the top of the hill only to find...",
-      moral: "Pinocchio's nose grew longer and longer as he..."
+      moral: "Pinocchio's nose grew longer and longer as he...",
+      fantasy: "Fairy"
     };
     setInputText(defaultText[genre]);
   }, [genre]);
 
+  // TODO: Check if when app is launched for first time loadSaveData doesn't make any errors. I solved the problem commenting and uncommenting loadSavedData 
   // Load saved data on launch
   useEffect(() => {
-    console.log("2")
+    // console.log("2")
     loadSavedData();
   }, []);
 
   // Update on storyData and inputText change
   useEffect(() => {
-    console.log("3")
+    // console.log("3")
     storyData.inputTextInStory = inputText;
     updateData();
   }, [storyData || inputText]);
@@ -138,7 +164,6 @@ export default function CreateStory({ navigation }) {
       setter(text);
 
       setIsError(false);
-
       // If the input is empty, exit the function to prevent further processing
       if (text === "") return;
     } else {
@@ -170,18 +195,16 @@ export default function CreateStory({ navigation }) {
     }
   };
 
-
-
   const handleParagraphsChange = (text) => {
-    handleInputChange(setParagraphs, text, 1, 6, "Paragraphs");
+    handleInputChange(setParagraphs, text, 2, 6, "Paragraphs");
     storyData.paragraphsInText = text;
   };
   const handleSentencesChange = (text) => {
-    handleInputChange(setSentences, text, 1, 5, "Sentences");
+    handleInputChange(setSentences, text, 2, 5, "Sentences");
     storyData.sentencesInParagraph = text;
   };
   const handleWordsChange = (text) => {
-    handleInputChange(setWords, text, 1, 25, "Words");
+    handleInputChange(setWords, text, 5, 25, "Words");
     storyData.wordsInSentence = text;
   };
 
@@ -193,7 +216,8 @@ export default function CreateStory({ navigation }) {
 
   const handleStoryPromptChange = (text) => {
     //const isValidInput = /[a-zA-Z][0-9a-zA-Z\s.,!?'"-]*/.test(text); // Updated regex pattern to disallow numbers
-    const isValidInput = /^[a-zA-Z\s.,!?'"-]*$/.test(text);
+    //const isValidInput = /^[a-zA-Z\s.,!?'"-]*$/.test(text);
+    const isValidInput = /^[a-zA-Z\s.,!?'"’-]*$/.test(text);
     if (isValidInput || text === "") { // Check if text is empty
       setInputText(text);
       setIsError(false);
@@ -214,6 +238,18 @@ export default function CreateStory({ navigation }) {
     }
   };
 
+
+  // Function to convert blob to Base64
+  const convertBlobToBase64 = async (blob) => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onerror = reject;
+      reader.onload = () => {
+        resolve(reader.result);
+      };
+      reader.readAsDataURL(blob);
+    });
+  };
 
   //========================
   const generateStory = async () => {
@@ -244,10 +280,12 @@ export default function CreateStory({ navigation }) {
       console.log("newInputText: ", newInputText)
       // Generate story
       const storyResponse = await OpenAIServices.textCompletion(newInputText, 400, 0.5, 0.5, 0, 0, 'gpt-3.5-turbo-instruct');
+      // console.log("TESTING 1", storyResponse);
       const responseData = await storyResponse.json(); // Remove leading and trailing whitespaces 
       // const responseData = storyResponse;
+      // console.log("TESTING 2", responseData);
       const story = responseData.text.trim();
-      //console.log(story);
+      console.log("TESTING 3", story);
 
 
       // Generate Title
@@ -255,7 +293,7 @@ export default function CreateStory({ navigation }) {
       const responseTitle = await OpenAIServices.textCompletion(titlePrompt, 300, 0.5, 0.5, 0, 0, 'gpt-3.5-turbo-instruct');
       const dataTitle = await responseTitle.json();
       const storyTitle = dataTitle.text.replace(/^"|"$/g, '');
-      //console.log(storyTitle);
+      console.log(storyTitle);
       //const storyTitle = 'dear cat';
 
 
@@ -264,8 +302,9 @@ export default function CreateStory({ navigation }) {
       const responseQuestion = await OpenAIServices.textCompletion(questionPrompt, 400, 0.5, 0.5, 0, 0, 'gpt-3.5-turbo-instruct');
       const dataQuestion = await responseQuestion.json();
       const questions = dataQuestion.text;
-      //console.log(questions);
+      console.log(questions);
       //const questions = 'how to do it';
+      // console.log("TESTING 5 - Questions generated successfully");
 
 
 
@@ -286,7 +325,7 @@ export default function CreateStory({ navigation }) {
       // Add "\n\n" to the end of each paragraph to make them independent
       paragraphArray = paragraphArray.map(paragraph => paragraph + "\n\n");
 
-      console.log("original paragraphArray: ", paragraphArray);
+      // console.log("original paragraphArray: ", paragraphArray);
 
       // Generate images <= 5
       numImg = paragraphArray.length;
@@ -300,11 +339,31 @@ export default function CreateStory({ navigation }) {
 
       const imageResponse = await OpenAIServices.imageGeneration(imgPrompt, numImg);
       const imageData = await imageResponse.json();
-      for (let i = 0; i < numImg; i++) {
+      // console.log(imageData);
+      // Old version with URLs
+      /*for (let i = 0; i < numImg; i++) {
         console.log("response url: ", imageData.imgURL[i].url);
         imageURLs[i] = imageData.imgURL[i].url;
+      }*/
+      // New version that stores image as base64
+      console.log("Response generated successfully");
+      for (let i = 0; i < numImg; i++) {
+        console.log("response url: ", imageData.imgURL[i].url);
+        //const response = await fetch(imageData.imgURL[i].url);
+        const response = await fetch(imageData.imgURL[i].url, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        })
+        console.log("FETCH", response);
+        const imageBlob = await response.blob();
+        const base64Image = await convertBlobToBase64(imageBlob);
+        imageURLs[i] = base64Image;
+        console.log("base64 image ", i);
       }
 
+      console.log("Images successfully converted to base64");
 
       // rebuild paragrah
       const numPra = paragraphArray.length;
@@ -338,7 +397,7 @@ export default function CreateStory({ navigation }) {
         paragraph: paragraphArray[index],
         imageURL: imageURLs[index],
       }));
-
+      console.log("Generated storyData");
       // Set story data
       setGeneratedTitle(storyTitle);
       setIsError(false); // Reset error state if generation succeeds
@@ -349,6 +408,7 @@ export default function CreateStory({ navigation }) {
       // Set loading state to false
       setIsLoading(false);
 
+      console.log("Before navigate ViewStory");
       // Navigate to the view story screen
       navigation.navigate('ViewStory', {
         theStoryTitle: storyTitle,
@@ -360,6 +420,8 @@ export default function CreateStory({ navigation }) {
       });
     } catch (error) {
       console.error("1 ERROR:", error.message);
+      console.log(error);
+      setApiErrorText(error.message);
       setIsError(true);
       setIsLoading(false); // Set loading state to false
     }
@@ -371,154 +433,183 @@ export default function CreateStory({ navigation }) {
 
 
   return (
-    <ImageBackground style={styles.backgroundImage}>
+    <ImageBackground source={MyImage} style={styles.backgroundImage}>
       {/*<View style={styles.container}>*/}
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-        style={styles.container}>
+        style={{ flex: 1 }}>
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-          <ScrollView contentContainerStyle={styles.container}>
-            <View style={styles.topContainer}>
-              <Text style={styles.inputLabel}>Select Genre:</Text>
-              <View style={styles.storyParameterSelector}>
-                <Button
-                  title="Fiction"
-                  onPress={() => handleGenreSelect('fiction')}
-                  disabled={genre === 'fiction'}
-                  color='#8a3636'
-                />
-                <Button
-                  title="Adventure"
-                  onPress={() => handleGenreSelect('adventure')}
-                  disabled={genre === 'adventure'}
-                  color='#8a3636'
-                />
-                <Button
-                  title="Moral"
-                  onPress={() => handleGenreSelect('moral')}
-                  disabled={genre === 'moral'}
-                  color='#8a3636'
-                />
-                <Button
-                  title="Poem"
-                  onPress={() => handleGenreSelect('poem')}
-                  disabled={genre === 'poem'}
-                  color='#8a3636'
-                />
+          <SafeAreaView style={{ flex: 1 }}>
+            <ScrollView contentContainerStyle={styles.container} >
+              <View style={styles.topContainer}>
+                <View style={{ height: 20 }} />
+                <View style={{ flexDirection: "row" }}>
+                  <Text style={styles.inputLabel}>Select Genre:   </Text>
+                  {Platform.OS === 'ios' ? (
+                    <Dropdown
+                      style={styles.dropdown}
+                      data={data}
+                      labelField="label"
+                      valueField="value"
+                      placeholder="Select genre"
+                      value={genre}
+                      onChange={(item) => handleGenreSelect(item.value)}
+                    />
+                  ) : (
+                    <Picker
+                      style={styles.pickerStyle}
+                      selectedValue={genre}
+                      onValueChange={(itemValue) => handleGenreSelect(itemValue)}
+                    >
+                      {data.map((item) => (
+                        <Picker.Item key={item.value} label={item.label} value={item.value} />
+                      ))}
+                    </Picker>
+                  )}
+                </View>
+                <View style={{ height: 10 }} />
+                <View style={{ flexDirection: "row" }}>
+                  <Text style={styles.inputLabel}>Select Image Type:   </Text>
+                  {Platform.OS === 'ios' ? (
+                    <Dropdown
+                      style={styles.dropdown}
+                      data={imageTypeData}
+                      labelField="label"
+                      valueField="value"
+                      placeholder="Select image type"
+                      value={imageType}
+                      onChange={(item) => handleImageSelect(item.value)}
+                    />
+                  ) : (
+                    <Picker
+                      style={styles.pickerStyle}
+                      selectedValue={imageType}
+                      onValueChange={(itemValue) => handleImageSelect(itemValue)}
+                    >
+                      {imageTypeData.map((item) => (
+                        <Picker.Item key={item.value} label={item.label} value={item.value} />
+                      ))}
+                    </Picker>
+                  )}
+                </View>
+                <View style={{ height: 10 }} />
+                <View>
+                  <Text style={styles.inputLabel}>Enter the Child's Age: {age}</Text>
+                  <Slider
+                    style={{ width: 200, height: 20 }}
+                    minimumValue={1}
+                    maximumValue={12}
+                    minimumTrackTintColor="#ffffff"
+                    maximumTrackTintColor="#000000"
+                    thumbTintColor="#bf150f"
+                    onValueChange={(value) => handleChangeAge(value)}
+                    step={1}
+                    value={Number(age)}
+                  />
+                </View>
+                <View style={{ height: 10 }} />
+                <View>
+                  <Text style={styles.inputLabel}>Total Paragraphs: {paragraphs}  </Text>
+                  <Slider
+                    style={{ alignSelf:'center',width: 200, height: 10 }}
+                    minimumValue={2}
+                    maximumValue={6}
+                    minimumTrackTintColor="#ffffff"
+                    maximumTrackTintColor="#000000"
+                    thumbTintColor="#fc9803"
+                    onValueChange={(value) => handleParagraphsChange(value)}
+                    step={1}
+                    value={Number(paragraphs)}
+                  />
+                  {/*<TextInput
+                    style={[styles.inputNumber, { marginLeft: 80 }]}
+                    onChangeText={handleParagraphsChange}
+                    keyboardType="numeric"
+                    value={paragraphs}
+                      />*/}
 
-              </View>
-              <View style={{ height: 20 }} />
-              <Text style={styles.inputLabel}>Select Image Type:</Text>
-              <View style={styles.storyParameterSelector}>
-                <Button
-                  title="Illustration"
-                  onPress={() => handleImageSelect('illustration')}
-                  disabled={imageType === 'illustration'}
-                  color='#8a4736'
-                />
-                <Button
-                  title="Historical"
-                  onPress={() => handleImageSelect('historical image')}
-                  disabled={imageType === 'historical image'}
-                  color='#8a4736'
-                />
-                <Button
-                  title="Photorealistic"
-                  onPress={() => handleImageSelect('picture')}
-                  disabled={imageType === 'picture'}
-                  color='#8a4736'
-                />
+                </View>
+                <View>
+                  <Text style={styles.inputLabel}>Sentences per Paragraph: {sentences}   </Text>
+                  <Slider
+                    style={{ alignSelf:'center',width: 200, height: 10 }}
+                    minimumValue={2}
+                    maximumValue={5}
+                    minimumTrackTintColor="#ffffff"
+                    maximumTrackTintColor="#000000"
+                    thumbTintColor="#319455"
+                    onValueChange={(value) => handleSentencesChange(value)}
+                    step={1}
+                    value={Number(sentences)}
+                  />
+                  {/*<TextInput
+                    style={[styles.inputNumber, { marginLeft: 5 }]}
+                    onChangeText={handleSentencesChange}
+                    keyboardType="numeric"
+                    value={sentences}
+                    />*/}
 
-              </View>
-              <View style={{ height: 30 }} />
-              <View style={styles.storyParameterSelector}>
-                <Text style={styles.inputLabel}>Enter the Child's Age:</Text>
+                </View>
+                <View >
+                  <Text style={styles.inputLabel}>Words per Sentence: {words}</Text>
+                  <Slider
+                    style={{ alignSelf:'center',width: 200, height: 10 }}
+                    minimumValue={5}
+                    maximumValue={25}
+                    minimumTrackTintColor="#ffffff"
+                    maximumTrackTintColor="#000000"
+                    //thumbTintColor="#bf150f"
+                    thumbTintColor="#3c5b91"
+                    onValueChange={(value) => handleWordsChange(value)}
+                    step={1}
+                    value={Number(words)}
+                  />
+                  {/*<TextInput
+                    style={[styles.inputNumber, { marginLeft: 50 }]}
+                    onChangeText={handleWordsChange}
+                    keyboardType="numeric"
+                    value={words}
+                  />*/}
+
+                </View>
+                <View style={{ height: 10 }} />
+                <Text style={styles.inputLabel}>Enter your story prompt:</Text>
+
                 <TextInput
-                  style={[styles.inputNumber, { marginLeft: 50 }]}
-                  onChangeText={handleChangeAge}
-                  keyboardType="numeric"
-                  value={age}
+                  value={inputText}
+                  onChangeText={handleStoryPromptChange}
+                  multiline
+                  style={styles.inputText}
+                  placeholder="Type here..."
                 />
 
-              </View>
-              <View style={{ height: 20 }} />
-              <View style={styles.storyParameterSelector}>
-                <Text style={styles.inputLabel}>Total Paragraphs:</Text>
+                <View style={{ height: 20 }} />
 
-                <TextInput
-                  style={[styles.inputNumber, { marginLeft: 80 }]}
-                  onChangeText={handleParagraphsChange}
-                  keyboardType="numeric"
-                  value={paragraphs}
-                />
+                {isLoading ? (<ActivityIndicator size="large" color="#bf150f" />)
+                  : (
+                    <Pressable style={[styles.buttonStyle, { backgroundColor: '#bf150f' }]} onPress={generateStory} disabled={inputText.trim() === '' || age === '' || paragraphs === '' || sentences === '' || words === ''}>
+                      <Text style={styles.buttonText}>Generate Illustrated Story</Text>
+                    </Pressable>
+                  )
+                }
 
-              </View>
-              <View style={styles.storyParameterSelector}>
-                <Text style={styles.inputLabel}>Sentences per Paragraph:</Text>
-
-                <TextInput
-                  style={[styles.inputNumber, { marginLeft: 5 }]}
-                  onChangeText={handleSentencesChange}
-                  keyboardType="numeric"
-                  value={sentences}
-                />
-
-              </View>
-              <View style={styles.storyParameterSelector}>
-                <Text style={styles.inputLabel}>Words per Sentence:</Text>
-
-                <TextInput
-                  style={[styles.inputNumber, { marginLeft: 50 }]}
-                  onChangeText={handleWordsChange}
-                  keyboardType="numeric"
-                  value={words}
-                />
+                {isError ?
+                  (<Text style={styles.errorText}>
+                    {inputText.trim() === '' && <Text>Story prompt cannot be empty.{"\n"}</Text>}
+                    {age === '' && <Text>Age cannot be empty.{"\n"}</Text>}
+                    {paragraphs === '' && <Text>Total Paragraphs cannot be empty.{"\n"} </Text>}
+                    {sentences === '' && <Text>Sentences per Paragraph cannot be empty.{"\n"}</Text>}
+                    {words === '' && <Text>Words per Sentence cannot be empty.{"\n"}</Text>}
+                    {apiErrorText}
+                  </Text>
+                  ) :
+                  (<View style={{ height: 10 }} />)
+                }
 
               </View>
-              <View style={{ height: 20 }} />
-              <Text style={styles.inputLabel}>Enter your story prompt:</Text>
-
-              <TextInput
-                value={inputText}
-                onChangeText={handleStoryPromptChange}
-                multiline
-                style={styles.inputText}
-                placeholder="Type here..."
-              />
-
-              <View style={{ height: 20 }} />
-
-              { isLoading ? ( <ActivityIndicator size="large" color="#bf150f" /> )
-              : (
-              <View>
-                <Button
-                title="Generate Illustrated Story"
-                onPress={generateStory}
-                color='#bf150f'
-
-                disabled={isError || inputText.trim() === '' || age.trim() === '' || paragraphs.trim() === '' || sentences.trim() === '' || words.trim() === ''}
-              />
-              </View>
-              )
-            }
-              
-
-
-              {
-                <Text style={styles.errorText}>
-                  {inputText.trim() === '' && <Text>Story prompt cannot be empty.{"\n"}</Text>}
-                  {age.trim() === '' && <Text>Age cannot be empty.{"\n"}</Text>}
-                  {paragraphs.trim() === '' && <Text>Total Paragraphs cannot be empty.{"\n"} </Text>}
-                  {sentences.trim() === '' && <Text>Sentences per Paragraph cannot be empty.{"\n"}</Text>}
-                  {words.trim() === '' && <Text>Words per Sentence cannot be empty.{"\n"}</Text>}
-                </Text>
-              }
-
-
-
-            </View>
-            {/*</View>*/}
-          </ScrollView>
+              {/*</View>*/}
+            </ScrollView>
+          </SafeAreaView>
         </TouchableWithoutFeedback>
       </KeyboardAvoidingView>
     </ImageBackground>

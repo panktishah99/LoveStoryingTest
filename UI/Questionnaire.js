@@ -1,13 +1,18 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, Button, StyleSheet, ScrollView } from 'react-native';
+import { View, Text, Button, StyleSheet, ScrollView, Pressable, ImageBackground } from 'react-native';
 import { RadioButton } from 'react-native-paper';
+import styles from "./CommonStyleSheet";
+import LottieView from 'lottie-react-native';
+import MyImage from '../assets/bgimages/landscape1.jpg';
 
 export default function Questionnaire({ navigation, route }) {
-  const {storyTitleQues, questions } = route.params;
+  const { storyTitleQues, questions } = route.params;
   const [questionAndAnswer, setQuestionAndAnswer] = useState([]);
   const [userSelections, setUserSelections] = useState([]);
   const [score, setScore] = useState(null);
   const [wrongAnswers, setWrongAnswers] = useState([]);
+  const [showConfetti, setShowConfetti] = useState(false);
+  const [showDragon, setShowDragon] = useState(false);
 
   // Function to shuffle the answers array
   const shuffleAnswers = (answers) => {
@@ -74,86 +79,68 @@ export default function Questionnaire({ navigation, route }) {
     setScore(tempScore);
     // Set wrong answers state
     setWrongAnswers(wrongQuestions);
+    /*
+        if (tempScore > 0) {
+    
+        }*/
+    setShowConfetti(true);
+    setTimeout(() => setShowConfetti(false), 3000); // Confetti lasts for 3 seconds
+    setShowDragon(true);
+    //setTimeout(() => setShowDragon(false));
   };
 
-return (
-  <ScrollView contentContainerStyle={styles.container}>
-    {score !== null && (
-      <View style={styles.scoreContainer}>
-        <Text style={styles.score}>Score: {score}/{questionAndAnswer.length}</Text>
-      </View>
-    )}
-    <Text style={styles.title}>Questions for: '{storyTitleQues}'</Text>
-    {questionAndAnswer.map((qa, index) => (
-      <View key={index} style={styles.questionContainer}>
-        <Text style={styles.question}>{qa.question}</Text>
-        <View style={styles.answerContainer}>
-          {qa.answers.map((answer, i) => (
-            <View key={i} style={styles.radioButtonContainer}>
-              <RadioButton
-                value={answer}
-                status={userSelections[index] === answer ? 'checked' : 'unchecked'}
-                onPress={() => handleChange(index, answer)}
-              />
-              <Text>{answer}</Text>
+  return (
+    <View style={[ styles.container, {padding:0}]}>
+      <ImageBackground source={MyImage} style={styles.backgroundImage}>
+      <ScrollView contentContainerStyle={[styles.content,{padding:0}]}>
+        <Text style={styles.qtitle}>Questions for: '{storyTitleQues}'</Text>
+          
+        {questionAndAnswer.map((qa, index) => (
+          <View key={index} style={styles.questionContainer}>
+            <Text style={styles.question}>{qa.question}</Text>
+            <View style={styles.answerContainer}>
+              {qa.answers.map((answer, i) => (
+                <View key={i} style={styles.radioButtonContainer}>
+                  <RadioButton
+                    uncheckedColor='#000000'
+                    color='#000000'
+                    value={answer}
+                    status={userSelections[index] === answer ? 'checked' : 'unchecked'}
+                    onPress={() => handleChange(index, answer)}
+                  />
+                  <Text>{answer}</Text>
+                </View>
+              ))}
             </View>
-          ))}
-        </View>
-        {score !== null && wrongAnswers.find(wrongAnswer => wrongAnswer.question === qa.question) && (
-          <Text style={[styles.correctAnswer, { color: 'red', fontWeight: 'bold' }]}>Correct Answer: {qa.rightAnswer}</Text>
+            {score !== null && wrongAnswers.find(wrongAnswer => wrongAnswer.question === qa.question) && (
+              <Text style={[styles.correctAnswer, { color: 'red', fontWeight: 'bold' }]}>Correct Answer: {qa.rightAnswer}</Text>
+            )}
+          </View>
+        ))}
+      </ScrollView>
+      
+      <View style={{paddingBottom:20}}>
+        <Pressable style={[styles.buttonStyle, { width: 170, marginTop: 10, alignSelf: 'center' }]} onPress={handleSubmit}>
+          <Text style={styles.buttonText}>Submit Answers</Text>
+          {showConfetti && (
+            <LottieView
+              source={require('../assets/confetti2.json')}
+              autoPlay
+              loop={false}
+              onAnimationFinish={() => setShowConfetti(false)}
+              style={styles.lottie}
+            />
+          )}
+        </Pressable>
+        {score !== null && (
+          <View style={styles.scoreContainer}>
+            <Text style={styles.score}>Score: {score}/{questionAndAnswer.length}</Text>
+          </View>
 
         )}
       </View>
-    ))}
-    <Button title="Submit Answers" onPress={handleSubmit} />
-  </ScrollView>
-);
-
+      </ImageBackground>
+    </View>
+  );
 
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flexGrow: 1,
-    padding: 20,
-  },
-  scoreContainer: {
-    marginTop: 20,
-    marginBottom: 10,
-  },
-  score: {
-    fontSize: 18,
-    fontWeight: 'bold',
-  },
-  title: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    marginBottom: 20,
-  },
-  questionContainer: {
-    marginBottom: 20,
-  },
-  question: {
-    fontSize: 16,
-    marginBottom: 10,
-  },
-  answerContainer: {
-    flexDirection: 'column',
-  },
-  radioButtonContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  correctAnswer: {
-    fontSize: 14,
-    marginBottom: 5,
-  },
-  wrongAnswersContainer: {
-    marginTop: 20,
-  },
-  wrongAnswersTitle: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    marginBottom: 10,
-  },
-});

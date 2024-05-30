@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, Button, ScrollView, Image } from 'react-native';
+import { View, Text, Button, ScrollView, Image, Pressable, Dimensions , ImageBackground} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import styles from './CommonStyleSheet'; // assuming CommonStyleSheet contains your styles
+import MyImage from '../assets/bgimages/notebook.jpg';
 
 export default function ViewStory({ navigation, route }) {
     const [storyData, setStoryData] = useState(null);
@@ -13,6 +14,7 @@ export default function ViewStory({ navigation, route }) {
         load();
     }, []);
 
+
     const load = async () => {
         try {
             const desiredDateName = item;
@@ -21,7 +23,7 @@ export default function ViewStory({ navigation, route }) {
             if (desiredItem !== null) {
                 let titleString = JSON.parse(desiredItem.title);
                 setTitle(titleString);
-                
+
                 let data = desiredItem.storyData;
                 setStoryData(data);
 
@@ -53,30 +55,33 @@ export default function ViewStory({ navigation, route }) {
     };
 
     const goToQuestionnaire = async () => {
-        navigation.navigate('Questionnaire', { storyTitleQues: storyTitles, questions: questionsData});
+        navigation.navigate('Questionnaire', { storyTitleQues: storyTitles, questions: questionsData });
     };
 
     return (
-        <View style={styles.container}>
-            <ScrollView contentContainerStyle={styles.content}>
-                <Text style={styles.title}>{storyTitles}</Text>
+        <View style={[ styles.container, {padding:0}]}>
+            <ImageBackground source={MyImage} style={styles.backgroundImage}>
+            <ScrollView contentContainerStyle={styles.content} style={{backgroundColor: 'transparent'}}>
+                <Text style={[styles.title,{padding:15}]}>{storyTitles}</Text>
                 {storyData ? (
                     storyData.map((item, index) => (
                         <View key={index} style={styles.storyContainer}>
                             <Text style={styles.content}>{item.paragraph}</Text>
                             <Image source={{ uri: item.imageURL }} style={styles.image} />
-                             {/*Image source={{ uri: item.imageURL }} style={styles.image}/>*/}
+                            {/*Image source={{ uri: item.imageURL }} style={styles.image}/>*/}
                         </View>
                     ))
                 ) : (
                     <Text> Sorry, no story data available</Text>
                 )}
             </ScrollView>
-            <Button
-                title="Ready to Answer Questions?"
-                onPress={goToQuestionnaire}
-                color='#256943'
-            />
+            
+            <View style={{padding:20}}>
+            <Pressable style={[styles.buttonStyle, {backgroundColor:'#256943',width:250,alignSelf:'center'}]} onPress={goToQuestionnaire}>
+                <Text style={styles.buttonText}>Ready to Answer Questions?</Text>
+            </Pressable>
+            </View>
+            </ImageBackground>
         </View>
     );
 }

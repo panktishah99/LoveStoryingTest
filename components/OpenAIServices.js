@@ -2,7 +2,7 @@
 
 export function textCompletion(inputText, selectedMaxResTokenLength,selectedTemperature, selectedTopP, selectedFreqPenalty, selectedPresPenalty, selectedDataModel) {
 
-    const localUrl = "https://openaiserver.loca.lt/openai/completions/3.0"; // public endpoint for text completion
+    const localUrl = "https://openai.loca.lt/openai/completions/3.0"; // public endpoint for text completion
 
     return fetch(localUrl, { // Use localUrl instead of url
         method: "POST",
@@ -26,7 +26,7 @@ export function textCompletion(inputText, selectedMaxResTokenLength,selectedTemp
 
 export function imageGeneration(textPrompt, numImg) {
   
-    const localUrl = "https://openaiserver.loca.lt/openai/generations";// public endpoint for img
+    const localUrl = "https://openai.loca.lt/openai/generations";// public endpoint for img
 
     return fetch(localUrl, { // Use localUrl instead of url
         method: "POST",
@@ -44,7 +44,7 @@ export function imageGeneration(textPrompt, numImg) {
 
 export function loginVerify(username, password) {
   
-    const localUrl = "https://openaiserver.loca.lt/openai/loginVerify";// public endpoint for login
+    const localUrl = "https://openai.loca.lt/openai/loginVerify";// public endpoint for login
 
     return fetch(localUrl, { // Use localUrl instead of url
         method: "POST",
