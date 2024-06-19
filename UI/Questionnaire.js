@@ -90,7 +90,7 @@ export default function Questionnaire({ navigation, route }) {
   };
 
   return (
-    <View style={[ styles.container, {padding:0}]}>
+    <View style={[ styles.container, {padding:0, paddingTop:60}]}>
       <ImageBackground source={MyImage} style={styles.backgroundImage}>
       <ScrollView contentContainerStyle={[styles.content,{padding:0}]}>
         <Text style={styles.qtitle}>Questions for: '{storyTitleQues}'</Text>

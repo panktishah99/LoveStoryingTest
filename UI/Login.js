@@ -28,8 +28,13 @@ export default function Login({ navigation }) {
 
   // Handles user Log in using Firebase Authentication
   const handleLogin = async () => {
+	setLoading(false);
+	//navigation.navigate('Central')  
+	  
     setLoading(true);
     //setAutoLog(false);
+	
+	
 
     try {
       const response = await signInWithEmailAndPassword(auth, userName, password);
@@ -42,6 +47,8 @@ export default function Login({ navigation }) {
     } finally {
       setLoading(false);
     }
+	
+	
   };
 
 

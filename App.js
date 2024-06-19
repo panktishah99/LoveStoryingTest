@@ -12,6 +12,9 @@ import ViewStory from "./UI/ViewStory";
 import Questionnaire from "./UI/Questionnaire";
 import ReadStory from "./UI/ReadStory";
 
+import ReadStoryAll from "./UI/ReadStoryAll";
+import Central from "./UI/Central";
+
 import { User, onAuthStateChanged } from 'firebase/auth';
 import { firebaseAuth } from './components/FireBaseConfig';
 
@@ -21,12 +24,14 @@ const InsideStack = createNativeStackNavigator();
 
 function InsideLayout() {
   return (
-    <InsideStack.Navigator initialRouteName="Dashboard">
-      <InsideStack.Screen name="Dashboard" component={Dashboard} />
-      <InsideStack.Screen name="CreateStory" component={CreateStory} />
-      <InsideStack.Screen name="ViewStory" component={ViewStory} />
-      <InsideStack.Screen name="Questionnaire" component={Questionnaire} />
-      <InsideStack.Screen name="ReadStory" component={ReadStory} />
+    <InsideStack.Navigator initialRouteName="My Library">
+      <InsideStack.Screen name="My Library" component={Dashboard} />
+      <InsideStack.Screen name="Create your own story" component={CreateStory}/>
+      <InsideStack.Screen name="ViewStory" component={ViewStory} options={{ headerShown: false }}/>
+      <InsideStack.Screen name="Questionnaire" component={Questionnaire} options={{ headerShown: false }}/>
+      <InsideStack.Screen name="ReadStory" component={ReadStory} options={{ headerShown: false }}/>
+  	  <InsideStack.Screen name="Community Stories" component={Central}/>
+  	  <InsideStack.Screen name="ReadStoryAll" component={ReadStoryAll} options={{ headerShown: false }}/>
     </InsideStack.Navigator>
   );
 }
@@ -50,7 +55,7 @@ export default function App() {
             (<Stack.Screen name="Inside" component={InsideLayout} options={{ headerShown: false }} />)
             : ( <>
                 <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
-                <Stack.Screen name="CreateAccount" component={CreateAccount} options={{ headerShown: false }}/>
+                <Stack.Screen name="CreateAccount" component={CreateAccount}/>
                 </>
               )
           }

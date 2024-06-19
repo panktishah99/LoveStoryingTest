@@ -68,10 +68,10 @@ export default function CreateStory({ navigation }) {
     // Set default input text based on selected genre
     const defaultText = {
       fiction: "a cat and a mouse were best friends...",
-      poem: "a poem about Seattle",
+      poem: "a poem about my favorite city Seattle",
       adventure: "a boy named John climbs the top of the hill only to find...",
       moral: "Pinocchio's nose grew longer and longer as he...",
-      fantasy: "Fairy"
+      fantasy: "Voldemort was the most powerful wizard of all time, but his one weakness was..."
     };
     setInputText(defaultText[genre]);
   }, [genre]);
@@ -285,7 +285,7 @@ export default function CreateStory({ navigation }) {
       // const responseData = storyResponse;
       // console.log("TESTING 2", responseData);
       const story = responseData.text.trim();
-      console.log("TESTING 3", story);
+      //console.log("TESTING 3", story);
 
 
       // Generate Title
@@ -356,7 +356,7 @@ export default function CreateStory({ navigation }) {
             'Content-Type': 'application/json',
           },
         })
-        console.log("FETCH", response);
+        //console.log("FETCH", response);
         const imageBlob = await response.blob();
         const base64Image = await convertBlobToBase64(imageBlob);
         imageURLs[i] = base64Image;
@@ -386,7 +386,7 @@ export default function CreateStory({ navigation }) {
         paragraphArray = dividedParagraphs;
       }
 
-      console.log("group paragraphArray: ", paragraphArray);
+      //console.log("group paragraphArray: ", paragraphArray);
 
 
 
@@ -442,7 +442,6 @@ export default function CreateStory({ navigation }) {
           <SafeAreaView style={{ flex: 1 }}>
             <ScrollView contentContainerStyle={styles.container} >
               <View style={styles.topContainer}>
-                <View style={{ height: 20 }} />
                 <View style={{ flexDirection: "row" }}>
                   <Text style={styles.inputLabel}>Select Genre:   </Text>
                   {Platform.OS === 'ios' ? (

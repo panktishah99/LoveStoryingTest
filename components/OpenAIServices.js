@@ -1,8 +1,60 @@
 
 
+export function gettingallstory(username) {
+  
+    const localUrl = "https://openaiserver.loca.lt/openai/fetchAllStories";// public endpoint for login
+
+    return fetch(localUrl, { // Use localUrl instead of url
+        method: "POST",
+        mode: "cors",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+            "username": username
+        })
+    });
+}
+
+
+export function deleteStory(dateName) {
+  
+    const localUrl = "https://openaiserver.loca.lt/openai/deleteStory";// public endpoint for login
+
+    return fetch(localUrl, { // Use localUrl instead of url
+        method: "POST",
+        mode: "cors",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+            "dateName": dateName
+        })
+    });
+}
+
+
+
+export function saveToServerAll(story) {
+  
+    const localUrl = "https://openaiserver.loca.lt/openai/saveAllStory";// public endpoint for login
+
+    return fetch(localUrl, { // Use localUrl instead of url
+        method: "POST",
+        mode: "cors",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+            "story": story
+        })
+    });
+}
+
+
 export function textCompletion(inputText, selectedMaxResTokenLength,selectedTemperature, selectedTopP, selectedFreqPenalty, selectedPresPenalty, selectedDataModel) {
 
-    const localUrl = "https://openai.loca.lt/openai/completions/3.0"; // public endpoint for text completion
+    const localUrl = "https://openaiserver.loca.lt/openai/completions/3.0"; // public endpoint for text completion
 
     return fetch(localUrl, { // Use localUrl instead of url
         method: "POST",
@@ -26,7 +78,7 @@ export function textCompletion(inputText, selectedMaxResTokenLength,selectedTemp
 
 export function imageGeneration(textPrompt, numImg) {
   
-    const localUrl = "https://openai.loca.lt/openai/generations";// public endpoint for img
+    const localUrl = "https://openaiserver.loca.lt/openai/generations";// public endpoint for img
 
     return fetch(localUrl, { // Use localUrl instead of url
         method: "POST",
@@ -44,7 +96,7 @@ export function imageGeneration(textPrompt, numImg) {
 
 export function loginVerify(username, password) {
   
-    const localUrl = "https://openai.loca.lt/openai/loginVerify";// public endpoint for login
+    const localUrl = "https://openaiserver.loca.lt/openai/loginVerify";// public endpoint for login
 
     return fetch(localUrl, { // Use localUrl instead of url
         method: "POST",

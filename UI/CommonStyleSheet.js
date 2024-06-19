@@ -146,12 +146,12 @@ export default styles = StyleSheet.create({
     marginVertical: 5,
     padding: 10,
     backgroundColor: '#eee',
-    borderRadius: 5,
+    borderRadius: 7,
   },
   imageInfo: {
     flexDirection: 'row',
     alignItems: 'stretch',
-    width: 250,
+    width: 220,
   },
   imageName: {
     marginTop: 5,
@@ -159,7 +159,7 @@ export default styles = StyleSheet.create({
     marginRight: 10,
     marginBottom: 5,
     textAlign: 'left',
-    width: 160,
+    width: 220,
     fontSize: 16,
   },
   // New style for error container

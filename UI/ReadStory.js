@@ -3,6 +3,7 @@ import { View, Text, Button, ScrollView, Image, Pressable, Dimensions , ImageBac
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import styles from './CommonStyleSheet'; // assuming CommonStyleSheet contains your styles
 import MyImage from '../assets/bgimages/notebook.jpg';
+import voiceStory from '../components/TextToSpeech';
 
 export default function ViewStory({ navigation, route }) {
     const [storyData, setStoryData] = useState(null);
@@ -17,7 +18,7 @@ export default function ViewStory({ navigation, route }) {
 
     const load = async () => {
         try {
-            const desiredDateName = item;
+            const desiredDateName = item.dateName;
             const desiredItem = await getItemByDateName(desiredDateName);
 
             if (desiredItem !== null) {
@@ -30,7 +31,7 @@ export default function ViewStory({ navigation, route }) {
                 let question1 = desiredItem.question;
                 setQuestions(question1);
             } else {
-                console.log('No story found with the given title:', title);
+                console.log('No story found with the given title:', item.title);
             }
         } catch (err) {
             alert(err);
@@ -58,11 +59,20 @@ export default function ViewStory({ navigation, route }) {
         navigation.navigate('Questionnaire', { storyTitleQues: storyTitles, questions: questionsData });
     };
 
+    const readStoryAloud = async () => {
+        voiceStory(item.title);
+        let fullStoryText = '';
+        storyData.forEach((item, index) => {
+            fullStoryText = fullStoryText + item.paragraph ;
+        });
+        voiceStory(fullStoryText);
+    };
+
     return (
-        <View style={[ styles.container, {padding:0}]}>
+        <View style={[ styles.container, {padding:0, paddingTop:60}]}>
             <ImageBackground source={MyImage} style={styles.backgroundImage}>
             <ScrollView contentContainerStyle={styles.content} style={{backgroundColor: 'transparent'}}>
-                <Text style={[styles.title,{padding:15}]}>{storyTitles}</Text>
+                <Text style={[styles.title,{padding:20}]}>{storyTitles}</Text>
                 {storyData ? (
                     storyData.map((item, index) => (
                         <View key={index} style={styles.storyContainer}>
@@ -79,6 +89,9 @@ export default function ViewStory({ navigation, route }) {
             <View style={{padding:20}}>
             <Pressable style={[styles.buttonStyle, {backgroundColor:'#256943',width:250,alignSelf:'center'}]} onPress={goToQuestionnaire}>
                 <Text style={styles.buttonText}>Ready to Answer Questions?</Text>
+            </Pressable>
+            <Pressable style={[styles.buttonStyle, {backgroundColor:'#256943',width:250,alignSelf:'center'}]} onPress={readStoryAloud}>
+                <Text style={styles.buttonText}>Read story aloud</Text>
             </Pressable>
             </View>
             </ImageBackground>

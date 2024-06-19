@@ -183,20 +183,19 @@ export default function Dashboard({ navigation }) {
                         <Text style={styles.buttonText}>Push stories</Text>
                     </TouchableOpacity>
                 </View>
-                {/*<TouchableOpacity style={styles.buttonStyle1} >
-                    <Button
-                        color='#2f8062'
-                        title="Go to Create Story Page"
-                        onPress={() => navigation.navigate('CreateStory')}
-                    />
-                </TouchableOpacity>*/}
-                <View style={{ height: 10 }} />
-                <Pressable style={[styles.buttonStyle, {backgroundColor:'#a8481e', width: 240}]} onPress={() => navigation.navigate('CreateStory')}>
-                    <Text style={styles.buttonText}>Go to Create Story Page</Text>
-                </Pressable>
 
-                <View style={{ height: 20 }} />
-                <Text style={[styles.title, { color: 'white' }]}>My Saved Stories: {storyTitles.length}</Text>
+                <View style={{ flexDirection: 'row', marginVertical:10}}>
+                  <Pressable style={[styles.buttonStyle, { backgroundColor:'#5c3c3b', width: 175, marginHorizontal:10}]} onPress={() => navigation.navigate('Community Stories')}>
+                      <Text style={styles.buttonText}>Community Stories</Text>
+                  </Pressable>
+                  <Pressable style={[styles.buttonStyle, {backgroundColor:'#a8481e', width: 135, marginHorizontal:10}]} onPress={() => navigation.navigate('Create your own story')}>
+                      <Text style={styles.buttonText}>Create Story</Text>
+                  </Pressable>
+                </View>
+
+                <View style={{ borderRadius:5, backgroundColor: 'rgba(255, 255, 255, 0.5)' }}>
+                <Text style={[styles.title, {marginHorizontal:10, color: 'black' }]}>My Saved Stories: {storyTitles.length}</Text>
+                </View>
 
                 {storyTitles.length > 0 ? (
                     <SwipeListView
@@ -204,14 +203,14 @@ export default function Dashboard({ navigation }) {
                         data={storyTitles.slice().reverse()} // Reverse the array
                         keyExtractor={(item, index) => index.toString()}
                         renderItem={({ item }) => (
-                            <TouchableHighlight underlayColor="#006400" style={styles.selectStory} onPress={() => handleTitlePress(item.dateName)}>
+                            <TouchableHighlight underlayColor="#006400" style={styles.selectStory} onPress={() => handleTitlePress(item)}>
                                 <View style={styles.imageItem}>
                                     <Image
                                         source={{ uri: item.coverURL }}
                                         style={{ width: 90, height: 90, marginRight: 10 }}
                                     />
                                     <View style={styles.imageInfo}>
-                                        <Text style={[styles.imageName, { width: 240 }]}>{JSON.parse(item.title)}</Text>
+                                        <Text style={styles.imageName}>{JSON.parse(item.title)}</Text>
                                     </View>
                                 </View>
                             </TouchableHighlight>
@@ -241,5 +240,3 @@ export default function Dashboard({ navigation }) {
         </ImageBackground>
     );
 }
-
-

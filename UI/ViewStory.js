@@ -1,4 +1,4 @@
-import { View, Text, TextInput, Button, StyleSheet, Image, ScrollView, Dimensions, ImageBackground, Pressable } from 'react-native';
+import { View, Text, TextInput, Button, StyleSheet, Image, ScrollView, Dimensions, ImageBackground, Pressable, ActivityIndicator } from 'react-native';
 import React, { useState, useEffect } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as OpenAIServices from '../components/OpenAIServices';
@@ -12,6 +12,7 @@ export default function ViewStory({ navigation, route }) {
   const [userAge, setUserAge] = useState("");
   // const { item, img } = route.params;
   const { theStoryTitle, theStoryData, theCoverURL, sGenre, uAge, questionsResponse } = route.params;
+  const [isLoading, setIsLoading] = useState(false);
 
   //=====================
   const goToQuestionnaire = async () => {
@@ -36,6 +37,27 @@ export default function ViewStory({ navigation, route }) {
     const theAge = JSON.stringify(uAge);
     setUserAge(theAge);
   }
+  
+
+////=============== Save story to Server===============
+  const saveStoryToServer = async (story) => {
+    try {
+
+      const response = await OpenAIServices.saveToServerAll(story);
+      //const data = await regisResponse.json();
+
+      if (response.ok) {
+        console.log('Story saved to server successfully!');
+      } else {
+        console.error('Failed to save story to server:', response.statusText);
+      }
+    } catch (error) {
+      console.error('Error saving story to server:', error);
+    }
+  };
+
+////===========================================================
+
 
   /////////////// Functions that saves data to Directory /////////////
   // Function to convert and store the array as JSON
@@ -45,6 +67,7 @@ export default function ViewStory({ navigation, route }) {
 
     // Get the current time
     const currentTime = new Date();
+    setIsLoading(true);
 
 
     // Save each image to local storage
@@ -73,9 +96,13 @@ export default function ViewStory({ navigation, route }) {
 
       await AsyncStorage.setItem("storyTitles", JSON.stringify(titlesArray));
 
+	  // Save story to server
+	  await saveStoryToServer(story);
 
       alert("Story saved successfully!");
+      setIsLoading(false);
     } catch (err) {
+      setIsLoading(false);
       alert(err);
     }
   };
@@ -103,10 +130,10 @@ export default function ViewStory({ navigation, route }) {
 
   return (
     
-    <View style={[ styles.container, {padding:0}]}>
+    <View style={[ styles.container, {padding:0, paddingTop:60}]}>
       <ImageBackground source={MyImage} style={styles.backgroundImage}>
       <ScrollView contentContainerStyle={styles.content} style={{backgroundColor: 'transparent'}}>
-        <Text style={[styles.title,{padding:10}]}>{theStoryTitle}</Text>
+        <Text style={[styles.title,{padding:20}]}>{theStoryTitle}</Text>
         {theStoryData.map((item, index) => (
           <View key={index} style={styles.storyContainer}>
 
@@ -125,9 +152,13 @@ export default function ViewStory({ navigation, route }) {
         <Text style={styles.buttonText}>Ready to Answer Questions?</Text>
       </Pressable>
       <View style={{height:10}}/>
-      <Pressable style={[styles.buttonStyle, {backgroundColor:'#274b7a',width:120,alignSelf:'center'}]} onPress={() => { saveStory(); }}>
-        <Text style={styles.buttonText}>Save story</Text>
-      </Pressable>
+      {isLoading ? (<ActivityIndicator size="large" color="#274b7a" />)
+        : (
+          <Pressable style={[styles.buttonStyle, {backgroundColor:'#274b7a',width:120,alignSelf:'center'}]} onPress={() => { saveStory(); }}>
+            <Text style={styles.buttonText}>Save story</Text>
+          </Pressable>
+        )
+      }
       </View>
       </ImageBackground>
     </View>
